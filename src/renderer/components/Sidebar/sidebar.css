@@ -1,0 +1,19 @@
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  border-right: 2px solid rgba(255, 255, 255, 0.5);
+
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.sidebar-container {
+  padding-top: 35px;
+}
+
+.interactive-zone {
+  background-color: white;
+  width: 5px;
+  height: 100vh;
+}
