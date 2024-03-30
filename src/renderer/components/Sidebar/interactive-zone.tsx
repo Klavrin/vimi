@@ -1,11 +1,25 @@
+import { useDispatch } from 'react-redux';
+import { setSidebarValue } from '../../store/reducers/sidebar-active';
 import './sidebar.css';
 
-function InteractiveZone() {
+type InteractiveZoneProps = {
+  interactiveZoneWasHovered: () => void;
+};
+
+function InteractiveZone({ interactiveZoneWasHovered }: InteractiveZoneProps) {
+  const dispatch = useDispatch();
+
+  const handleMouseOver = () => {
+    interactiveZoneWasHovered();
+    dispatch(setSidebarValue(true));
+  };
+
   return (
     <div
       className="interactive-zone"
-      onMouseOver={() => console.log('sidebar visible')}
-      onMouseLeave={() => console.log('sidebar invisible')}
+      onFocus={() => console.log('sidebar focused')}
+      onMouseOver={handleMouseOver}
+      // onMouseLeave={() => dispatch(setSidebarValue(false))}
     />
   );
 }

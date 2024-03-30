@@ -13,7 +13,8 @@
 }
 
 .interactive-zone {
-  background-color: white;
   width: 5px;
   height: 100vh;
+  position: absolute;
+  left: 0;
 }
