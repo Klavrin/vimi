@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Flex } from 'antd';
-import { setSidebarValue } from '../../store/reducers/sidebar-active';
-import { State } from '../../types/state';
-import InteractiveZone from './interactive-zone';
-import './sidebar.css';
+import { setSidebarValue } from '../store/reducers/sidebar-active';
+import { State } from '../types/state';
+import StyledSidebar from './styles/sidebar.styled';
+import InteractiveZone from './SidebarInteractiveZone';
 
 function Sidebar() {
   const [interactiveZoneWasHovered, setInteractiveZoneWasHovered] =
@@ -33,14 +33,12 @@ function Sidebar() {
       />
 
       {sidebarActive && (
-        <div className="sidebar" onMouseLeave={handleMouseLeave}>
-          {/* <div className="sidebar-container"> */}
+        <StyledSidebar onMouseLeave={handleMouseLeave}>
           <Flex className="sidebar-container">
             <div className="sidebar-note">hello</div>
             <div className="sidebar-note">world</div>
           </Flex>
-          {/* </div> */}
-        </div>
+        </StyledSidebar>
       )}
     </>
   );

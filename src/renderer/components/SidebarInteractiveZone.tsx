@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
-import { setSidebarValue } from '../../store/reducers/sidebar-active';
-import './sidebar.css';
+import { setSidebarValue } from '../store/reducers/sidebar-active';
+import StyledSidebarInteractiveZone from './styles/interactive-zone.styled';
 
 type InteractiveZoneProps = {
   interactiveZoneWasHovered: () => void;
@@ -15,7 +15,7 @@ function InteractiveZone({ interactiveZoneWasHovered }: InteractiveZoneProps) {
   };
 
   return (
-    <div
+    <StyledSidebarInteractiveZone
       className="interactive-zone"
       onFocus={() => console.log('sidebar focused')}
       onMouseOver={handleMouseOver}
