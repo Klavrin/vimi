@@ -1,13 +1,22 @@
 import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
-import store from './store';
 import App from './App';
-import './styles/globals.css';
+import { ThemeProvider } from 'styled-components';
+import { Provider as ReduxProvider } from 'react-redux';
+import store from './store';
+import GlobalStyles from './styles/globals.styled';
+
+const theme = {
+  colors: {},
+};
 
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
+
 root.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <ReduxProvider store={store}>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <App />
+    </ThemeProvider>
+  </ReduxProvider>,
 );

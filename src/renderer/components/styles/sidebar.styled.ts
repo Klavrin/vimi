@@ -9,14 +9,14 @@ const StyledSidebar = styled.div`
   top: 0;
   left: 0;
 
-  .sidebar-container {
+  .container {
     padding-top: 35px;
     padding-inline: 10px;
     flex-direction: column;
     gap: 10px;
   }
 
-  .sidebar-note {
+  .note {
     width: 100%;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 5px;
