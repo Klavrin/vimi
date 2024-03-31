@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Flex } from 'antd';
 import { setSidebarValue } from '../../store/reducers/sidebar-active';
-import { State } from '../../store/state';
+import { State } from '../../types/state';
 import InteractiveZone from './interactive-zone';
 import './sidebar.css';
 
@@ -33,7 +34,12 @@ function Sidebar() {
 
       {sidebarActive && (
         <div className="sidebar" onMouseLeave={handleMouseLeave}>
-          <div className="sidebar-container">sidebar</div>
+          {/* <div className="sidebar-container"> */}
+          <Flex className="sidebar-container">
+            <div className="sidebar-note">hello</div>
+            <div className="sidebar-note">world</div>
+          </Flex>
+          {/* </div> */}
         </div>
       )}
     </>

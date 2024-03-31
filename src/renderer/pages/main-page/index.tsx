@@ -1,6 +1,6 @@
-import { Button, Flex, Switch } from 'antd';
+import { Button, Switch } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-import { State } from '../../store/state';
+import type { State } from '../../types/state';
 import { toggleSidebar } from '../../store/reducers/sidebar-active';
 import Sidebar from '../../components/Sidebar';
 
@@ -13,7 +13,6 @@ function MainPage() {
       <Sidebar />
 
       <div style={{ paddingLeft: sidebarActive ? 240 : 0 }}>
-        <h1>Hello</h1>
         <Button
           onClick={() => dispatch(toggleSidebar())}
           size="small"
@@ -21,12 +20,7 @@ function MainPage() {
         >
           Sidebar on/off
         </Button>
-
-        <Flex>
-          <p>hello</p>
-          <p>yo</p>
-          <Switch size="small" />
-        </Flex>
+        <Switch size="small" />
       </div>
     </>
   );
