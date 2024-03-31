@@ -1,4 +1,5 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
+import fs from 'fs';
 import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
@@ -99,6 +100,23 @@ const createWindow = async () => {
 };
 
 // Event listeners
+ipcMain.on('setConfigTheme', (_event, { theme, config }) => {
+  try {
+    const oldConfig = config;
+    oldConfig.theme = theme;
+    const newConfig = JSON.stringify(config, null, 2);
+
+    fs.writeFile(
+      '/Users/sergiugherasim/Developer/mini/config/config.json',
+      newConfig,
+      (err) => {
+        if (err) console.log(err);
+      },
+    );
+  } catch (err) {
+    console.log('Could not write the new theme to config.json: ', err);
+  }
+});
 
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even

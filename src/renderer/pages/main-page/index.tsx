@@ -30,6 +30,7 @@ function MainPage() {
         <Button onClick={() => dispatch(changeTheme('midnight-blue'))}>
           midnight-blue
         </Button>
+
         <Switch size="small" />
       </div>
     </>

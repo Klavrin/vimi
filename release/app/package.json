@@ -1,12 +1,12 @@
 {
-  "name": "electron-react-boilerplate",
-  "version": "4.6.0",
-  "description": "A foundation for scalable desktop apps",
+  "name": "mini",
+  "version": "1.0.0",
+  "description": "A note taking app that allows you to forget about your mouse.",
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://github.com/electron-react-boilerplate"
+    "name": "mini",
+    "email": "sergeras4@gmail.com",
+    "url": "https://github.com/Klavrin/mini"
   },
   "main": "./dist/main/main.js",
   "scripts": {
