@@ -3,7 +3,12 @@ import styled from 'styled-components';
 const StyledSidebar = styled.div`
   width: 240px;
   height: 100vh;
-  border-right: 2px solid rgba(255, 255, 255, 0.1);
+  border-right-width: 2px;
+  border-right-style: solid;
+  border-right-color: ${(props) =>
+    props.theme.borderColor
+      ? props.theme.borderColor
+      : 'rgba(255, 255, 255, 0.1)'};
 
   position: fixed;
   top: 0;

@@ -15,6 +15,9 @@ const GlobalStyles = createGlobalStyle`
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     font-family: sans-serif;
+
+    background-color: ${(props: any) => props.theme.backgroundColor};
+    color: ${(props: any) => props.theme.color}
   }
 
   img,

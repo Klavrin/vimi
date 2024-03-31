@@ -2,6 +2,7 @@ import { Button, Switch } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import type { State } from '../../types/state';
 import { toggleSidebar } from '../../store/reducers/sidebar-active';
+import { changeTheme } from '../../store/reducers/theme';
 import Sidebar from '../../components/Sidebar';
 
 function MainPage() {
@@ -19,6 +20,15 @@ function MainPage() {
           type="primary"
         >
           Sidebar on/off
+        </Button>
+
+        <Button onClick={() => dispatch(changeTheme('light'))}>light</Button>
+        <Button onClick={() => dispatch(changeTheme('dark'))}>dark</Button>
+        <Button onClick={() => dispatch(changeTheme('gruvbox'))}>
+          gruvbox
+        </Button>
+        <Button onClick={() => dispatch(changeTheme('midnight-blue'))}>
+          midnight-blue
         </Button>
         <Switch size="small" />
       </div>
