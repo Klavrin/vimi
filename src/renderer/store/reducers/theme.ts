@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { Theme } from '../../types/themes';
-import config from '../../../../config/config.json';
 
 type initialStateType = {
   currentTheme: Theme;
 };
 
 const initialState: initialStateType = {
-  currentTheme: config.theme as Theme,
+  currentTheme: (localStorage.getItem('theme')
+    ? localStorage.getItem('theme')
+    : 'dark') as Theme,
 };
 
 const themeSlice = createSlice({
@@ -16,10 +17,7 @@ const themeSlice = createSlice({
   reducers: {
     changeTheme: (state, action: PayloadAction<Theme>) => {
       state.currentTheme = action.payload;
-      window.electron.ipcRenderer.sendMessage('setConfigTheme', {
-        theme: action.payload,
-        config,
-      });
+      localStorage.setItem('theme', action.payload);
     },
   },
 });
