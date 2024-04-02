@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Flex } from 'antd';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
@@ -9,8 +9,24 @@ import StyledSidebar from './styles/sidebar.styled';
 function Sidebar() {
   const [interactiveZoneWasHovered, setInteractiveZoneWasHovered] =
     useState(false);
+  const [directoryFiles, setDirectoryFiles] = useState(['no files']);
   const sidebarActive = useSelector((state: State) => state.sidebar.isActive);
+  const currentDirectoryPath = useSelector(
+    (state: State) => state.currentDirectory.currentDirectoryPath,
+  );
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (currentDirectoryPath) {
+      window.electron.ipcRenderer.sendMessage(
+        'getDirectoryContents',
+        currentDirectoryPath,
+      );
+      window.electron.ipcRenderer.on('dirItems', (dirItems: any) => {
+        setDirectoryFiles(dirItems);
+      });
+    }
+  }, [currentDirectoryPath]);
 
   /**
    * If the user hovered the interactive zone, a.k.a used their
@@ -35,8 +51,12 @@ function Sidebar() {
       {sidebarActive && (
         <StyledSidebar onMouseLeave={handleMouseLeave}>
           <Flex className="container">
-            <div className="note">hello</div>
-            <div className="note">world</div>
+            {directoryFiles.map((file) => (
+              // Temporary key: Do not use the file name as the key!
+              <div key={`${file}`} className="note">
+                {file}
+              </div>
+            ))}
           </Flex>
         </StyledSidebar>
       )}

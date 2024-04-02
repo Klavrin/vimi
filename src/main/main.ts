@@ -1,4 +1,5 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
+import fs from 'fs-extra';
 import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
@@ -97,6 +98,24 @@ const createWindow = async () => {
   // eslint-disable-next-line
   new AppUpdater();
 };
+
+// Event listeners
+ipcMain.on('getDirectoryContents', (event, dirPath) => {
+  fs.readdir(dirPath, (err, dirItems) => {
+    if (err) throw err;
+
+    event.sender.send('dirItems', dirItems);
+  });
+});
+
+ipcMain.on('isDirectory', async (event, dirPath) => {
+  try {
+    const stats = await fs.stat(dirPath);
+    event.reply('isDirectoryReply', stats.isDirectory());
+  } catch (err) {
+    if (err) throw err;
+  }
+});
 
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even

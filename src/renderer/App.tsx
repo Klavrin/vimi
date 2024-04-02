@@ -1,4 +1,5 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
+import Main from './components/Main';
 import MainPage from './pages/main-page';
 import Titlebar from './components/Titlebar';
 
@@ -7,13 +8,13 @@ export default function App() {
     <>
       <Titlebar />
 
-      <main>
+      <Main>
         <Router>
           <Routes>
             <Route path="/" element={<MainPage />} />
           </Routes>
         </Router>
-      </main>
+      </Main>
     </>
   );
 }

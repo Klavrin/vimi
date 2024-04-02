@@ -7,4 +7,7 @@ export type State = {
   theme: {
     currentTheme: Theme;
   };
+  currentDirectory: {
+    currentDirectoryPath: string;
+  };
 };

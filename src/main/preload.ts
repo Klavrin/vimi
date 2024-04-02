@@ -3,9 +3,10 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
 export type Channels =
-  | 'getStoredTheme'
-  | 'changeStoredTheme'
-  | 'setConfigTheme';
+  | 'getDirectoryContents'
+  | 'dirItems'
+  | 'isDirectory'
+  | 'isDirectoryReply';
 
 const electronHandler = {
   ipcRenderer: {

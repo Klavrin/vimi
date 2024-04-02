@@ -52,6 +52,8 @@ const GlobalStyles = createGlobalStyle`
   }
 
   main {
+    min-height: 100vh;
+
     padding-top: 35px;
     padding-inline: 20px;
     padding-bottom: 20px;
