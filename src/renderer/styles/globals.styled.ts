@@ -16,8 +16,8 @@ const GlobalStyles = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     font-family: sans-serif;
 
-    background-color: ${(props: any) => props.theme.backgroundColor};
-    color: ${(props: any) => props.theme.color}
+    background-color: ${(props) => props.theme.backgroundColor};
+    color: ${(props) => props.theme.color}
   }
 
   img,
@@ -34,6 +34,7 @@ const GlobalStyles = createGlobalStyle`
   textarea,
   select {
     font: inherit;
+    color: ${(props) => props.theme.color};
   }
 
   p,

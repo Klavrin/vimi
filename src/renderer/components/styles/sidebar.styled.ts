@@ -31,7 +31,6 @@ const StyledSidebar = styled.div`
     padding-inline: 10px;
     padding-block: 5px;
     cursor: pointer;
-    color: #fff;
     text-align: start;
   }
 

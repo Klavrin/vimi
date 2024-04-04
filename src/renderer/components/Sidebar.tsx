@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Flex } from 'antd';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
@@ -15,6 +15,7 @@ function Sidebar() {
   const currentDirectoryPath = useSelector(
     (state: State) => state.currentDirectory.currentDirectoryPath,
   );
+  const containerRef = useRef<any>(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,6 +29,43 @@ function Sidebar() {
       });
     }
   }, [currentDirectoryPath]);
+
+  useEffect(() => {
+    const handleVimNavigation = (e: any) => {
+      if (containerRef.current) {
+        const interactiveElements: any = Array.from(
+          containerRef.current.querySelectorAll('button'),
+        );
+
+        if (e.key === 'j') {
+          e.preventDefault();
+          const currentIndex = interactiveElements.indexOf(
+            document.activeElement,
+          );
+          const nextIndex =
+            currentIndex === interactiveElements.length - 1
+              ? 0
+              : currentIndex + 1;
+          if (interactiveElements[nextIndex])
+            interactiveElements[nextIndex].focus();
+        } else if (e.key === 'k') {
+          e.preventDefault();
+          const currentIndex = interactiveElements.indexOf(
+            document.activeElement,
+          );
+          const prevIndex =
+            currentIndex === 0
+              ? interactiveElements.length - 1
+              : currentIndex - 1;
+          if (interactiveElements[prevIndex])
+            interactiveElements[prevIndex].focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleVimNavigation);
+    return () => document.removeEventListener('keydown', handleVimNavigation);
+  }, []);
 
   /**
    * If the user hovered the interactive zone, a.k.a used their
@@ -51,7 +89,7 @@ function Sidebar() {
 
       {sidebarActive && (
         <StyledSidebar onMouseLeave={handleMouseLeave}>
-          <Flex className="container">
+          <Flex className="container" ref={containerRef}>
             {directoryFiles.map((dir: any) => (
               <SidebarItem key={dir.name} item={dir} />
             ))}
