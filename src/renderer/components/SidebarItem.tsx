@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 type SidebarItemProps = {
   item:
     | { name: string; path: string; type: 'file' }
@@ -9,25 +11,34 @@ type SidebarItemProps = {
 };
 
 function SidebarItem({ item }: SidebarItemProps) {
+  const [dirFilesVisible, setDirFilesVisible] = useState(false);
+
   // Render file
   if (item.type === 'file')
     return (
       <div key={item.path} className="note">
-        {item.name}
+        FILE: {item.name}
       </div>
     );
 
   // Render directory
   return (
-    <div key={item.name} className="note">
-      {item.name}
-      <ul>
-        {/* TODO: Write a type for the child prop */}
-        {item.children.map((child: any) => (
-          <SidebarItem key={child.name} item={child} />
-        ))}
-      </ul>
-    </div>
+    <button
+      type="button"
+      key={item.name}
+      className="note"
+      onClick={() => setDirFilesVisible(!dirFilesVisible)}
+    >
+      DIR: {item.name}
+      {dirFilesVisible && (
+        <div className="directory-container">
+          {/* TODO: Write a type for the child prop */}
+          {item.children.map((child: any) => (
+            <SidebarItem key={child.name} item={child} />
+          ))}
+        </div>
+      )}
+    </button>
   );
 }
 

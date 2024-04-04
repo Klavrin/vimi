@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  currentDirectoryPath: '',
+  currentDirectoryPath: localStorage.getItem('currentDirectoryPath')
+    ? localStorage.getItem('currentDirectoryPath')
+    : '',
 };
 
 const currentDirectorySlice = createSlice({
@@ -10,6 +12,7 @@ const currentDirectorySlice = createSlice({
   reducers: {
     setCurrentDirectoryPath: (state, action) => {
       state.currentDirectoryPath = action.payload;
+      localStorage.setItem('currentDirectoryPath', action.payload);
     },
   },
 });

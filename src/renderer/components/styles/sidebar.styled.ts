@@ -26,9 +26,21 @@ const StyledSidebar = styled.div`
   .note {
     width: 100%;
     background: rgba(255, 255, 255, 0.1);
+    border: none;
     border-radius: 5px;
     padding-inline: 10px;
     padding-block: 5px;
+    cursor: pointer;
+    color: #fff;
+    text-align: start;
+  }
+
+  .directory-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 10px;
   }
 `;
 
