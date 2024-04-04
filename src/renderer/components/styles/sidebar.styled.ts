@@ -9,6 +9,7 @@ const StyledSidebar = styled.div`
     props.theme.borderColor
       ? props.theme.borderColor
       : 'rgba(255, 255, 255, 0.1)'};
+  overflow-y: scroll;
 
   position: fixed;
   top: 0;
@@ -17,6 +18,7 @@ const StyledSidebar = styled.div`
   .container {
     padding-top: 35px;
     padding-inline: 10px;
+    padding-bottom: 10px;
     flex-direction: column;
     gap: 10px;
   }

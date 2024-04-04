@@ -26,7 +26,7 @@ function Main({ children }: MainProps) {
       window.electron.ipcRenderer.sendMessage('isDirectory', dir.path);
       window.electron.ipcRenderer.on('isDirectoryReply', (isDir) => {
         if (isDir) {
-          // Use Redux and save the directory path
+          // Use Redux to save the directory path
           dispatch(setCurrentDirectoryPath(dir.path));
         } else {
           // Show a message that warns the user that whatever they dragged and dropped might

@@ -6,6 +6,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import readDirectory from './utils/read-directory';
 
 class AppUpdater {
   constructor() {
@@ -100,20 +101,22 @@ const createWindow = async () => {
 };
 
 // Event listeners
-ipcMain.on('getDirectoryContents', (event, dirPath) => {
-  fs.readdir(dirPath, (err, dirItems) => {
-    if (err) throw err;
-
-    event.sender.send('dirItems', dirItems);
-  });
-});
-
 ipcMain.on('isDirectory', async (event, dirPath) => {
   try {
     const stats = await fs.stat(dirPath);
     event.reply('isDirectoryReply', stats.isDirectory());
   } catch (err) {
-    if (err) throw err;
+    // TODO: let the user know something wrong happened
+  }
+});
+
+// Expects that dirPath is always a directory path.
+ipcMain.on('readDirectory', (event, dirPath) => {
+  try {
+    const dirPathContents = readDirectory(dirPath);
+    event.reply('dirPathContents', dirPathContents);
+  } catch (err) {
+    // TODO: let the user know something wrong happened
   }
 });
 

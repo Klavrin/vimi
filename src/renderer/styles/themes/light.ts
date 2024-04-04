@@ -1,5 +1,5 @@
 const primaryBackground = '#fff';
-const primaryText = '#000';
+const primaryText = 'rgba(0, 0, 0, 0.7)';
 
 const lightTheme = {
   backgroundColor: primaryBackground,

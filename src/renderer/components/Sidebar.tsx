@@ -4,6 +4,7 @@ import { Flex } from 'antd';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
 import { State } from '../types/state';
 import InteractiveZone from './SidebarInteractiveZone';
+import SidebarItem from './SidebarItem';
 import StyledSidebar from './styles/sidebar.styled';
 
 function Sidebar() {
@@ -19,10 +20,10 @@ function Sidebar() {
   useEffect(() => {
     if (currentDirectoryPath) {
       window.electron.ipcRenderer.sendMessage(
-        'getDirectoryContents',
+        'readDirectory',
         currentDirectoryPath,
       );
-      window.electron.ipcRenderer.on('dirItems', (dirItems: any) => {
+      window.electron.ipcRenderer.on('dirPathContents', (dirItems: any) => {
         setDirectoryFiles(dirItems);
       });
     }
@@ -51,11 +52,8 @@ function Sidebar() {
       {sidebarActive && (
         <StyledSidebar onMouseLeave={handleMouseLeave}>
           <Flex className="container">
-            {directoryFiles.map((file) => (
-              // Temporary key: Do not use the file name as the key!
-              <div key={`${file}`} className="note">
-                {file}
-              </div>
+            {directoryFiles.map((dir: any) => (
+              <SidebarItem key={dir.name} item={dir} />
             ))}
           </Flex>
         </StyledSidebar>

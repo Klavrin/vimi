@@ -3,10 +3,11 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
 export type Channels =
-  | 'getDirectoryContents'
   | 'dirItems'
   | 'isDirectory'
-  | 'isDirectoryReply';
+  | 'isDirectoryReply'
+  | 'readDirectory'
+  | 'dirPathContents';
 
 const electronHandler = {
   ipcRenderer: {
