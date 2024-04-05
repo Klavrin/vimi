@@ -4,6 +4,7 @@ import type { State } from '../../types/state';
 import { toggleSidebar } from '../../store/reducers/sidebar-active';
 import { changeTheme } from '../../store/reducers/theme';
 import Sidebar from '../../components/Sidebar';
+import Editor from '../../components/Editor';
 import StyledMainPage from './main-page';
 
 function MainPage() {
@@ -22,6 +23,8 @@ function MainPage() {
           'Drag a folder from you computer to get started.'
         ) : (
           <>
+            <Editor />
+
             <Button
               onClick={() => dispatch(toggleSidebar())}
               size="small"
@@ -30,7 +33,7 @@ function MainPage() {
               Sidebar on/off
             </Button>
 
-            <Select
+            {/* <Select
               style={{ width: 300 }}
               onChange={(value) => dispatch(changeTheme(value))}
             >
@@ -38,7 +41,7 @@ function MainPage() {
               <Select.Option value="light">Light</Select.Option>
               <Select.Option value="gruvbox">Gruvbox</Select.Option>
               <Select.Option value="midnight-blue">Midnight-Blue</Select.Option>
-            </Select>
+            </Select> */}
           </>
         )}
       </StyledMainPage>

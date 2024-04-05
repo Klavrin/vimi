@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const StyledSidebarInteractiveZone = styled.div`
   width: 5px;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   left: 0;
 `;
 

@@ -7,7 +7,9 @@ export type Channels =
   | 'isDirectory'
   | 'isDirectoryReply'
   | 'readDirectory'
-  | 'dirPathContents';
+  | 'dirPathContents'
+  | 'readFile'
+  | 'fileContents';
 
 const electronHandler = {
   ipcRenderer: {

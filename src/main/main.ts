@@ -60,6 +60,8 @@ const createWindow = async () => {
     show: false,
     width: 1024,
     height: 728,
+    minWidth: 728,
+    minHeight: 628,
     titleBarStyle: 'hidden',
     trafficLightPosition: { x: 10, y: 10 },
     icon: getAssetPath('icon.png'),
@@ -118,6 +120,14 @@ ipcMain.on('readDirectory', (event, dirPath) => {
   } catch (err) {
     // TODO: let the user know something wrong happened
   }
+});
+
+ipcMain.on('readFile', (event, filePath) => {
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) throw err;
+
+    event.reply('fileContents', data);
+  });
 });
 
 app.on('window-all-closed', () => {

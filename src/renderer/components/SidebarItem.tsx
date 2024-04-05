@@ -12,55 +12,28 @@ type SidebarItemProps = {
 
 function SidebarItem({ item }: SidebarItemProps) {
   const [dirFilesVisible, setDirFilesVisible] = useState(false);
-  // const containerRef = useRef<any>(null);
 
-  // useEffect(() => {
-  //   const handleKeyDown = (e: any) => {
-  //     if (containerRef.current) {
-  //       const interactiveElements: any = Array.from(
-  //         containerRef.current.querySelectorAll('button'),
-  //       );
-
-  //       if (e.key === 'j') {
-  //         e.preventDefault();
-  //         const currentIndex = interactiveElements.indexOf(
-  //           document.activeElement,
-  //         );
-  //         const nextIndex =
-  //           currentIndex === interactiveElements.length - 1
-  //             ? 0
-  //             : currentIndex + 1;
-  //         interactiveElements[nextIndex].focus();
-  //       } else if (e.key === 'k') {
-  //         e.preventDefault();
-  //         const currentIndex = interactiveElements.indexOf(
-  //           document.activeElement,
-  //         );
-  //         const prevIndex =
-  //           currentIndex === 0
-  //             ? interactiveElements.length - 1
-  //             : currentIndex - 1;
-  //         interactiveElements[prevIndex].focus();
-  //       }
-  //     }
-  //   };
-
-  //   document.addEventListener('keydown', handleKeyDown);
-
-  //   return () => document.removeEventListener('keydown', handleKeyDown);
-  // }, []);
-
-  const handleButtonClick = (
+  const handleDirectoryClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     e.stopPropagation();
     setDirFilesVisible(!dirFilesVisible);
   };
 
+  const handleFileClick = (filePath: string, e: any) => {
+    e.stopPropagation();
+    window.electron.ipcRenderer.sendMessage('readFile', filePath);
+  };
+
   // Render file
   if (item.type === 'file')
     return (
-      <button type="button" key={item.path} className="note">
+      <button
+        onClick={(event) => handleFileClick(item.path, event)}
+        type="button"
+        key={item.path}
+        className="note"
+      >
         FILE: {item.name}
       </button>
     );
@@ -71,7 +44,7 @@ function SidebarItem({ item }: SidebarItemProps) {
       type="button"
       key={item.name}
       className="note"
-      onClick={handleButtonClick}
+      onClick={handleDirectoryClick}
     >
       DIR: {item.name}
       {dirFilesVisible && (
