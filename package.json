@@ -1,8 +1,9 @@
 {
-  "description": "A foundation for scalable desktop apps",
+  "name": "vimi",
+  "description": "Vimify your note-taking experience.",
   "keywords": [
     "electron",
-    "boilerplate",
+    "vim",
     "react",
     "typescript",
     "ts",
@@ -11,25 +12,25 @@
     "hot",
     "reload"
   ],
-  "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
+  "homepage": "https://github.com/Klavrin/vimi",
   "bugs": {
-    "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
+    "url": "https://github.com/Klavrin/vimi"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
+    "url": "git+https://github.com/Klavrin/vimi.git"
   },
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://electron-react-boilerplate.js.org"
+    "name": "vimi - vimify your note-taking experience.",
+    "email": "sergeras4@gmail.com",
+    "url": "https://jealous-flier-dbb.notion.site/vimi-b69ed4e1e2054fc09ff3740614534998?pvs=4"
   },
   "contributors": [
     {
-      "name": "Amila Welihinda",
-      "email": "amilajack@gmail.com",
-      "url": "https://github.com/amilajack"
+      "name": "Sergiu Gherasim",
+      "email": "sergeras4@gmail.com",
+      "url": "https://github.com/Klavrin"
     }
   ],
   "main": "./src/main/main.ts",

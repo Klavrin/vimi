@@ -1,12 +1,12 @@
 {
-  "name": "mini",
+  "name": "vimi",
   "version": "1.0.0",
-  "description": "A note taking app that allows you to forget about your mouse.",
+  "description": "Vimify your note-taking experience.",
   "license": "MIT",
   "author": {
-    "name": "mini",
+    "name": "Sergiu Gherasim",
     "email": "sergeras4@gmail.com",
-    "url": "https://github.com/Klavrin/mini"
+    "url": "https://github.com/Klavrin"
   },
   "main": "./dist/main/main.js",
   "scripts": {
