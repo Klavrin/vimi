@@ -5,10 +5,7 @@ const StyledSidebar = styled.div`
   height: 100vh;
   border-right-width: 2px;
   border-right-style: solid;
-  border-right-color: ${(props) =>
-    props.theme.borderColor
-      ? props.theme.borderColor
-      : 'rgba(255, 255, 255, 0.1)'};
+  border-right-color: ${(props) => props.theme.borderColor};
   overflow-y: scroll;
 
   position: fixed;

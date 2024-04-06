@@ -15,6 +15,7 @@ function Sidebar() {
   const currentDirectoryPath = useSelector(
     (state: State) => state.currentDirectory.currentDirectoryPath,
   );
+  const isEditing = useSelector((state: State) => state.editor.isEditing);
   const containerRef = useRef<any>(null);
   const dispatch = useDispatch();
 
@@ -32,6 +33,8 @@ function Sidebar() {
 
   useEffect(() => {
     const handleVimNavigation = (e: any) => {
+      if (isEditing) return;
+
       if (containerRef.current) {
         const interactiveElements: any = Array.from(
           containerRef.current.querySelectorAll('button'),
@@ -65,7 +68,7 @@ function Sidebar() {
 
     document.addEventListener('keydown', handleVimNavigation);
     return () => document.removeEventListener('keydown', handleVimNavigation);
-  }, []);
+  }, [isEditing]);
 
   /**
    * If the user hovered the interactive zone, a.k.a used their

@@ -10,4 +10,7 @@ export type State = {
   currentDirectory: {
     currentDirectoryPath: string;
   };
+  editor: {
+    isEditing: boolean;
+  };
 };

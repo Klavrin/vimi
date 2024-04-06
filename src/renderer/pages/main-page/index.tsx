@@ -33,7 +33,7 @@ function MainPage() {
               Sidebar on/off
             </Button>
 
-            {/* <Select
+            <Select
               style={{ width: 300 }}
               onChange={(value) => dispatch(changeTheme(value))}
             >
@@ -41,7 +41,7 @@ function MainPage() {
               <Select.Option value="light">Light</Select.Option>
               <Select.Option value="gruvbox">Gruvbox</Select.Option>
               <Select.Option value="midnight-blue">Midnight-Blue</Select.Option>
-            </Select> */}
+            </Select>
           </>
         )}
       </StyledMainPage>
