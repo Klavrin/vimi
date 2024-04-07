@@ -1,7 +1,6 @@
-import { Button, Select } from 'antd';
+import { Select } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import type { State } from '../../types/state';
-import { toggleSidebar } from '../../store/reducers/sidebar-active';
 import { changeTheme } from '../../store/reducers/theme';
 import Sidebar from '../../components/Sidebar';
 import Editor from '../../components/Editor';
@@ -25,15 +24,7 @@ function MainPage() {
           <>
             <Editor />
 
-            <Button
-              onClick={() => dispatch(toggleSidebar())}
-              size="small"
-              type="primary"
-            >
-              Sidebar on/off
-            </Button>
-
-            <Select
+            {/* <Select
               style={{ width: 300 }}
               onChange={(value) => dispatch(changeTheme(value))}
             >
@@ -41,7 +32,7 @@ function MainPage() {
               <Select.Option value="light">Light</Select.Option>
               <Select.Option value="gruvbox">Gruvbox</Select.Option>
               <Select.Option value="midnight-blue">Midnight-Blue</Select.Option>
-            </Select>
+            </Select> */}
           </>
         )}
       </StyledMainPage>

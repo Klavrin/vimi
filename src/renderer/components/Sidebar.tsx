@@ -68,7 +68,7 @@ function Sidebar() {
 
     document.addEventListener('keydown', handleVimNavigation);
     return () => document.removeEventListener('keydown', handleVimNavigation);
-  }, [isEditing]);
+  }, [isEditing, dispatch]);
 
   /**
    * If the user hovered the interactive zone, a.k.a used their
@@ -90,15 +90,18 @@ function Sidebar() {
         interactiveZoneWasHovered={() => setInteractiveZoneWasHovered(true)}
       />
 
-      {sidebarActive && (
-        <StyledSidebar onMouseLeave={handleMouseLeave}>
-          <Flex className="container" ref={containerRef}>
-            {directoryFiles.map((dir: any) => (
-              <SidebarItem key={dir.name} item={dir} />
-            ))}
-          </Flex>
-        </StyledSidebar>
-      )}
+      <StyledSidebar
+        style={{
+          transform: sidebarActive ? `translateX(0)` : `translateX(-240px)`,
+        }}
+        onMouseLeave={handleMouseLeave}
+      >
+        <Flex className="container" ref={containerRef}>
+          {directoryFiles.map((dir: any) => (
+            <SidebarItem key={dir.name} item={dir} />
+          ))}
+        </Flex>
+      </StyledSidebar>
     </>
   );
 }

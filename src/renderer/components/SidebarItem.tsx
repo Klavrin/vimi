@@ -29,10 +29,10 @@ function SidebarItem({ item }: SidebarItemProps) {
   if (item.type === 'file')
     return (
       <button
-        onClick={(event) => handleFileClick(item.path, event)}
         type="button"
         key={item.path}
         className="note"
+        onClick={(event) => handleFileClick(item.path, event)}
       >
         FILE: {item.name}
       </button>

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Vim } from '@replit/codemirror-vim';
 import { useDispatch } from 'react-redux';
-import { toggleSidebar } from '../store/reducers/sidebar-active';
+import { setSidebarValue } from '../store/reducers/sidebar-active';
 
 function useVimConfig() {
   const dispatch = useDispatch();
@@ -10,12 +10,12 @@ function useVimConfig() {
     Vim.unmap('<Space>');
     Vim.map('<Space><Space>', 'l');
     Vim.defineAction('toggleSidebar', () => {
-      dispatch(toggleSidebar());
+      dispatch(setSidebarValue(true));
+      const sidebar: any = document.querySelector('.note');
+      sidebar?.focus();
     });
     Vim.mapCommand('<Space>e', 'action', 'toggleSidebar');
-
-    return () => Vim.unmapAll();
-  }, []);
+  }, [dispatch]);
 }
 
 export default useVimConfig;

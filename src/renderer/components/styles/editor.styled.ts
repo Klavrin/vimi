@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
 const StyledEditor = styled.div`
-  margin: 0 auto;
-  max-width: 55rem;
+  width: 100%;
 
   .cm-editor {
     width: 100%;
@@ -22,7 +21,7 @@ const StyledEditor = styled.div`
   }
 
   .cm-selectionMatch {
-    background: rgba(0, 0, 0, 0.4);
+    background: ${(props) => props.theme.borderColor} !important;
   }
 
   .cm-gutters {
@@ -32,6 +31,14 @@ const StyledEditor = styled.div`
   .cm-gutter {
     background: ${(props) => props.theme.backgroundColor};
     color: ${(props) => props.theme.color};
+  }
+
+  .cm-gutterElement {
+    opacity: 0.3;
+  }
+
+  .cm-activeLineGutter {
+    opacity: 1;
   }
 
   .cm-focused .cm-cursor {
