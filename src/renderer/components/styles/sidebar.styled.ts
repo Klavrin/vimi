@@ -13,7 +13,7 @@ const StyledSidebar = styled.div`
   left: 0;
 
   .container {
-    padding-top: 35px;
+    padding-top: 45px;
     padding-inline: 10px;
     padding-bottom: 10px;
     flex-direction: column;

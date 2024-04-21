@@ -4,9 +4,8 @@ const StyledTitlebar = styled.div`
   width: 100vw;
   height: 35px;
   position: fixed;
+  padding-left: 5rem; //! temporary
 
-  user-select: none;
-  -webkit-user-select: none;
   -webkit-app-region: drag;
 `;
 

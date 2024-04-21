@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Flex } from 'antd';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
 import { State } from '../types/state';
-import InteractiveZone from './SidebarInteractiveZone';
-import SidebarItem from './SidebarItem';
+import InteractiveZone from './sidebar-interactive-zone';
+import SidebarItem from './sizebar-item';
 import StyledSidebar from './styles/sidebar.styled';
 
 function Sidebar() {

@@ -61,6 +61,18 @@ const StyledEditor = styled.div`
     background: ${(props) => props.theme.backgroundColor};
     color: ${(props) => props.theme.color};
   }
+
+  .tab-list {
+    width: 100%;
+    background-color: ${(props) => props.theme.backgroundColor};
+    border-bottom: 2px solid ${(props) => props.theme.borderColor};
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-left: 5rem;
+    z-index: 99;
+    -webkit-app-region: no-drag;
+  }
 `;
 
 export default StyledEditor;

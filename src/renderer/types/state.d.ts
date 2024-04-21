@@ -13,4 +13,7 @@ export type State = {
   editor: {
     isEditing: boolean;
   };
+  tabBar: {
+    activeTabIndex: number;
+  };
 };
