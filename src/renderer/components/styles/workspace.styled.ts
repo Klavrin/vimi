@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StyledEditor = styled.div`
+const StyledWorkspace = styled.div`
   width: 100%;
 
   .cm-editor {
@@ -75,4 +75,4 @@ const StyledEditor = styled.div`
   }
 `;
 
-export default StyledEditor;
+export default StyledWorkspace;

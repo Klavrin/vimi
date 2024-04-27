@@ -10,7 +10,7 @@ export type State = {
   currentDirectory: {
     currentDirectoryPath: string;
   };
-  editor: {
+  workspace: {
     isEditing: boolean;
   };
   tabBar: {

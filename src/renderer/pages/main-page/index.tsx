@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 
-import Editor from '../../components/editor';
+import Workspace from '../../components/workspace';
 import Sidebar from '../../components/sidebar';
 // import TabBar from '../../components/tab-bar';
 import StyledMainPage from './main-page.styled';
@@ -19,7 +19,7 @@ function MainPage() {
         {currentDirectoryPath === '' ? (
           'Drag a folder from you computer to get started.'
         ) : (
-          <Editor />
+          <Workspace />
         )}
       </StyledMainPage>
     </>

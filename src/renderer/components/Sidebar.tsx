@@ -15,7 +15,7 @@ function Sidebar() {
   const currentDirectoryPath = useSelector(
     (state: State) => state.currentDirectory.currentDirectoryPath,
   );
-  const isEditing = useSelector((state: State) => state.editor.isEditing);
+  const isEditing = useSelector((state: State) => state.workspace.isEditing);
   const containerRef = useRef<any>(null);
   const dispatch = useDispatch();
 
