@@ -33,7 +33,7 @@ function WorkspaceTabHeader() {
               style={{ background: 'none' }}
               onClick={() => dispatch(removeTab(index))}
             >
-              x
+              X
             </button>
           </button>
         ))}
