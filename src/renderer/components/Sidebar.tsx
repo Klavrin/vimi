@@ -2,16 +2,19 @@ import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Flex } from 'antd';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
-import { State } from '../types/state';
+
 import InteractiveZone from './sidebar-interactive-zone';
 import SidebarItem from './sidebar-item';
+import SidebarTabHeader from './sidebar-tab-header';
 import StyledSidebar from './styles/sidebar.styled';
+
+import { State } from '../types/state';
 
 function Sidebar() {
   const [interactiveZoneWasHovered, setInteractiveZoneWasHovered] =
     useState(false);
   const [directoryFiles, setDirectoryFiles] = useState(['no files']);
-  // const sidebarActive = useSelector((state: State) => state.sidebar.isActive);
+  const sidebarActive = useSelector((state: State) => state.sidebar.isActive);
   const currentDirectoryPath = useSelector(
     (state: State) => state.currentDirectory.currentDirectoryPath,
   );
@@ -90,7 +93,11 @@ function Sidebar() {
         interactiveZoneWasHovered={() => setInteractiveZoneWasHovered(true)}
       />
 
-      <StyledSidebar onMouseLeave={handleMouseLeave}>
+      <StyledSidebar
+        onMouseLeave={handleMouseLeave}
+        style={{ width: sidebarActive ? 280 : 0 }}
+      >
+        <SidebarTabHeader />
         <Flex className="container" ref={containerRef}>
           {directoryFiles.map((dir: any) => (
             <SidebarItem key={dir.name} item={dir} />

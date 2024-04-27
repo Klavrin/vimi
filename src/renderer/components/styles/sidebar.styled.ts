@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const StyledSidebar = styled.div`
-  min-width: 240px;
+  /* min-width: 240px; */
   height: 100vh;
   border-right-width: 2px;
   border-right-style: solid;
@@ -9,7 +9,8 @@ const StyledSidebar = styled.div`
   overflow-y: scroll;
 
   .container {
-    padding-top: 45px;
+    /* padding-top: 45px; */
+    padding-top: 25px;
     padding-inline: 10px;
     padding-bottom: 10px;
     flex-direction: column;
