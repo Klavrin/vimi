@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 
 import Workspace from '../../components/workspace';
+import WorkspaceTabHeader from '../../components/workspace-tab-header';
 import Sidebar from '../../components/sidebar';
 // import TabBar from '../../components/tab-bar';
 import StyledMainPage from './main-page.styled';
@@ -14,14 +15,17 @@ function MainPage() {
   return (
     <>
       <Sidebar />
+      <div style={{ width: '100%' }}>
+        <WorkspaceTabHeader />
 
-      <StyledMainPage>
-        {currentDirectoryPath === '' ? (
-          'Drag a folder from you computer to get started.'
-        ) : (
-          <Workspace />
-        )}
-      </StyledMainPage>
+        <StyledMainPage>
+          {currentDirectoryPath === '' ? (
+            'Drag a folder from you computer to get started.'
+          ) : (
+            <Workspace />
+          )}
+        </StyledMainPage>
+      </div>
     </>
   );
 }

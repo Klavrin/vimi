@@ -2,8 +2,7 @@ import styled from 'styled-components';
 
 const StyledMainPage = styled.div`
   width: 100%;
-  max-height: 100vh;
-  display: flex;
+  max-height: calc(100vh - 35px);
   overflow-y: scroll;
 `;
 
