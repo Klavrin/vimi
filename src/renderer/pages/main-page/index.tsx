@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import Workspace from '../../components/workspace';
 import WorkspaceTabHeader from '../../components/workspace-tab-header';
 import Sidebar from '../../components/sidebar';
-// import TabBar from '../../components/tab-bar';
 import StyledMainPage from './main-page.styled';
+
 import type { State } from '../../types/state';
 
 function MainPage() {

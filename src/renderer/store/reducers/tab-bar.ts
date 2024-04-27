@@ -1,7 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
   activeTabIndex: 0,
+  tabs: localStorage.getItem('tabs')
+    ? JSON.parse(localStorage.getItem('tabs') as string)
+    : [],
 };
 
 const tabBarSlice = createSlice({
@@ -17,6 +20,17 @@ const tabBarSlice = createSlice({
     decrementActiveTabIndex: (state) => {
       state.activeTabIndex -= state.activeTabIndex;
     },
+    addTab: (
+      state,
+      action: PayloadAction<{ basename: string; contents: string }>,
+    ) => {
+      state.tabs.push(action.payload);
+      localStorage.setItem('tabs', JSON.stringify(state.tabs));
+    },
+    removeTab: (state, action: PayloadAction<number>) => {
+      state.tabs.splice(action.payload, 1);
+      localStorage.setItem('tabs', state.tabs);
+    },
   },
 });
 
@@ -24,6 +38,8 @@ export const {
   setActiveTabIndex,
   incrementActiveTabIndex,
   decrementActiveTabIndex,
+  addTab,
+  removeTab,
 } = tabBarSlice.actions;
 
 export default tabBarSlice.reducer;

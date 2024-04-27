@@ -4,7 +4,7 @@ import { Flex } from 'antd';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
 import { State } from '../types/state';
 import InteractiveZone from './sidebar-interactive-zone';
-import SidebarItem from './sizebar-item';
+import SidebarItem from './sidebar-item';
 import StyledSidebar from './styles/sidebar.styled';
 
 function Sidebar() {

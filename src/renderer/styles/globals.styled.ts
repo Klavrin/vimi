@@ -37,6 +37,11 @@ const GlobalStyles = createGlobalStyle`
     color: ${(props) => props.theme.color};
   }
 
+  button {
+    background: none;
+    border: none;
+  }
+
   p,
   h1,
   h2,

@@ -1,28 +1,30 @@
-import { Tabs, Tab } from 'react-tabs';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setActiveTabIndex } from '../store/reducers/tab-bar';
 
 import StyledWorkspaceTabHeader from './styles/workspace-tab-header';
+import { State } from '../types/state';
 
 function WorkspaceTabHeader() {
+  const tabs = useSelector((state: State) => state.tabBar.tabs);
   const dispatch = useDispatch();
 
   return (
     <StyledWorkspaceTabHeader>
-      <Tabs className="workspace-tabs">
-        <Tab
-          className="workspace-tab"
-          onClick={() => dispatch(setActiveTabIndex(0))}
-        >
-          Tab 1
-        </Tab>
-        <Tab
-          className="workspace-tab"
-          onClick={() => dispatch(setActiveTabIndex(1))}
-        >
-          Tab 2
-        </Tab>
-      </Tabs>
+      <div className="workspace-tabs">
+        {tabs.map((tab, index) => (
+          <button
+            type="button"
+            key={tab.basename}
+            className="workspace-tab"
+            onClick={() => dispatch(setActiveTabIndex(index))}
+          >
+            {tab.basename}
+            {/* <button type="button" style={{ background: 'none' }}>
+              x
+            </button> */}
+          </button>
+        ))}
+      </div>
     </StyledWorkspaceTabHeader>
   );
 }

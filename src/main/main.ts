@@ -126,7 +126,10 @@ ipcMain.on('readFile', (event, filePath) => {
   fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) throw err;
 
-    event.reply('fileContents', data);
+    event.reply('fileContents', {
+      basename: path.basename(filePath),
+      contents: data,
+    });
   });
 });
 
