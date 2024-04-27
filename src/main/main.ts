@@ -127,6 +127,7 @@ ipcMain.on('readFile', (event, filePath) => {
     if (err) throw err;
 
     event.reply('fileContents', {
+      path: filePath,
       basename: path.basename(filePath),
       contents: data,
     });

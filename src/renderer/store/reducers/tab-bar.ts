@@ -22,7 +22,11 @@ const tabBarSlice = createSlice({
     },
     addTab: (
       state,
-      action: PayloadAction<{ basename: string; contents: string }>,
+      action: PayloadAction<{
+        path: string;
+        basename: string;
+        contents: string;
+      }>,
     ) => {
       state.tabs.push(action.payload);
       localStorage.setItem('tabs', JSON.stringify(state.tabs));

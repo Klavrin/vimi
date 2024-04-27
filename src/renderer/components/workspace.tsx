@@ -16,7 +16,13 @@ function Workspace() {
 
   useEffect(() => {
     window.electron.ipcRenderer.on('fileContents', (file: any) => {
-      dispatch(addTab({ basename: file.basename, contents: file.contents }));
+      dispatch(
+        addTab({
+          path: file.path,
+          basename: file.basename,
+          contents: file.contents,
+        }),
+      );
     });
   }, [dispatch]);
 

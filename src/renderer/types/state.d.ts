@@ -15,6 +15,6 @@ export type State = {
   };
   tabBar: {
     activeTabIndex: number;
-    tabs: { basename: string; contents: string }[];
+    tabs: { path: string; basename: string; contents: string }[];
   };
 };
