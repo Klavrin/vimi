@@ -9,10 +9,7 @@ const StyledSidebar = styled.div`
   overflow-y: scroll;
 
   .container {
-    /* padding-top: 45px; */
-    padding-top: 25px;
-    padding-inline: 10px;
-    padding-bottom: 10px;
+    padding: 0 10px 10px 10px;
     flex-direction: column;
     gap: 10px;
   }

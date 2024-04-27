@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const StyledWorkspaceTabHeader = styled.div`
   width: 100%;
-  height: 35px;
+  height: 38px;
   border-bottom: 2px solid ${(props) => props.theme.borderColor};
 
   -webkit-app-region: drag;

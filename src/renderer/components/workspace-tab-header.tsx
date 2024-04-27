@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveTabIndex } from '../store/reducers/tab-bar';
+import { setActiveTabIndex, removeTab } from '../store/reducers/tab-bar';
 
 import StyledWorkspaceTabHeader from './styles/workspace-tab-header';
 import { State } from '../types/state';
@@ -28,9 +28,13 @@ function WorkspaceTabHeader() {
             onClick={() => dispatch(setActiveTabIndex(index))}
           >
             {tab.basename}
-            {/* <button type="button" style={{ background: 'none' }}>
+            <button
+              type="button"
+              style={{ background: 'none' }}
+              onClick={() => dispatch(removeTab(index))}
+            >
               x
-            </button> */}
+            </button>
           </button>
         ))}
       </div>

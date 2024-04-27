@@ -16,7 +16,6 @@ function InteractiveZone({ interactiveZoneWasHovered }: InteractiveZoneProps) {
 
   return (
     <StyledSidebarInteractiveZone
-      onFocus={() => console.log('sidebar focused')}
       onMouseOver={handleMouseOver}
       // onMouseLeave={() => dispatch(setSidebarValue(false))}
     />
