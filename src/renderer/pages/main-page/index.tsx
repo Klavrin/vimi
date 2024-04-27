@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 
-import Editor from '../../components/Editor';
-import Sidebar from '../../components/Sidebar';
+import Editor from '../../components/editor';
+import Sidebar from '../../components/sidebar';
 import TabBar from '../../components/tab-bar';
 import StyledMainPage from './main-page';
 import type { State } from '../../types/state';
