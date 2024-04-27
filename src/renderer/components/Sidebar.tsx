@@ -11,7 +11,7 @@ function Sidebar() {
   const [interactiveZoneWasHovered, setInteractiveZoneWasHovered] =
     useState(false);
   const [directoryFiles, setDirectoryFiles] = useState(['no files']);
-  const sidebarActive = useSelector((state: State) => state.sidebar.isActive);
+  // const sidebarActive = useSelector((state: State) => state.sidebar.isActive);
   const currentDirectoryPath = useSelector(
     (state: State) => state.currentDirectory.currentDirectoryPath,
   );
@@ -90,12 +90,7 @@ function Sidebar() {
         interactiveZoneWasHovered={() => setInteractiveZoneWasHovered(true)}
       />
 
-      <StyledSidebar
-        style={{
-          transform: sidebarActive ? `translateX(0)` : `translateX(-240px)`,
-        }}
-        onMouseLeave={handleMouseLeave}
-      >
+      <StyledSidebar onMouseLeave={handleMouseLeave}>
         <Flex className="container" ref={containerRef}>
           {directoryFiles.map((dir: any) => (
             <SidebarItem key={dir.name} item={dir} />
