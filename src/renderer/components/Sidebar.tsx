@@ -10,10 +10,37 @@ import StyledSidebar from './styles/sidebar.styled';
 
 import { State } from '../types/state';
 
+// TODO: Poor TypeScript code, find a way to rewrite it!
+type SidebarItemProps = {
+  item:
+    | {
+        name: string;
+        path: string;
+        type: 'file';
+      }
+    | {
+        name: string;
+        children: SidebarItemProps[];
+        type: 'directory';
+      };
+};
+
+type File = {
+  name: string;
+  path: string;
+  type: 'file';
+};
+
+type Directory = {
+  name: string;
+  children: SidebarItemProps[];
+  type: 'directory';
+};
+
 function Sidebar() {
   const [interactiveZoneWasHovered, setInteractiveZoneWasHovered] =
     useState(false);
-  const [directoryFiles, setDirectoryFiles] = useState(['no files']);
+  const [directoryFiles, setDirectoryFiles] = useState([]);
   const sidebarActive = useSelector((state: State) => state.sidebar.isActive);
   const currentDirectoryPath = useSelector(
     (state: State) => state.currentDirectory.currentDirectoryPath,
@@ -99,7 +126,7 @@ function Sidebar() {
       >
         <SidebarTabHeader />
         <Flex className="container" ref={containerRef}>
-          {directoryFiles.map((dir: any) => (
+          {directoryFiles.map((dir: Directory | File) => (
             <SidebarItem key={dir.name} item={dir} />
           ))}
         </Flex>

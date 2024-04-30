@@ -6,7 +6,11 @@ import { State } from '../types/state';
 
 type SidebarItemProps = {
   item:
-    | { name: string; path: string; type: 'file' }
+    | {
+        name: string;
+        path: string;
+        type: 'file';
+      }
     | {
         name: string;
         children: SidebarItemProps[];

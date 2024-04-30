@@ -15,10 +15,13 @@ const tabBarSlice = createSlice({
       state.activeTabIndex = action.payload;
     },
     incrementActiveTabIndex: (state) => {
-      state.activeTabIndex += state.activeTabIndex;
+      if (state.activeTabIndex < state.tabs.length - 1)
+        state.activeTabIndex += 1;
+      else state.activeTabIndex = 0;
     },
     decrementActiveTabIndex: (state) => {
-      state.activeTabIndex -= state.activeTabIndex;
+      if (state.activeTabIndex > 0) state.activeTabIndex -= 1;
+      else state.activeTabIndex = state.tabs.length - 1;
     },
     addTab: (
       state,
@@ -33,7 +36,7 @@ const tabBarSlice = createSlice({
     },
     removeTab: (state, action: PayloadAction<number>) => {
       state.tabs.splice(action.payload, 1);
-      localStorage.setItem('tabs', state.tabs);
+      localStorage.setItem('tabs', JSON.stringify(state.tabs));
     },
   },
 });
