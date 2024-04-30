@@ -51,7 +51,7 @@ const StyledWorkspace = styled.div`
   }
 
   .md-editor-preview {
-    width: 50%;
+    width: 100%;
     height: 100%;
     background: ${(props) => props.theme.backgroundColor};
     color: ${(props) => props.theme.color};

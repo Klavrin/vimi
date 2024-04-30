@@ -28,8 +28,9 @@ function Workspace() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (textEditorRefs.current[activeTab].editor.current.view)
-      textEditorRefs.current[activeTab].editor.current.view.focus();
+    if (textEditorRefs.current[activeTab])
+      if (textEditorRefs.current[activeTab].editor.current.view)
+        textEditorRefs.current[activeTab].editor.current.view.focus();
   }, [activeTab]);
 
   const handleTextEditorRef = (index: any, ref: any) => {
@@ -47,6 +48,7 @@ function Workspace() {
             contents={tab.contents}
             handleTextEditorRef={handleTextEditorRef}
             index={index}
+            textEditorRefs={textEditorRefs}
           />
         </div>
       ))}
