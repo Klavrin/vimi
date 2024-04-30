@@ -19,6 +19,7 @@ export type State = {
       path: string;
       basename: string;
       contents: string;
+      previewMode: boolean;
     }[];
   };
 };

@@ -3,6 +3,8 @@ import MarkdownEditor, { MarkdownEditorRef } from '@uiw/react-markdown-editor';
 import { useDispatch } from 'react-redux';
 import { vim } from '@replit/codemirror-vim';
 import { EditorView } from '@codemirror/view';
+import { togglePreviewMode } from '../store/reducers/tab-bar';
+import useVimConfig from '../utils/vim-config';
 
 import { setIsEditing } from '../store/reducers/workspace';
 
@@ -11,6 +13,7 @@ type TextEditorProps = {
   handleTextEditorRef: (index: number, ref: MarkdownEditorRef) => void;
   index: number;
   textEditorRefs: any;
+  previewMode: boolean;
 };
 
 function TextEditor({
@@ -18,14 +21,15 @@ function TextEditor({
   handleTextEditorRef,
   index,
   textEditorRefs,
+  previewMode,
 }: TextEditorProps) {
   const [editorContent, setEditorContent] = useState(contents);
-  const [preview, setPreview] = useState(false);
   const dispatch = useDispatch();
+  useVimConfig();
 
   const handlePreviewButton = () => {
-    setPreview(!preview);
-    if (preview) {
+    dispatch(togglePreviewMode());
+    if (previewMode) {
       setTimeout(() => {
         textEditorRefs.current[index].editor.current.view.focus();
       }, 0);
@@ -40,8 +44,8 @@ function TextEditor({
         value={editorContent}
         onChange={(data: string) => setEditorContent(data)}
         hideToolbar={false}
-        enablePreview={preview}
-        editable={!preview}
+        enablePreview={previewMode}
+        editable={!previewMode}
         extensions={[vim(), EditorView.lineWrapping]}
         onFocus={() => dispatch(setIsEditing(true))}
         onBlur={() => dispatch(setIsEditing(false))}

@@ -29,6 +29,7 @@ const tabBarSlice = createSlice({
         path: string;
         basename: string;
         contents: string;
+        previewMode: boolean;
       }>,
     ) => {
       state.tabs.push(action.payload);
@@ -37,6 +38,10 @@ const tabBarSlice = createSlice({
     removeTab: (state, action: PayloadAction<number>) => {
       state.tabs.splice(action.payload, 1);
       localStorage.setItem('tabs', JSON.stringify(state.tabs));
+    },
+    togglePreviewMode: (state) => {
+      state.tabs[state.activeTabIndex].previewMode =
+        !state.tabs[state.activeTabIndex].previewMode;
     },
   },
 });
@@ -47,6 +52,7 @@ export const {
   decrementActiveTabIndex,
   addTab,
   removeTab,
+  togglePreviewMode,
 } = tabBarSlice.actions;
 
 export default tabBarSlice.reducer;

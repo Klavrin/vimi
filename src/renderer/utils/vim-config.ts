@@ -5,7 +5,11 @@ import { setSidebarValue } from '../store/reducers/sidebar-active';
 import {
   decrementActiveTabIndex,
   incrementActiveTabIndex,
+  togglePreviewMode,
 } from '../store/reducers/tab-bar';
+
+// previewMode: boolean,
+// setPreviewMode: (previewMode: boolean) => void,
 
 function useVimConfig() {
   const dispatch = useDispatch();
@@ -13,6 +17,8 @@ function useVimConfig() {
   useEffect(() => {
     Vim.unmap('<Space>');
     Vim.map('<Space><Space>', 'l');
+
+    // Toggle sidebar
     Vim.defineAction('toggleSidebar', () => {
       dispatch(setSidebarValue(true));
       const sidebar: any = document.querySelector('.note');
@@ -20,6 +26,7 @@ function useVimConfig() {
     });
     Vim.mapCommand('<Space>e', 'action', 'toggleSidebar');
 
+    // Move through tabs
     Vim.defineAction('moveToNextTab', () => {
       dispatch(incrementActiveTabIndex());
     });
@@ -28,6 +35,12 @@ function useVimConfig() {
     });
     Vim.mapCommand('L', 'action', 'moveToNextTab');
     Vim.mapCommand('H', 'action', 'moveToPrevTab');
+
+    // Toggle preview mode
+    Vim.defineAction('togglePreviewMode', () => {
+      dispatch(togglePreviewMode());
+    });
+    Vim.mapCommand('<Space>p', 'action', 'togglePreviewMode');
   }, [dispatch]);
 }
 

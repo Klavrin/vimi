@@ -4,7 +4,6 @@ import { addTab } from '../store/reducers/tab-bar';
 
 import TextEditor from './text-editor';
 
-import useVimConfig from '../utils/vim-config';
 import StyledWorkspace from './styles/workspace.styled';
 import { State } from '../types/state';
 
@@ -13,7 +12,6 @@ function Workspace() {
   const activeTab = useSelector((state: State) => state.tabBar.activeTabIndex);
   const textEditorRefs = useRef(Array(tabs.length).fill(null));
   const dispatch = useDispatch();
-  useVimConfig();
 
   useEffect(() => {
     window.electron.ipcRenderer.on('fileContents', (file: any) => {
@@ -22,6 +20,7 @@ function Workspace() {
           path: file.path,
           basename: file.basename,
           contents: file.contents,
+          previewMode: false,
         }),
       );
     });
@@ -49,6 +48,7 @@ function Workspace() {
             handleTextEditorRef={handleTextEditorRef}
             index={index}
             textEditorRefs={textEditorRefs}
+            previewMode={tab.previewMode}
           />
         </div>
       ))}
