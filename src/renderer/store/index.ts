@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import sidebar from './reducers/sidebar-active';
 import theme from './reducers/theme';
 import currentDirectory from './reducers/current-directory';
-import editor from './reducers/editor';
+import workspace from './reducers/workspace';
 import tabBar from './reducers/tab-bar';
 
 export default configureStore({
@@ -10,7 +10,7 @@ export default configureStore({
     sidebar,
     theme,
     currentDirectory,
-    editor,
+    workspace,
     tabBar,
   },
 });

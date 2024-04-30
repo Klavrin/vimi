@@ -10,10 +10,13 @@ export type State = {
   currentDirectory: {
     currentDirectoryPath: string;
   };
-  editor: {
+  workspace: {
     isEditing: boolean;
   };
   tabBar: {
     activeTabIndex: number;
+    tabs: { path: string; basename: string; contents: string }[];
   };
 };
+
+// tabs: { path: string; basename: string; contents: string; ref: ref.current.editor.current }[];

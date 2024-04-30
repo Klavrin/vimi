@@ -1,29 +1,31 @@
 import { useSelector } from 'react-redux';
 
-import Editor from '../../components/Editor';
-import Sidebar from '../../components/Sidebar';
-import TabBar from '../../components/tab-bar';
-import StyledMainPage from './main-page';
+import Workspace from '../../components/workspace';
+import WorkspaceTabHeader from '../../components/workspace-tab-header';
+import Sidebar from '../../components/sidebar';
+import StyledMainPage from './main-page.styled';
+
 import type { State } from '../../types/state';
 
 function MainPage() {
-  const sidebarActive = useSelector((state: State) => state.sidebar.isActive);
   const currentDirectoryPath = useSelector(
     (state: State) => state.currentDirectory.currentDirectoryPath,
   );
 
   return (
     <>
-      <TabBar />
       <Sidebar />
+      <div style={{ width: '100%' }}>
+        <WorkspaceTabHeader />
 
-      <StyledMainPage style={{ paddingLeft: sidebarActive ? 240 : 0 }}>
-        {currentDirectoryPath === '' ? (
-          'Drag a folder from you computer to get started.'
-        ) : (
-          <Editor />
-        )}
-      </StyledMainPage>
+        <StyledMainPage>
+          {currentDirectoryPath === '' ? (
+            'Drag a folder from you computer to get started.'
+          ) : (
+            <Workspace />
+          )}
+        </StyledMainPage>
+      </div>
     </>
   );
 }

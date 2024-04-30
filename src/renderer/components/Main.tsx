@@ -2,6 +2,8 @@ import { ReactNode } from 'react';
 import { useDispatch } from 'react-redux';
 import { setCurrentDirectoryPath } from '../store/reducers/current-directory';
 
+import StyledMain from './styles/main.styled';
+
 type MainProps = {
   children: ReactNode;
 };
@@ -37,9 +39,9 @@ function Main({ children }: MainProps) {
   };
 
   return (
-    <main onDragOver={handleDragOver} onDrop={handleDrop}>
+    <StyledMain onDragOver={handleDragOver} onDrop={handleDrop}>
       {children}
-    </main>
+    </StyledMain>
   );
 }
 

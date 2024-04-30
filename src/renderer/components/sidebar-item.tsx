@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setActiveTabIndex } from '../store/reducers/tab-bar';
+
+import { State } from '../types/state';
 
 type SidebarItemProps = {
   item:
-    | { name: string; path: string; type: 'file' }
+    | {
+        name: string;
+        path: string;
+        type: 'file';
+      }
     | {
         name: string;
         children: SidebarItemProps[];
@@ -12,6 +20,8 @@ type SidebarItemProps = {
 
 function SidebarItem({ item }: SidebarItemProps) {
   const [dirFilesVisible, setDirFilesVisible] = useState(false);
+  const tabs = useSelector((state: State) => state.tabBar.tabs);
+  const dispatch = useDispatch();
 
   const handleDirectoryClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -22,6 +32,17 @@ function SidebarItem({ item }: SidebarItemProps) {
 
   const handleFileClick = (filePath: string, e: any) => {
     e.stopPropagation();
+
+    // Check if this file exists before reading
+    const pathExists = tabs.some((tab, index) => {
+      if (tab.path === filePath) {
+        dispatch(setActiveTabIndex(index));
+        return true;
+      }
+      return false;
+    });
+    if (pathExists) return;
+
     window.electron.ipcRenderer.sendMessage('readFile', filePath);
   };
 

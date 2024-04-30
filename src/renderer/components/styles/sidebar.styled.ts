@@ -1,21 +1,15 @@
 import styled from 'styled-components';
 
 const StyledSidebar = styled.div`
-  width: 240px;
+  /* min-width: 240px; */
   height: 100vh;
   border-right-width: 2px;
   border-right-style: solid;
   border-right-color: ${(props) => props.theme.borderColor};
   overflow-y: scroll;
 
-  position: fixed;
-  top: 0;
-  left: 0;
-
   .container {
-    padding-top: 45px;
-    padding-inline: 10px;
-    padding-bottom: 10px;
+    padding: 0 10px 10px 10px;
     flex-direction: column;
     gap: 10px;
   }

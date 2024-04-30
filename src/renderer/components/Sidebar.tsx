@@ -2,20 +2,50 @@ import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Flex } from 'antd';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
-import { State } from '../types/state';
+
 import InteractiveZone from './sidebar-interactive-zone';
-import SidebarItem from './sizebar-item';
+import SidebarItem from './sidebar-item';
+import SidebarTabHeader from './sidebar-tab-header';
 import StyledSidebar from './styles/sidebar.styled';
+
+import { State } from '../types/state';
+
+// TODO: Poor TypeScript code, find a way to rewrite it!
+type SidebarItemProps = {
+  item:
+    | {
+        name: string;
+        path: string;
+        type: 'file';
+      }
+    | {
+        name: string;
+        children: SidebarItemProps[];
+        type: 'directory';
+      };
+};
+
+type File = {
+  name: string;
+  path: string;
+  type: 'file';
+};
+
+type Directory = {
+  name: string;
+  children: SidebarItemProps[];
+  type: 'directory';
+};
 
 function Sidebar() {
   const [interactiveZoneWasHovered, setInteractiveZoneWasHovered] =
     useState(false);
-  const [directoryFiles, setDirectoryFiles] = useState(['no files']);
+  const [directoryFiles, setDirectoryFiles] = useState([]);
   const sidebarActive = useSelector((state: State) => state.sidebar.isActive);
   const currentDirectoryPath = useSelector(
     (state: State) => state.currentDirectory.currentDirectoryPath,
   );
-  const isEditing = useSelector((state: State) => state.editor.isEditing);
+  const isEditing = useSelector((state: State) => state.workspace.isEditing);
   const containerRef = useRef<any>(null);
   const dispatch = useDispatch();
 
@@ -91,13 +121,12 @@ function Sidebar() {
       />
 
       <StyledSidebar
-        style={{
-          transform: sidebarActive ? `translateX(0)` : `translateX(-240px)`,
-        }}
         onMouseLeave={handleMouseLeave}
+        style={{ width: sidebarActive ? 280 : 0 }}
       >
+        <SidebarTabHeader />
         <Flex className="container" ref={containerRef}>
-          {directoryFiles.map((dir: any) => (
+          {directoryFiles.map((dir: Directory | File) => (
             <SidebarItem key={dir.name} item={dir} />
           ))}
         </Flex>

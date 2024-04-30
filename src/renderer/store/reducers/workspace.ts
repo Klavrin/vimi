@@ -4,8 +4,8 @@ const initialState = {
   isEditing: false,
 };
 
-const editorSlice = createSlice({
-  name: 'editor',
+const workspaceSlice = createSlice({
+  name: 'workspace',
   initialState,
   reducers: {
     toggleIsEditing: (state) => {
@@ -17,6 +17,6 @@ const editorSlice = createSlice({
   },
 });
 
-export const { toggleIsEditing, setIsEditing } = editorSlice.actions;
+export const { toggleIsEditing, setIsEditing } = workspaceSlice.actions;
 
-export default editorSlice.reducer;
+export default workspaceSlice.reducer;
