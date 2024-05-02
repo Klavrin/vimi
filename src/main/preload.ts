@@ -9,7 +9,8 @@ export type Channels =
   | 'readDirectory'
   | 'dirPathContents'
   | 'readFile'
-  | 'fileContents';
+  | 'fileContents'
+  | 'closeCurrentTab';
 
 const electronHandler = {
   ipcRenderer: {

@@ -4,7 +4,6 @@ import {
   shell,
   BrowserWindow,
   MenuItemConstructorOptions,
-  ipcMain,
 } from 'electron';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
@@ -62,11 +61,11 @@ export default class MenuBuilder {
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
-        // {
-        //   label: 'Hide Vimi',
-        //   accelerator: 'Command+H',
-        //   selector: 'hide:',
-        // },
+        {
+          label: 'Hide Vimi',
+          accelerator: 'Command+H',
+          selector: 'hide:',
+        },
         { type: 'separator' },
         {
           label: 'Quit',
@@ -95,7 +94,7 @@ export default class MenuBuilder {
           label: 'Close Current Tab',
           accelerator: 'Command+W',
           click: () => {
-            console.log('COMMAND + W');
+            this.mainWindow.webContents.send('closeCurrentTab');
           },
         },
       ],
@@ -146,7 +145,7 @@ export default class MenuBuilder {
           accelerator: 'Command+M',
           selector: 'performMiniaturize:',
         },
-        { label: 'Close', accelerator: 'Command+W', selector: 'performClose:' },
+        // { label: 'Close', accelerator: 'Command+W', selector: 'performClose:' },
         { type: 'separator' },
         { label: 'Bring All to Front', selector: 'arrangeInFront:' },
       ],

@@ -1,5 +1,10 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveTabIndex, removeTab } from '../store/reducers/tab-bar';
+import {
+  setActiveTabIndex,
+  removeTab,
+  removeCurrentTab,
+} from '../store/reducers/tab-bar';
 
 import StyledWorkspaceTabHeader from './styles/workspace-tab-header';
 import { State } from '../types/state';
@@ -9,6 +14,12 @@ function WorkspaceTabHeader() {
   const tabs = useSelector((state: State) => state.tabBar.tabs);
   const sidebarActive = useSelector((state: State) => state.sidebar.isActive);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    window.electron.ipcRenderer.on('closeCurrentTab', () => {
+      dispatch(removeCurrentTab());
+    });
+  }, [dispatch]);
 
   return (
     <StyledWorkspaceTabHeader>

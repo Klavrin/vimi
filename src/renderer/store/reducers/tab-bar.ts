@@ -39,6 +39,9 @@ const tabBarSlice = createSlice({
       state.tabs.splice(action.payload, 1);
       localStorage.setItem('tabs', JSON.stringify(state.tabs));
     },
+    removeCurrentTab: (state) => {
+      state.tabs.splice(state.activeTabIndex, 1);
+    },
     // TODO: Figure out how to move this to the workspace reducer
     togglePreviewMode: (state) => {
       state.tabs[state.activeTabIndex].previewMode =
@@ -58,6 +61,7 @@ export const {
   decrementActiveTabIndex,
   addTab,
   removeTab,
+  removeCurrentTab,
   togglePreviewMode,
   setPreviewMode,
 } = tabBarSlice.actions;
