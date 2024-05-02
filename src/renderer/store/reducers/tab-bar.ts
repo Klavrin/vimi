@@ -39,9 +39,15 @@ const tabBarSlice = createSlice({
       state.tabs.splice(action.payload, 1);
       localStorage.setItem('tabs', JSON.stringify(state.tabs));
     },
+    // TODO: Figure out how to move this to the workspace reducer
     togglePreviewMode: (state) => {
       state.tabs[state.activeTabIndex].previewMode =
         !state.tabs[state.activeTabIndex].previewMode;
+      localStorage.setItem('tabs', JSON.stringify(state.tabs));
+    },
+    setPreviewMode: (state, action: PayloadAction<boolean>) => {
+      state.tabs[state.activeTabIndex].previewMode = action.payload;
+      localStorage.setItem('tabs', JSON.stringify(state.tabs));
     },
   },
 });
@@ -53,6 +59,7 @@ export const {
   addTab,
   removeTab,
   togglePreviewMode,
+  setPreviewMode,
 } = tabBarSlice.actions;
 
 export default tabBarSlice.reducer;

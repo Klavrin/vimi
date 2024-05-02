@@ -1,17 +1,21 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTab } from '../store/reducers/tab-bar';
+import useVimConfig from '../utils/vim-config';
 
 import TextEditor from './text-editor';
 
 import StyledWorkspace from './styles/workspace.styled';
 import { State } from '../types/state';
 
+// TODO: Establish communication between the TextEditor's vim and the layout
+
 function Workspace() {
   const tabs = useSelector((state: State) => state.tabBar.tabs);
   const activeTab = useSelector((state: State) => state.tabBar.activeTabIndex);
   const textEditorRefs = useRef(Array(tabs.length).fill(null));
   const dispatch = useDispatch();
+  useVimConfig();
 
   useEffect(() => {
     window.electron.ipcRenderer.on('fileContents', (file: any) => {

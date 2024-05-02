@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MarkdownEditor, { MarkdownEditorRef } from '@uiw/react-markdown-editor';
 import { useDispatch } from 'react-redux';
 import { vim } from '@replit/codemirror-vim';
 import { EditorView } from '@codemirror/view';
-import { togglePreviewMode } from '../store/reducers/tab-bar';
-import useVimConfig from '../utils/vim-config';
+import {
+  togglePreviewMode,
+  setPreviewMode,
+  incrementActiveTabIndex,
+  decrementActiveTabIndex,
+} from '../store/reducers/tab-bar';
 
 import { setIsEditing } from '../store/reducers/workspace';
 
@@ -24,8 +28,29 @@ function TextEditor({
   previewMode,
 }: TextEditorProps) {
   const [editorContent, setEditorContent] = useState(contents);
+  const [spacePressed, setSpacePressed] = useState(false);
   const dispatch = useDispatch();
-  useVimConfig();
+
+  // Use vim mappings in the preview mode
+  useEffect(() => {
+    const handleKeyDown = (e: any) => {
+      if (!previewMode) return;
+      // e.preventDefault();
+
+      // Toggle preview
+      if (e.code === 'Space') setSpacePressed(true);
+      if (e.key === 'p' && spacePressed) {
+        setSpacePressed(false);
+        dispatch(setPreviewMode(false));
+        setTimeout(() => {
+          textEditorRefs.current[index].editor.current.view.focus();
+        }, 0);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [previewMode, spacePressed]);
 
   const handlePreviewButton = () => {
     dispatch(togglePreviewMode());
@@ -39,6 +64,7 @@ function TextEditor({
   return (
     <>
       <MarkdownEditor
+        // @ts-ignore
         ref={(ref: any) => handleTextEditorRef(index, ref)}
         className="editor"
         value={editorContent}

@@ -8,9 +8,6 @@ import {
   togglePreviewMode,
 } from '../store/reducers/tab-bar';
 
-// previewMode: boolean,
-// setPreviewMode: (previewMode: boolean) => void,
-
 function useVimConfig() {
   const dispatch = useDispatch();
 

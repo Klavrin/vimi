@@ -4,6 +4,7 @@ import {
   shell,
   BrowserWindow,
   MenuItemConstructorOptions,
+  ipcMain,
 } from 'electron';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
@@ -61,19 +62,11 @@ export default class MenuBuilder {
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
-        { label: 'Services', submenu: [] },
-        { type: 'separator' },
-        {
-          label: 'Hide ElectronReact',
-          accelerator: 'Command+H',
-          selector: 'hide:',
-        },
-        {
-          label: 'Hide Others',
-          accelerator: 'Command+Shift+H',
-          selector: 'hideOtherApplications:',
-        },
-        { label: 'Show All', selector: 'unhideAllApplications:' },
+        // {
+        //   label: 'Hide Vimi',
+        //   accelerator: 'Command+H',
+        //   selector: 'hide:',
+        // },
         { type: 'separator' },
         {
           label: 'Quit',
@@ -97,6 +90,13 @@ export default class MenuBuilder {
           label: 'Select All',
           accelerator: 'Command+A',
           selector: 'selectAll:',
+        },
+        {
+          label: 'Close Current Tab',
+          accelerator: 'Command+W',
+          click: () => {
+            console.log('COMMAND + W');
+          },
         },
       ],
     };

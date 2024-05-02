@@ -23,5 +23,3 @@ export type State = {
     }[];
   };
 };
-
-// tabs: { path: string; basename: string; contents: string; ref: ref.current.editor.current }[];
