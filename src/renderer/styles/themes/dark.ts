@@ -1,4 +1,4 @@
-const primaryBackground = '#171717';
+const primaryBackground = '#0d1117';
 const primaryText = '#fff';
 
 const darkTheme = {

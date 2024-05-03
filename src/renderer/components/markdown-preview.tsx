@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
@@ -12,12 +12,20 @@ type MarkdownPreviewProps = {
 };
 
 function MarkdownPreview({ innerText, previewMode }: MarkdownPreviewProps) {
-  const md = unified()
-    .use(remarkParse)
-    .use(remarkGfm)
-    // @ts-ignore
-    .use(remarkReact, React)
-    .processSync(innerText).result;
+  const [md, setMd] = useState('');
+
+  useEffect(() => {
+    if (previewMode) {
+      const markdown: any = unified()
+        .use(remarkParse)
+        .use(remarkGfm)
+        // @ts-ignore
+        .use(remarkReact, React)
+        .processSync(innerText).result;
+
+      setMd(markdown);
+    }
+  }, [previewMode, innerText]);
 
   return (
     <StyledPreviewMarkdown style={{ display: previewMode ? 'block' : 'none' }}>

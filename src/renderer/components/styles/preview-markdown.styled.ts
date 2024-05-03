@@ -4,7 +4,6 @@ const StyledPreviewMarkdown = styled.div`
   /*dark*/
 
   max-width: 100%;
-  color-scheme: dark;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   margin: 0;

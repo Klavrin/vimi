@@ -41,6 +41,7 @@ function TextEditor({
         setTimeout(() => {
           textEditorRefs.current[index].editor.current.view.focus();
         }, 0);
+        document.removeEventListener('keydown', handleKeyDown);
       }
     };
 
