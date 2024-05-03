@@ -3,12 +3,7 @@ import MarkdownEditor, { MarkdownEditorRef } from '@uiw/react-markdown-editor';
 import { useDispatch } from 'react-redux';
 import { vim } from '@replit/codemirror-vim';
 import { EditorView } from '@codemirror/view';
-import {
-  togglePreviewMode,
-  setPreviewMode,
-  incrementActiveTabIndex,
-  decrementActiveTabIndex,
-} from '../store/reducers/tab-bar';
+import { togglePreviewMode, setPreviewMode } from '../store/reducers/tab-bar';
 
 import { setIsEditing } from '../store/reducers/workspace';
 
@@ -35,7 +30,6 @@ function TextEditor({
   useEffect(() => {
     const handleKeyDown = (e: any) => {
       if (!previewMode) return;
-      // e.preventDefault();
 
       // Toggle preview
       if (e.code === 'Space') setSpacePressed(true);

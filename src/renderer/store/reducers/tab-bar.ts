@@ -41,6 +41,7 @@ const tabBarSlice = createSlice({
     },
     removeCurrentTab: (state) => {
       state.tabs.splice(state.activeTabIndex, 1);
+      localStorage.setItem('tabs', JSON.stringify(state.tabs));
     },
     // TODO: Figure out how to move this to the workspace reducer
     togglePreviewMode: (state) => {

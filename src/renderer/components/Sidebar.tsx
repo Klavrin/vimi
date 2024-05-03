@@ -46,7 +46,7 @@ function Sidebar() {
     (state: State) => state.currentDirectory.currentDirectoryPath,
   );
   const isEditing = useSelector((state: State) => state.workspace.isEditing);
-  const containerRef = useRef<any>(null);
+  const containerRef = useRef<HTMLButtonElement>(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -62,18 +62,18 @@ function Sidebar() {
   }, [currentDirectoryPath]);
 
   useEffect(() => {
-    const handleVimNavigation = (e: any) => {
+    const handleVimNavigation = (e: KeyboardEvent) => {
       if (isEditing) return;
 
       if (containerRef.current) {
-        const interactiveElements: any = Array.from(
+        const interactiveElements: HTMLButtonElement[] = Array.from(
           containerRef.current.querySelectorAll('button'),
         );
 
         if (e.key === 'j') {
           e.preventDefault();
           const currentIndex = interactiveElements.indexOf(
-            document.activeElement,
+            document.activeElement as HTMLButtonElement,
           );
           const nextIndex =
             currentIndex === interactiveElements.length - 1
@@ -84,7 +84,7 @@ function Sidebar() {
         } else if (e.key === 'k') {
           e.preventDefault();
           const currentIndex = interactiveElements.indexOf(
-            document.activeElement,
+            document.activeElement as HTMLButtonElement,
           );
           const prevIndex =
             currentIndex === 0

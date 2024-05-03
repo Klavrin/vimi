@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTab } from '../store/reducers/tab-bar';
-import useVimConfig from '../utils/vim-config';
+import useVimConfig from '../utils/use-vim-config';
 
 import TextEditor from './text-editor';
 
