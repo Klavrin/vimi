@@ -14,7 +14,8 @@ const GlobalStyles = createGlobalStyle`
   body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
-    font-family: sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans',
+    Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
 
     background-color: ${(props) => props.theme.backgroundColor};
     color: ${(props) => props.theme.color};

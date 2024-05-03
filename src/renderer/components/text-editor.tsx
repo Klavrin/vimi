@@ -7,6 +7,8 @@ import { togglePreviewMode, setPreviewMode } from '../store/reducers/tab-bar';
 
 import { setIsEditing } from '../store/reducers/workspace';
 
+import MarkdownPreview from './markdown-preview';
+
 type TextEditorProps = {
   contents: string;
   handleTextEditorRef: (index: number, ref: MarkdownEditorRef) => void;
@@ -59,17 +61,19 @@ function TextEditor({
     <>
       <MarkdownEditor
         // @ts-ignore
-        ref={(ref: any) => handleTextEditorRef(index, ref)}
+        ref={(ref) => handleTextEditorRef(index, ref)}
         className="editor"
+        style={{ display: !previewMode ? 'block' : 'none' }}
         value={editorContent}
         onChange={(data: string) => setEditorContent(data)}
         hideToolbar={false}
-        enablePreview={previewMode}
+        enablePreview={false}
         editable={!previewMode}
         extensions={[vim(), EditorView.lineWrapping]}
         onFocus={() => dispatch(setIsEditing(true))}
         onBlur={() => dispatch(setIsEditing(false))}
       />
+      <MarkdownPreview previewMode={previewMode} innerText={editorContent} />
 
       <button
         type="button"
