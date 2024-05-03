@@ -13,9 +13,15 @@ type MarkdownPreviewProps = {
 
 function MarkdownPreview({ innerText, previewMode }: MarkdownPreviewProps) {
   const [md, setMd] = useState('');
+  const [timeoutId, setTimeoutId] = useState(null);
 
   useEffect(() => {
-    if (previewMode) {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      setTimeoutId(null);
+    }
+
+    setTimeout(() => {
       const markdown: any = unified()
         .use(remarkParse)
         .use(remarkGfm)
@@ -24,8 +30,14 @@ function MarkdownPreview({ innerText, previewMode }: MarkdownPreviewProps) {
         .processSync(innerText).result;
 
       setMd(markdown);
-    }
-  }, [previewMode, innerText]);
+    }, 300);
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [previewMode, innerText, timeoutId]);
 
   return (
     <StyledPreviewMarkdown style={{ display: previewMode ? 'block' : 'none' }}>
