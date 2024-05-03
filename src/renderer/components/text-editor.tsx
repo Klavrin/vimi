@@ -40,7 +40,7 @@ function TextEditor({
         dispatch(setPreviewMode(false));
         setTimeout(() => {
           textEditorRefs.current[index].editor.current.view.focus();
-        }, 0);
+        });
         document.removeEventListener('keydown', handleKeyDown);
       }
     };
@@ -54,7 +54,7 @@ function TextEditor({
     if (previewMode) {
       setTimeout(() => {
         textEditorRefs.current[index].editor.current.view.focus();
-      }, 0);
+      });
     }
   };
 

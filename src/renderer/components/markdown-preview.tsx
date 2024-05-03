@@ -30,7 +30,7 @@ function MarkdownPreview({ innerText, previewMode }: MarkdownPreviewProps) {
         .processSync(innerText).result;
 
       setMd(markdown);
-    }, 300);
+    }, 400);
 
     return () => {
       if (timeoutId) {
