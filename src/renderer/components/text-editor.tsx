@@ -3,6 +3,7 @@ import MarkdownEditor, { MarkdownEditorRef } from '@uiw/react-markdown-editor';
 import { useDispatch } from 'react-redux';
 import { vim } from '@replit/codemirror-vim';
 import { EditorView } from '@codemirror/view';
+import { FaEye } from 'react-icons/fa6';
 import { togglePreviewMode, setPreviewMode } from '../store/reducers/tab-bar';
 
 import { setIsEditing } from '../store/reducers/workspace';
@@ -79,9 +80,13 @@ function TextEditor({
       <button
         type="button"
         onClick={handlePreviewButton}
-        style={{ position: 'fixed', bottom: 10, right: 10 }}
+        style={{
+          position: 'fixed',
+          bottom: 20,
+          right: 20,
+        }}
       >
-        preview/edit
+        <FaEye size={30} opacity={0.4} />
       </button>
     </>
   );

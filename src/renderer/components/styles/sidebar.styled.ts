@@ -1,11 +1,7 @@
 import styled from 'styled-components';
 
 const StyledSidebar = styled.div`
-  /* min-width: 240px; */
   height: 100vh;
-  /* border-right-width: 2px; */
-  /* border-right-style: solid;
-  border-right-color: ${(props) => props.theme.borderColor}; */
   overflow-y: scroll;
   background: ${(props) => props.theme.backgroundSecondary};
 
@@ -20,10 +16,18 @@ const StyledSidebar = styled.div`
     border: none;
     border-radius: 5px;
     padding-inline: 10px;
-    padding-block: 5px;
+    padding-block: 2px;
     cursor: pointer;
     text-align: start;
     font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    outline-color: ${(props) => props.theme.secondary};
+    outline-width: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     &:focus {
       & .title {

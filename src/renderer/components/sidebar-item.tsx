@@ -77,7 +77,7 @@ function SidebarItem({ item }: SidebarItemProps) {
         ) : (
           <FaRegFolderClosed style={{ minWidth: 15 }} />
         )}
-        {item.name}
+        <p className="fucking-work">{item.name}</p>
       </div>
       {dirFilesVisible && (
         <div className="directory-container">

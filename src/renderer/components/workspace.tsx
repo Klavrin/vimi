@@ -8,8 +8,6 @@ import TextEditor from './text-editor';
 import StyledWorkspace from './styles/workspace.styled';
 import { State } from '../types/state';
 
-// TODO: Establish communication between the TextEditor's vim and the layout
-
 function Workspace() {
   const tabs = useSelector((state: State) => state.tabBar.tabs);
   const activeTab = useSelector((state: State) => state.tabBar.activeTabIndex);
