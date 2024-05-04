@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Flex } from 'antd';
+import { motion } from 'framer-motion';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
 
 import InteractiveZone from './sidebar-interactive-zone';
@@ -120,17 +121,22 @@ function Sidebar() {
         interactiveZoneWasHovered={() => setInteractiveZoneWasHovered(true)}
       />
 
-      <StyledSidebar
+      <motion.div
+        key="sidebar"
+        animate={{ width: sidebarActive ? 280 : 0 }}
+        transition={{ duration: 0.2 }}
+        className="sidebar-container"
         onMouseLeave={handleMouseLeave}
-        style={{ width: sidebarActive ? 280 : 0 }}
       >
-        <SidebarTabHeader />
-        <Flex className="container" ref={containerRef}>
-          {directoryFiles.map((dir: Directory | File) => (
-            <SidebarItem key={dir.name} item={dir} />
-          ))}
-        </Flex>
-      </StyledSidebar>
+        <StyledSidebar>
+          <SidebarTabHeader />
+          <Flex className="container" ref={containerRef}>
+            {directoryFiles.map((dir: Directory | File) => (
+              <SidebarItem key={dir.name} item={dir} />
+            ))}
+          </Flex>
+        </StyledSidebar>
+      </motion.div>
     </>
   );
 }

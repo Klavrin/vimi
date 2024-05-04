@@ -11,7 +11,13 @@ const StyledSidebarTabHeader = styled.div`
   -webkit-app-region: drag;
 
   button {
+    padding: 4px;
+    border-radius: 4px;
     -webkit-app-region: no-drag;
+  }
+
+  button:hover {
+    background: ${(props) => props.theme.secondary};
   }
 `;
 
