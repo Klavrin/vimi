@@ -14,6 +14,7 @@ const StyledSidebarTabHeader = styled.div`
     padding: 4px;
     border-radius: 4px;
     -webkit-app-region: no-drag;
+    opacity: 0.8;
   }
 
   button:hover {

@@ -15,6 +15,16 @@ const StyledWorkspaceTabHeader = styled.div`
     -webkit-app-region: no-drag;
   }
 
+  & .collapse-icon {
+    padding: 4px;
+    border-radius: 4px;
+    opacity: 0.8;
+
+    &:hover {
+      background: ${(props) => props.theme.secondary};
+    }
+  }
+
   .workspace-tabs {
     height: 100%;
     display: flex;
@@ -49,12 +59,6 @@ const StyledWorkspaceTabHeader = styled.div`
 
     & .icon {
       outline: none;
-      /* padding: 4px 6px;
-      border-radius: 5px; */
-
-      &:hover {
-        background: rgba(255, 255, 255, 0.1);
-      }
     }
   }
 `;

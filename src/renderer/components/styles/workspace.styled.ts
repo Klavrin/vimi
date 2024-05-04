@@ -2,13 +2,12 @@ import styled from 'styled-components';
 
 const StyledWorkspace = styled.div`
   width: 100%;
-  min-height: calc(100vh - 44px);
   border-left: 1px solid ${(props) => props.theme.borderColor};
   background: ${(props) => props.theme.backgroundPrimary};
 
   .cm-editor {
     width: 100%;
-    min-height: 100%;
+    min-height: calc(100vh - 44px);
     background: ${(props) => props.theme.backgroundPrimary};
     color: ${(props) => props.theme.primary};
   }

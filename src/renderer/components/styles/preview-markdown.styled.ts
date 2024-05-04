@@ -4,6 +4,7 @@ const StyledPreviewMarkdown = styled.div`
   /*dark*/
 
   max-width: 100%;
+  min-height: calc(100vh - 44px);
   position: relative;
   right: 0;
   -ms-text-size-adjust: 100%;
