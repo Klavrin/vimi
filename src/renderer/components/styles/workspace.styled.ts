@@ -6,8 +6,8 @@ const StyledWorkspace = styled.div`
   .cm-editor {
     width: 100%;
     min-height: 100%;
-    background: ${(props) => props.theme.backgroundColor};
-    color: ${(props) => props.theme.color};
+    background: ${(props) => props.theme.backgroundPrimary};
+    color: ${(props) => props.theme.primary};
   }
 
   .cm-editor * {
@@ -30,8 +30,8 @@ const StyledWorkspace = styled.div`
   }
 
   .cm-gutter {
-    background: ${(props) => props.theme.backgroundColor};
-    color: ${(props) => props.theme.color};
+    background: ${(props) => props.theme.backgroundPrimary};
+    color: ${(props) => props.theme.primary};
   }
 
   .cm-gutterElement {
@@ -43,7 +43,7 @@ const StyledWorkspace = styled.div`
   }
 
   .cm-focused .cm-cursor {
-    border-left-color: ${(props) => props.theme.color};
+    border-left-color: ${(props) => props.theme.primary};
   }
 
   .cm-activeLine,
@@ -54,18 +54,18 @@ const StyledWorkspace = styled.div`
   .md-editor-preview {
     width: 100%;
     height: 100%;
-    background: ${(props) => props.theme.backgroundColor};
-    color: ${(props) => props.theme.color};
+    background: ${(props) => props.theme.backgroundPrimary};
+    color: ${(props) => props.theme.primary};
   }
 
   .md-editor-preview * {
-    background: ${(props) => props.theme.backgroundColor};
-    color: ${(props) => props.theme.color};
+    background: ${(props) => props.theme.backgroundPrimary};
+    color: ${(props) => props.theme.primary};
   }
 
   .tab-list {
     width: 100%;
-    background-color: ${(props) => props.theme.backgroundColor};
+    background-color: ${(props) => props.theme.backgroundPrimary};
     border-bottom: 2px solid ${(props) => props.theme.borderColor};
     position: fixed;
     top: 0;

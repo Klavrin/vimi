@@ -7,6 +7,7 @@ const StyledSidebar = styled.div`
   border-right-style: solid;
   border-right-color: ${(props) => props.theme.borderColor};
   overflow-y: scroll;
+  background: ${(props) => props.theme.backgroundSecondary};
 
   .container {
     padding: 0 10px 10px 10px;

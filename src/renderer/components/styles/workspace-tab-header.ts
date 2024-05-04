@@ -2,9 +2,11 @@ import styled from 'styled-components';
 
 const StyledWorkspaceTabHeader = styled.div`
   width: 100%;
-  height: 38px;
-  border-bottom: 2px solid ${(props) => props.theme.borderColor};
+  height: 44px;
+  border-bottom: 1px solid ${(props) => props.theme.borderColor};
   user-select: none;
+  background: ${(props) => props.theme.backgroundSecondary};
+  padding-inline: 1rem;
 
   -webkit-app-region: drag;
 
@@ -16,21 +18,38 @@ const StyledWorkspaceTabHeader = styled.div`
   .workspace-tabs {
     height: 100%;
     display: flex;
+    /* align-items: flex-end; */
     align-items: center;
     list-style-type: none;
+    gap: 5px;
   }
 
   .workspace-tab {
-    height: 100%;
+    width: 12rem;
+    height: 75%;
     padding-inline: 0.8rem;
-    border-right: 2px solid ${(props) => props.theme.borderColor};
+    border-radius: 7px;
     cursor: pointer;
 
-    display: flex;
-    align-items: center;
+    -webkit-app-region: no-drag;
 
-    &:active {
-      background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+
+    position: relative;
+    top: 1px;
+
+    & .title {
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    & .icon {
+      outline: none;
     }
   }
 `;

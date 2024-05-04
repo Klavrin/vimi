@@ -5,8 +5,10 @@ import {
   removeTab,
   removeCurrentTab,
 } from '../store/reducers/tab-bar';
+import { FaX } from 'react-icons/fa6';
 
 import StyledWorkspaceTabHeader from './styles/workspace-tab-header';
+import darkTheme from '../styles/themes/dark';
 import { State } from '../types/state';
 
 function WorkspaceTabHeader() {
@@ -28,25 +30,44 @@ function WorkspaceTabHeader() {
         style={{ paddingLeft: !sidebarActive ? '4.5rem' : 0 }}
       >
         {tabs.map((tab, index) => (
-          <button
-            type="button"
+          <div
             key={tab.basename}
-            style={{
-              background:
-                index === activeTab ? 'rgba(255, 255, 255, 0.2)' : 'none',
-            }}
             className="workspace-tab"
             onClick={() => dispatch(setActiveTabIndex(index))}
+            role="button"
+            tabIndex={index}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                dispatch(setActiveTabIndex(index));
+              }
+            }}
+            style={{
+              background:
+                index === activeTab
+                  ? darkTheme.backgroundPrimary
+                  : darkTheme.backgroundSecondary,
+              border:
+                index === activeTab
+                  ? `1px solid ${darkTheme.borderColor}`
+                  : '1px solid transparent',
+              opacity: index === activeTab ? 1 : 0.6,
+            }}
           >
-            {tab.basename}
-            <button
-              type="button"
-              style={{ background: 'none' }}
+            <div className="title">{tab.basename}</div>
+            <FaX
+              className="icon"
+              style={{ display: index === activeTab ? 'block' : 'none' }}
               onClick={() => dispatch(removeTab(index))}
-            >
-              X
-            </button>
-          </button>
+              role="button"
+              size={14}
+              tabIndex={index}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  dispatch(setActiveTabIndex(index));
+                }
+              }}
+            />
+          </div>
         ))}
       </div>
     </StyledWorkspaceTabHeader>
