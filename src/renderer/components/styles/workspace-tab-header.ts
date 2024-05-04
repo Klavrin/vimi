@@ -18,7 +18,6 @@ const StyledWorkspaceTabHeader = styled.div`
   .workspace-tabs {
     height: 100%;
     display: flex;
-    /* align-items: flex-end; */
     align-items: center;
     list-style-type: none;
     gap: 5px;
@@ -50,6 +49,12 @@ const StyledWorkspaceTabHeader = styled.div`
 
     & .icon {
       outline: none;
+      /* padding: 4px 6px;
+      border-radius: 5px; */
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
     }
   }
 `;

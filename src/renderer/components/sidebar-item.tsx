@@ -72,7 +72,11 @@ function SidebarItem({ item }: SidebarItemProps) {
       onClick={handleDirectoryClick}
     >
       <div className="title">
-        {dirFilesVisible ? <FaRegFolderOpen /> : <FaRegFolderClosed />}
+        {dirFilesVisible ? (
+          <FaRegFolderOpen style={{ minWidth: 15 }} />
+        ) : (
+          <FaRegFolderClosed style={{ minWidth: 15 }} />
+        )}
         {item.name}
       </div>
       {dirFilesVisible && (

@@ -17,18 +17,25 @@ const StyledSidebar = styled.div`
 
   .note {
     width: 100%;
-    background: rgba(255, 255, 255, 0.1);
     border: none;
     border-radius: 5px;
     padding-inline: 10px;
     padding-block: 5px;
     cursor: pointer;
     text-align: start;
+    font-size: 15px;
+
+    &:focus {
+      & .title {
+        opacity: 1;
+      }
+    }
 
     & .title {
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      opacity: 0.6;
     }
   }
 

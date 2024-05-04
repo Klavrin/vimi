@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const StyledSidebarTabHeader = styled.div`
   width: 100%;
-  height: 38px;
+  height: 44px;
 
   display: flex;
   justify-content: end;
