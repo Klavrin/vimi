@@ -64,7 +64,7 @@ const createWindow = async () => {
     minWidth: 728,
     minHeight: 628,
     titleBarStyle: 'hidden',
-    trafficLightPosition: { x: 10, y: 10 },
+    trafficLightPosition: { x: 10, y: 15 },
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged

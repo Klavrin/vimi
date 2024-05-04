@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { FaRegFolderClosed, FaRegFolderOpen, FaRegFile } from 'react-icons/fa6';
 import { setActiveTabIndex } from '../store/reducers/tab-bar';
 
 import { State } from '../types/state';
@@ -55,7 +56,10 @@ function SidebarItem({ item }: SidebarItemProps) {
         className="note"
         onClick={(event) => handleFileClick(item.path, event)}
       >
-        FILE: {item.name}
+        <div className="title">
+          <FaRegFile style={{ minWidth: 15 }} />
+          {item.name}
+        </div>
       </button>
     );
 
@@ -67,7 +71,10 @@ function SidebarItem({ item }: SidebarItemProps) {
       className="note"
       onClick={handleDirectoryClick}
     >
-      DIR: {item.name}
+      <div className="title">
+        {dirFilesVisible ? <FaRegFolderOpen /> : <FaRegFolderClosed />}
+        {item.name}
+      </div>
       {dirFilesVisible && (
         <div className="directory-container">
           {/* TODO: Write a type for the child prop */}

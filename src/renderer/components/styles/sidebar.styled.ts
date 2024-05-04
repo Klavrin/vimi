@@ -3,9 +3,9 @@ import styled from 'styled-components';
 const StyledSidebar = styled.div`
   /* min-width: 240px; */
   height: 100vh;
-  border-right-width: 2px;
-  border-right-style: solid;
-  border-right-color: ${(props) => props.theme.borderColor};
+  /* border-right-width: 2px; */
+  /* border-right-style: solid;
+  border-right-color: ${(props) => props.theme.borderColor}; */
   overflow-y: scroll;
   background: ${(props) => props.theme.backgroundSecondary};
 
@@ -24,6 +24,12 @@ const StyledSidebar = styled.div`
     padding-block: 5px;
     cursor: pointer;
     text-align: start;
+
+    & .title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
   }
 
   .directory-container {
