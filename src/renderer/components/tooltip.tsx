@@ -24,7 +24,6 @@ function Tooltip({ innerText, style, visible = false }: TooltipProps) {
 
     return () => {
       clearTimeout(timeout);
-      setIsTooltipDisplayed(false);
       setTooltipVisible(false);
     };
   }, [visible]);
@@ -37,6 +36,7 @@ function Tooltip({ innerText, style, visible = false }: TooltipProps) {
         animate={{ opacity: tooltipVisible ? 1 : 0 }}
         style={{ opacity: tooltipVisible ? 1 : 0 }}
         transition={{ duration: 0.1 }}
+        onEnded={() => !tooltipVisible && setIsTooltipDisplayed(false)}
       >
         {innerText}
       </motion.div>
