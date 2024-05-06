@@ -4,6 +4,7 @@ import { addTab } from '../store/reducers/tab-bar';
 import useVimConfig from '../utils/use-vim-config';
 
 import TextEditor from './text-editor';
+import CommandMenu from './command-menu';
 
 import StyledWorkspace from './styles/workspace.styled';
 import { State } from '../types/state';
@@ -40,6 +41,7 @@ function Workspace() {
 
   return (
     <StyledWorkspace>
+      <CommandMenu />
       {tabs.map((tab, index) => (
         <div
           key={tab.basename}

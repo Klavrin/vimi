@@ -1,10 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Command } from 'cmdk';
+import { useDispatch, useSelector } from 'react-redux';
+import { FaMagnifyingGlass, FaRegFile } from 'react-icons/fa6';
+
+import { setActiveTabIndex } from '../store/reducers/tab-bar';
 
 import StyledCommandMenu from './styles/command-menu.styled';
+import { State } from '../types/state';
 
 function CommandMenu() {
   const [open, setOpen] = useState(false);
+  const tabs = useSelector((state: State) => state.tabBar.tabs);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const down = (e: any) => {
@@ -18,28 +25,44 @@ function CommandMenu() {
     return () => document.removeEventListener('keydown', down);
   }, []);
 
+  const handleCommandItemSelect = (index: number) => {
+    dispatch(setActiveTabIndex(index));
+    setOpen(false);
+  };
+
   return (
-    <StyledCommandMenu>
-      <Command.Dialog
-        open={open}
-        onOpenChange={setOpen}
-        label="Global Command Menu"
-      >
-        <Command.Input />
-        <Command.List>
-          <Command.Empty>No results found.</Command.Empty>
+    <Command.Dialog
+      open={open}
+      onOpenChange={setOpen}
+      label="Global Command Menu"
+      loop
+    >
+      <StyledCommandMenu onClick={() => setOpen(false)}>
+        <div className="container">
+          <div className="input-field">
+            <FaMagnifyingGlass className="magnifying-glass" />
+            <Command.Input placeholder="Search files" />
+          </div>
 
-          <Command.Group heading="Letters">
-            <Command.Item>a</Command.Item>
-            <Command.Item>b</Command.Item>
-            <Command.Separator />
-            <Command.Item>c</Command.Item>
-          </Command.Group>
+          <Command.List>
+            <Command.Empty className="command-item">
+              No results found.
+            </Command.Empty>
 
-          <Command.Item>Apple</Command.Item>
-        </Command.List>
-      </Command.Dialog>
-    </StyledCommandMenu>
+            {tabs.map((tab, index) => (
+              <Command.Item
+                key={tab.basename}
+                className="command-item"
+                onSelect={() => handleCommandItemSelect(index)}
+              >
+                <FaRegFile />
+                {tab.basename}
+              </Command.Item>
+            ))}
+          </Command.List>
+        </div>
+      </StyledCommandMenu>
+    </Command.Dialog>
   );
 }
 
