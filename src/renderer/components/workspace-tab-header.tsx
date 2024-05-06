@@ -49,11 +49,9 @@ function WorkspaceTabHeader() {
               onMouseOver={() => setIconHovered(true)}
               onMouseLeave={() => setIconHovered(false)}
               onFocus={() => null}
+              onClick={() => dispatch(setSidebarValue(true))}
             >
-              <PiSidebarFill
-                size={20}
-                onClick={() => dispatch(setSidebarValue(true))}
-              />
+              <PiSidebarFill size={20} style={{ minWidth: 20 }} />
             </button>
             <Tooltip
               innerText="Expand"
@@ -86,7 +84,6 @@ function WorkspaceTabHeader() {
             }}
           >
             <p className="title">{tab.basename}</p>
-
             <div
               className="icon"
               style={{ display: index === activeTab ? 'block' : 'none' }}

@@ -15,7 +15,7 @@ function MainPage() {
   return (
     <>
       <Sidebar />
-      <div style={{ width: '100%' }}>
+      <div style={{ overflow: 'hidden', width: '100%' }}>
         <WorkspaceTabHeader />
 
         <StyledMainPage>

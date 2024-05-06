@@ -20,6 +20,10 @@ const StyledCommandMenu = styled.div`
     color: ${(props) => props.theme.primary};
     border: 1px solid ${(props) => props.theme.secondary};
     border-radius: 10px;
+
+    @media only screen and (max-width: 1248px) {
+      width: 80%;
+    }
   }
 
   .input-field {

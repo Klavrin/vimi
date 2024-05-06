@@ -35,7 +35,7 @@ function CommandMenu() {
     <Command.Dialog
       open={open}
       onOpenChange={setOpen}
-      label="Global Command Menu"
+      label="Command Menu"
       loop
     >
       <StyledCommandMenu
