@@ -19,6 +19,8 @@ const GlobalStyles = createGlobalStyle`
 
     background-color: ${(props) => props.theme.backgroundSecondary};
     color: ${(props) => props.theme.color};
+
+    overflow: hidden;
   }
 
   img,

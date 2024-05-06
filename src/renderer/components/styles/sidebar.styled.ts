@@ -1,17 +1,14 @@
 import styled from 'styled-components';
 
 const StyledSidebar = styled.div`
-  /* height: 100vh;
-  overflow-y: scroll;
-  background: ${(props) => props.theme.backgroundSecondary}; */
-
-  .sidebar-container {
-    height: 100vh;
-    overflow-y: scroll;
-    background: ${(props) => props.theme.backgroundSecondary};
-  }
+  height: 100vh;
 
   .container {
+    height: calc(100% - 44px);
+    overflow-y: scroll;
+  }
+
+  .sidebar-content {
     padding: 0 10px 10px 10px;
     flex-direction: column;
     gap: 10px;

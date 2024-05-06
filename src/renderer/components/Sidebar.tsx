@@ -124,18 +124,21 @@ function Sidebar() {
       <motion.div
         key="sidebar"
         animate={{ width: sidebarActive ? 240 : 0 }}
-        style={{ width: sidebarActive ? 240 : 0, maxWidth: 240 }}
+        style={{
+          width: sidebarActive ? 240 : 0,
+        }}
         transition={{ duration: 0.2 }}
-        className="sidebar-container"
         onMouseLeave={handleMouseLeave}
       >
         <StyledSidebar>
           <SidebarTabHeader />
-          <Flex className="container" ref={containerRef}>
-            {directoryFiles.map((dir: Directory | File) => (
-              <SidebarItem key={dir.name} item={dir} />
-            ))}
-          </Flex>
+          <div className="container">
+            <Flex className="sidebar-content" ref={containerRef}>
+              {directoryFiles.map((dir: Directory | File) => (
+                <SidebarItem key={dir.name} item={dir} />
+              ))}
+            </Flex>
+          </div>
         </StyledSidebar>
       </motion.div>
     </>
