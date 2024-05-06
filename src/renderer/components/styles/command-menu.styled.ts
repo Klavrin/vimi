@@ -10,6 +10,7 @@ const StyledCommandMenu = styled.div`
   padding-top: 30vh;
 
   backdrop-filter: blur(3px);
+  background: rgba(0, 0, 0, 0.2);
 
   position: fixed;
   top: 0;
@@ -24,7 +25,7 @@ const StyledCommandMenu = styled.div`
   .input-field {
     background: ${(props) => props.theme.backgroundSecondary};
     padding-inline: 1rem;
-    padding-block: 0.6rem;
+    padding-block: 0.7rem;
     border-radius: 10px 10px 0 0;
     width: 100%;
     border-bottom: 1px solid ${(props) => props.theme.secondary};

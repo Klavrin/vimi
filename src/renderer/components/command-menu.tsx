@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Command } from 'cmdk';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaMagnifyingGlass, FaRegFile } from 'react-icons/fa6';
+import { motion } from 'framer-motion';
 
 import { setActiveTabIndex } from '../store/reducers/tab-bar';
 
@@ -37,7 +38,13 @@ function CommandMenu() {
       label="Global Command Menu"
       loop
     >
-      <StyledCommandMenu onClick={() => setOpen(false)}>
+      <StyledCommandMenu
+        onClick={() => setOpen(false)}
+        as={motion.div}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.15 }}
+      >
         <div className="container">
           <div className="input-field">
             <FaMagnifyingGlass className="magnifying-glass" />
