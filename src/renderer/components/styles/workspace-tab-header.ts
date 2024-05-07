@@ -10,8 +10,7 @@ const StyledWorkspaceTabHeader = styled.div`
 
   -webkit-app-region: drag;
 
-  button,
-  li {
+  button {
     -webkit-app-region: no-drag;
   }
 
@@ -35,6 +34,8 @@ const StyledWorkspaceTabHeader = styled.div`
   .workspace-tab {
     min-width: 6rem;
     max-width: 12rem;
+    width: 12rem;
+    max-width: 100%;
     height: 75%;
     padding-inline: 0.8rem;
     border-radius: 7px;

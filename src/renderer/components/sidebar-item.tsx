@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { AnimatePresence, motion } from 'framer-motion';
 import { FaRegFolderClosed, FaRegFolderOpen, FaRegFile } from 'react-icons/fa6';
 import { setActiveTabIndex } from '../store/reducers/tab-bar';
 
@@ -77,16 +78,26 @@ function SidebarItem({ item }: SidebarItemProps) {
         ) : (
           <FaRegFolderClosed style={{ minWidth: 15 }} />
         )}
-        <p className="fucking-work">{item.name}</p>
+        <p>{item.name}</p>
       </div>
-      {dirFilesVisible && (
-        <div className="directory-container">
-          {/* TODO: Write a type for the child prop */}
-          {item.children.map((child: any) => (
-            <SidebarItem key={child.name} item={child} />
-          ))}
-        </div>
-      )}
+
+      <AnimatePresence>
+        {dirFilesVisible && (
+          <motion.div
+            initial={{ height: 0 }}
+            animate={{ height: '100%' }}
+            exit={{ height: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <div className="directory-container">
+              {/* TODO: Write a type for the child prop */}
+              {item.children.map((child: any) => (
+                <SidebarItem key={child.name} item={child} />
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </button>
   );
 }
