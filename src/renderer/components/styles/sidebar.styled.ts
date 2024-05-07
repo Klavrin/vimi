@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 const StyledSidebar = styled.div`
   height: 100vh;
+  /* border-right: 1px solid red; */
 
   .container {
     height: calc(100% - 44px);
@@ -9,7 +10,7 @@ const StyledSidebar = styled.div`
   }
 
   .sidebar-content {
-    padding: 0 10px 10px 10px;
+    padding: 2px 10px 10px 10px;
     flex-direction: column;
     gap: 10px;
   }

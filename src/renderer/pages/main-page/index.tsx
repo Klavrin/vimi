@@ -20,7 +20,7 @@ function MainPage() {
 
         <StyledMainPage>
           {currentDirectoryPath === '' ? (
-            'Drag a folder from you computer to get started.'
+            'Drag a folder from your computer to get started.'
           ) : (
             <Workspace />
           )}

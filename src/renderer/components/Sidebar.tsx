@@ -124,9 +124,7 @@ function Sidebar() {
       <motion.div
         key="sidebar"
         animate={{ width: sidebarActive ? 240 : 0 }}
-        style={{
-          width: sidebarActive ? 240 : 0,
-        }}
+        style={{ width: sidebarActive ? 240 : 0 }}
         transition={{ duration: 0.2 }}
         onMouseLeave={handleMouseLeave}
       >

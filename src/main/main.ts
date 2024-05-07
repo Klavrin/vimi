@@ -107,7 +107,10 @@ const createWindow = async () => {
 ipcMain.on('isDirectory', async (event, dirPath) => {
   try {
     const stats = await fs.stat(dirPath);
-    event.reply('isDirectoryReply', stats.isDirectory());
+    event.reply('isDirectoryReply', {
+      isDir: stats.isDirectory(),
+      path: dirPath,
+    });
   } catch (err) {
     // TODO: let the user know something wrong happened
   }
