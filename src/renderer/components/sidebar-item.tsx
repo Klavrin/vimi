@@ -26,7 +26,7 @@ function SidebarItem({ item }: SidebarItemProps) {
   const dispatch = useDispatch();
 
   const handleDirectoryClick = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.KeyboardEvent,
   ) => {
     e.stopPropagation();
     setDirFilesVisible(!dirFilesVisible);
@@ -66,11 +66,16 @@ function SidebarItem({ item }: SidebarItemProps) {
 
   // Render directory
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
       key={item.name}
       className="note"
+      // the error occurs here
       onClick={handleDirectoryClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') handleDirectoryClick(e);
+      }}
     >
       <div className="title">
         {dirFilesVisible ? (
@@ -98,7 +103,7 @@ function SidebarItem({ item }: SidebarItemProps) {
           </motion.div>
         )}
       </AnimatePresence>
-    </button>
+    </div>
   );
 }
 

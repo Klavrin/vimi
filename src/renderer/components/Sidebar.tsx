@@ -68,7 +68,8 @@ function Sidebar() {
 
       if (containerRef.current) {
         const interactiveElements: HTMLButtonElement[] = Array.from(
-          containerRef.current.querySelectorAll('button'),
+          // containerRef.current.querySelectorAll('button'),
+          containerRef.current.querySelectorAll('.note'),
         );
 
         if (e.key === 'j') {
