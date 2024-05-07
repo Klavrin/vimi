@@ -32,12 +32,16 @@ function SidebarItem({ item }: SidebarItemProps) {
     setDirFilesVisible(!dirFilesVisible);
   };
 
-  const handleFileClick = (filePath: string, e: any) => {
+  const handleFileClick = (
+    filePath: string,
+    e: React.MouseEvent | React.KeyboardEvent<HTMLDivElement>,
+  ) => {
     e.stopPropagation();
 
-    // Check if this file exists before reading
+    // Check if this file exists in the tabs array before reading
     const pathExists = tabs.some((tab, index) => {
       if (tab.path === filePath) {
+        // If the file exists in the tabs array - set that tab as active
         dispatch(setActiveTabIndex(index));
         return true;
       }
@@ -51,17 +55,21 @@ function SidebarItem({ item }: SidebarItemProps) {
   // Render file
   if (item.type === 'file')
     return (
-      <button
-        type="button"
+      <div
+        role="button"
+        tabIndex={0}
         key={item.path}
         className="note"
         onClick={(event) => handleFileClick(item.path, event)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') handleFileClick(item.path, e);
+        }}
       >
         <div className="title">
           <FaRegFile style={{ minWidth: 15 }} />
           {item.name}
         </div>
-      </button>
+      </div>
     );
 
   // Render directory
@@ -71,7 +79,6 @@ function SidebarItem({ item }: SidebarItemProps) {
       tabIndex={0}
       key={item.name}
       className="note"
-      // the error occurs here
       onClick={handleDirectoryClick}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') handleDirectoryClick(e);

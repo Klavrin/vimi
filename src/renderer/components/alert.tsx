@@ -28,9 +28,9 @@ function Alert({ heading, innerText, showAlert, setShowAlert }: AlertProps) {
         <StyledAlert
           as={motion.div}
           transition={{ duration: 0.6, type: 'spring' }}
-          initial={{ transform: 'translate(-50%, -300px)' }}
+          initial={{ transform: 'translate(-50%, -200px)' }}
           animate={{ transform: 'translate(-50%, 10px)' }}
-          exit={{ transform: 'translate(-50%, -300px)' }}
+          exit={{ transform: 'translate(-50%, -200px)' }}
         >
           <div className="icon-container">
             <FaTriangleExclamation className="icon" size={20} />
