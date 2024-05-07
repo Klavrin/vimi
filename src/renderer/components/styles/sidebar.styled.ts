@@ -7,6 +7,7 @@ const StyledSidebar = styled.div`
   .container {
     height: calc(100% - 44px);
     overflow-y: scroll;
+    /* border-right: 1px solid ${(props) => props.theme.borderColor}; */
   }
 
   .sidebar-content {

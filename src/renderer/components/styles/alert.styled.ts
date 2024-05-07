@@ -8,15 +8,27 @@ const StyledAlert = styled.div`
   background: ${(props) => props.theme.backgroundSecondary};
   border: 1px solid ${(props) => props.theme.secondary};
   border-radius: 10px;
+  z-index: 99;
+
+  display: flex;
+  gap: 1rem;
 
   position: absolute;
   left: 50%;
   transform: translate(-50%);
 
-  h3 {
+  .icon-container {
+    min-width: 20px;
+    min-height: 100%;
+    margin-block: auto;
+  }
+
+  .content-container {
+    width: 100%;
   }
 
   p {
+    opacity: 0.7;
   }
 `;
 

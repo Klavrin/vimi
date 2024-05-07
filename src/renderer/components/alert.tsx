@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { FaTriangleExclamation } from 'react-icons/fa6';
 
 import StyledAlert from './styles/alert.styled';
 
@@ -31,8 +32,14 @@ function Alert({ heading, innerText, showAlert, setShowAlert }: AlertProps) {
           animate={{ transform: 'translate(-50%, 10px)' }}
           exit={{ transform: 'translate(-50%, -300px)' }}
         >
-          <h3>{heading}</h3>
-          <p>{innerText}</p>
+          <div className="icon-container">
+            <FaTriangleExclamation className="icon" size={20} />
+          </div>
+
+          <div className="content-container">
+            <h3>{heading}</h3>
+            <p>{innerText}</p>
+          </div>
         </StyledAlert>
       )}
     </AnimatePresence>
