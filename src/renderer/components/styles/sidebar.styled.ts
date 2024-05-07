@@ -12,6 +12,7 @@ const StyledSidebar = styled.div`
 
   .sidebar-content {
     padding: 2px 10px 10px 10px;
+    display: flex;
     flex-direction: column;
     gap: 10px;
   }
@@ -33,6 +34,7 @@ const StyledSidebar = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    user-select: none;
 
     &:focus {
       & .title {

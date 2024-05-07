@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Flex } from 'antd';
 import { motion } from 'framer-motion';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
 
@@ -47,7 +46,7 @@ function Sidebar() {
     (state: State) => state.currentDirectory.currentDirectoryPath,
   );
   const isEditing = useSelector((state: State) => state.workspace.isEditing);
-  const containerRef = useRef<HTMLButtonElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -132,11 +131,11 @@ function Sidebar() {
         <StyledSidebar>
           <SidebarTabHeader />
           <div className="container">
-            <Flex className="sidebar-content" ref={containerRef}>
+            <div className="sidebar-content" ref={containerRef}>
               {directoryFiles.map((dir: Directory | File) => (
                 <SidebarItem key={dir.name} item={dir} />
               ))}
-            </Flex>
+            </div>
           </div>
         </StyledSidebar>
       </motion.div>
