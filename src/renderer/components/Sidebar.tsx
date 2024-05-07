@@ -71,7 +71,7 @@ function Sidebar() {
           containerRef.current.querySelectorAll('.note'),
         );
 
-        if (e.key === 'j') {
+        if (e.key === 'j' || e.key === 'ArrowDown') {
           e.preventDefault();
           const currentIndex = interactiveElements.indexOf(
             document.activeElement as HTMLButtonElement,
@@ -82,7 +82,7 @@ function Sidebar() {
               : currentIndex + 1;
           if (interactiveElements[nextIndex])
             interactiveElements[nextIndex].focus();
-        } else if (e.key === 'k') {
+        } else if (e.key === 'k' || e.key === 'ArrowUp') {
           e.preventDefault();
           const currentIndex = interactiveElements.indexOf(
             document.activeElement as HTMLButtonElement,
