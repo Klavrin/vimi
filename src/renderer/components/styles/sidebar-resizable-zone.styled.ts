@@ -12,6 +12,11 @@ const StyledSidebarResizableZone = styled.div`
   &:hover {
     background: ${(props) => props.theme.secondary};
   }
+
+  &:active {
+    /* background: ${(props) => props.theme.secondary}; */
+    background: #aa4a44;
+  }
 `;
 
 export default StyledSidebarResizableZone;
