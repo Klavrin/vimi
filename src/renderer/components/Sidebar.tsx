@@ -6,8 +6,9 @@ import { setSidebarValue } from '../store/reducers/sidebar-active';
 import InteractiveZone from './sidebar-interactive-zone';
 import SidebarItem from './sidebar-item';
 import SidebarTabHeader from './sidebar-tab-header';
-import StyledSidebar from './styles/sidebar.styled';
+import SidebarDraggableZone from './sidebar-resizable-zone';
 
+import StyledSidebar from './styles/sidebar.styled';
 import { State } from '../types/state';
 
 // TODO: Poor TypeScript code, find a way to rewrite it!
@@ -41,6 +42,9 @@ function Sidebar() {
   const [interactiveZoneWasHovered, setInteractiveZoneWasHovered] =
     useState(false);
   const [directoryFiles, setDirectoryFiles] = useState([]);
+  const [sidebarWidth, setSidebarWidth] = useState(240);
+  const [isDragging, setIsDragging] = useState(false);
+
   const sidebarActive = useSelector((state: State) => state.sidebar.isActive);
   const currentDirectoryPath = useSelector(
     (state: State) => state.currentDirectory.currentDirectoryPath,
@@ -67,7 +71,6 @@ function Sidebar() {
 
       if (containerRef.current) {
         const interactiveElements: HTMLButtonElement[] = Array.from(
-          // containerRef.current.querySelectorAll('button'),
           containerRef.current.querySelectorAll('.note'),
         );
 
@@ -121,14 +124,13 @@ function Sidebar() {
         interactiveZoneWasHovered={() => setInteractiveZoneWasHovered(true)}
       />
 
-      <motion.div
-        key="sidebar"
-        animate={{ width: sidebarActive ? 240 : 0 }}
-        style={{ width: sidebarActive ? 240 : 0 }}
-        transition={{ duration: 0.2 }}
-        onMouseLeave={handleMouseLeave}
-      >
-        <StyledSidebar>
+      <div onMouseLeave={handleMouseLeave}>
+        <StyledSidebar
+          as={motion.div}
+          style={{ width: sidebarActive ? sidebarWidth : 0 }}
+          animate={{ width: sidebarActive ? sidebarWidth : 0 }}
+          transition={{ duration: !isDragging ? 0.2 : 0, ease: 'circInOut' }}
+        >
           <SidebarTabHeader />
           <div className="container">
             <div className="sidebar-content" ref={containerRef}>
@@ -138,7 +140,15 @@ function Sidebar() {
             </div>
           </div>
         </StyledSidebar>
-      </motion.div>
+      </div>
+
+      {sidebarActive && (
+        <SidebarDraggableZone
+          setSidebarWidth={setSidebarWidth}
+          isDragging={isDragging}
+          setIsDragging={setIsDragging}
+        />
+      )}
     </>
   );
 }

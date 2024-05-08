@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 const StyledSidebar = styled.div`
   height: 100vh;
+  max-width: 60em;
   /* border-right: 1px solid red; */
 
   .container {
