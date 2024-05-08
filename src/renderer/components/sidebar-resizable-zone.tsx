@@ -2,12 +2,14 @@ import { useEffect } from 'react';
 import StyledSidebarResizableZone from './styles/sidebar-resizable-zone.styled';
 
 type SidebarResizableZoneProps = {
+  sidebarWidth: number;
   setSidebarWidth: (value: number) => void;
   isDragging: boolean;
   setIsDragging: (value: boolean) => void;
 };
 
 function SidebarResizableZone({
+  sidebarWidth,
   setSidebarWidth,
   isDragging,
   setIsDragging,
@@ -17,13 +19,13 @@ function SidebarResizableZone({
       if (isDragging) {
         if (e.clientX > 220) setSidebarWidth(e.clientX);
         else setSidebarWidth(220);
-        document.body.style.userSelect = 'none';
       }
     };
 
     const handleMouseUp = () => {
       setIsDragging(false);
       document.body.style.userSelect = 'auto';
+      localStorage.setItem('sidebar-width', JSON.stringify(sidebarWidth));
     };
 
     document.addEventListener('mousemove', handleMouseMove);
@@ -33,7 +35,7 @@ function SidebarResizableZone({
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isDragging, setSidebarWidth, setIsDragging]);
+  }, [isDragging]);
 
   const handleMouseDown = () => {
     setIsDragging(true);

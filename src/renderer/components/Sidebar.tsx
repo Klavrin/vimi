@@ -42,7 +42,11 @@ function Sidebar() {
   const [interactiveZoneWasHovered, setInteractiveZoneWasHovered] =
     useState(false);
   const [directoryFiles, setDirectoryFiles] = useState([]);
-  const [sidebarWidth, setSidebarWidth] = useState(240);
+  const [sidebarWidth, setSidebarWidth] = useState(
+    localStorage.getItem('sidebar-width')
+      ? Number(localStorage.getItem('sidebar-width'))
+      : 220,
+  );
   const [isDragging, setIsDragging] = useState(false);
 
   const sidebarActive = useSelector((state: State) => state.sidebar.isActive);
@@ -144,6 +148,7 @@ function Sidebar() {
 
       {sidebarActive && (
         <SidebarDraggableZone
+          sidebarWidth={sidebarWidth}
           setSidebarWidth={setSidebarWidth}
           isDragging={isDragging}
           setIsDragging={setIsDragging}
