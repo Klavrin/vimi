@@ -61,10 +61,10 @@ const createWindow = async () => {
     show: false,
     width: 1024,
     height: 728,
-    minWidth: 728,
-    minHeight: 628,
+    minWidth: 328,
+    minHeight: 228,
     titleBarStyle: 'hidden',
-    trafficLightPosition: { x: 10, y: 10 },
+    trafficLightPosition: { x: 15, y: 15 },
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged
@@ -107,7 +107,10 @@ const createWindow = async () => {
 ipcMain.on('isDirectory', async (event, dirPath) => {
   try {
     const stats = await fs.stat(dirPath);
-    event.reply('isDirectoryReply', stats.isDirectory());
+    event.reply('isDirectoryReply', {
+      isDir: stats.isDirectory(),
+      path: dirPath,
+    });
   } catch (err) {
     // TODO: let the user know something wrong happened
   }

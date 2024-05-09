@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { AnimatePresence, motion } from 'framer-motion';
+import { FaRegFolderClosed, FaRegFolderOpen, FaRegFile } from 'react-icons/fa6';
 import { setActiveTabIndex } from '../store/reducers/tab-bar';
 
 import { State } from '../types/state';
@@ -24,18 +26,22 @@ function SidebarItem({ item }: SidebarItemProps) {
   const dispatch = useDispatch();
 
   const handleDirectoryClick = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.KeyboardEvent,
   ) => {
     e.stopPropagation();
     setDirFilesVisible(!dirFilesVisible);
   };
 
-  const handleFileClick = (filePath: string, e: any) => {
+  const handleFileClick = (
+    filePath: string,
+    e: React.MouseEvent | React.KeyboardEvent<HTMLDivElement>,
+  ) => {
     e.stopPropagation();
 
-    // Check if this file exists before reading
+    // Check if this file exists in the tabs array before reading
     const pathExists = tabs.some((tab, index) => {
       if (tab.path === filePath) {
+        // If the file exists in the tabs array - set that tab as active
         dispatch(setActiveTabIndex(index));
         return true;
       }
@@ -49,34 +55,62 @@ function SidebarItem({ item }: SidebarItemProps) {
   // Render file
   if (item.type === 'file')
     return (
-      <button
-        type="button"
+      <div
+        role="button"
+        tabIndex={0}
         key={item.path}
         className="note"
         onClick={(event) => handleFileClick(item.path, event)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') handleFileClick(item.path, e);
+        }}
       >
-        FILE: {item.name}
-      </button>
+        <div className="title">
+          <FaRegFile style={{ minWidth: 15 }} />
+          {item.name}
+        </div>
+      </div>
     );
 
   // Render directory
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
       key={item.name}
       className="note"
       onClick={handleDirectoryClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') handleDirectoryClick(e);
+      }}
     >
-      DIR: {item.name}
-      {dirFilesVisible && (
-        <div className="directory-container">
-          {/* TODO: Write a type for the child prop */}
-          {item.children.map((child: any) => (
-            <SidebarItem key={child.name} item={child} />
-          ))}
-        </div>
-      )}
-    </button>
+      <div className="title">
+        {dirFilesVisible ? (
+          <FaRegFolderOpen style={{ minWidth: 15 }} />
+        ) : (
+          <FaRegFolderClosed style={{ minWidth: 15 }} />
+        )}
+        <p>{item.name}</p>
+      </div>
+
+      <AnimatePresence>
+        {dirFilesVisible && (
+          <motion.div
+            initial={{ height: 0 }}
+            animate={{ height: '100%' }}
+            exit={{ height: 0 }}
+            transition={{ duration: 0.25, ease: 'backInOut' }}
+          >
+            <div className="directory-container">
+              {/* TODO: Write a type for the child prop */}
+              {item.children.map((child: any) => (
+                <SidebarItem key={child.name} item={child} />
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 

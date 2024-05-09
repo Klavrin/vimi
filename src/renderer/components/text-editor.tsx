@@ -3,9 +3,12 @@ import MarkdownEditor, { MarkdownEditorRef } from '@uiw/react-markdown-editor';
 import { useDispatch } from 'react-redux';
 import { vim } from '@replit/codemirror-vim';
 import { EditorView } from '@codemirror/view';
+import { FaEye } from 'react-icons/fa6';
 import { togglePreviewMode, setPreviewMode } from '../store/reducers/tab-bar';
 
 import { setIsEditing } from '../store/reducers/workspace';
+
+import MarkdownPreview from './markdown-preview';
 
 type TextEditorProps = {
   contents: string;
@@ -38,7 +41,8 @@ function TextEditor({
         dispatch(setPreviewMode(false));
         setTimeout(() => {
           textEditorRefs.current[index].editor.current.view.focus();
-        }, 0);
+        });
+        document.removeEventListener('keydown', handleKeyDown);
       }
     };
 
@@ -51,7 +55,7 @@ function TextEditor({
     if (previewMode) {
       setTimeout(() => {
         textEditorRefs.current[index].editor.current.view.focus();
-      }, 0);
+      });
     }
   };
 
@@ -59,24 +63,30 @@ function TextEditor({
     <>
       <MarkdownEditor
         // @ts-ignore
-        ref={(ref: any) => handleTextEditorRef(index, ref)}
+        ref={(ref) => handleTextEditorRef(index, ref)}
         className="editor"
+        style={{ display: !previewMode ? 'block' : 'none' }}
         value={editorContent}
         onChange={(data: string) => setEditorContent(data)}
         hideToolbar={false}
-        enablePreview={previewMode}
+        enablePreview={false}
         editable={!previewMode}
         extensions={[vim(), EditorView.lineWrapping]}
         onFocus={() => dispatch(setIsEditing(true))}
         onBlur={() => dispatch(setIsEditing(false))}
       />
+      <MarkdownPreview previewMode={previewMode} innerText={editorContent} />
 
       <button
         type="button"
         onClick={handlePreviewButton}
-        style={{ position: 'fixed', bottom: 10, right: 10 }}
+        style={{
+          position: 'fixed',
+          bottom: 20,
+          right: 20,
+        }}
       >
-        preview/edit
+        <FaEye size={30} opacity={0.4} />
       </button>
     </>
   );

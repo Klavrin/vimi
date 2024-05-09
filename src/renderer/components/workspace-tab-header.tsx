@@ -1,10 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { FaX } from 'react-icons/fa6';
+import { PiSidebarFill } from 'react-icons/pi';
+
 import {
   setActiveTabIndex,
   removeTab,
   removeCurrentTab,
 } from '../store/reducers/tab-bar';
+import { setSidebarValue } from '../store/reducers/sidebar-active';
+
+import Tooltip from './tooltip';
 
 import StyledWorkspaceTabHeader from './styles/workspace-tab-header';
 import { State } from '../types/state';
@@ -13,6 +19,7 @@ function WorkspaceTabHeader() {
   const activeTab = useSelector((state: State) => state.tabBar.activeTabIndex);
   const tabs = useSelector((state: State) => state.tabBar.tabs);
   const sidebarActive = useSelector((state: State) => state.sidebar.isActive);
+  const [iconHovered, setIconHovered] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -21,32 +28,56 @@ function WorkspaceTabHeader() {
     });
   }, [dispatch]);
 
+  const handleKeyDown = (e: any, index: number) => {
+    if (e.key === 'Enter') {
+      dispatch(setActiveTabIndex(index));
+    }
+  };
+
   return (
     <StyledWorkspaceTabHeader>
       <div
         className="workspace-tabs"
         style={{ paddingLeft: !sidebarActive ? '4.5rem' : 0 }}
       >
-        {tabs.map((tab, index) => (
-          <button
-            type="button"
-            key={tab.basename}
-            style={{
-              background:
-                index === activeTab ? 'rgba(255, 255, 255, 0.2)' : 'none',
-            }}
-            className="workspace-tab"
-            onClick={() => dispatch(setActiveTabIndex(index))}
-          >
-            {tab.basename}
+        {!sidebarActive && (
+          <>
             <button
               type="button"
-              style={{ background: 'none' }}
-              onClick={() => dispatch(removeTab(index))}
+              className="collapse-icon"
+              onMouseOver={() => setIconHovered(true)}
+              onMouseLeave={() => setIconHovered(false)}
+              onFocus={() => null}
+              onClick={() => dispatch(setSidebarValue(true))}
             >
-              X
+              <PiSidebarFill size={20} className="icon" />
             </button>
-          </button>
+            <Tooltip
+              innerText="Expand"
+              visible={iconHovered}
+              style={{ transform: 'translate(-12px, 30px)' }}
+            />
+          </>
+        )}
+
+        {tabs.map((tab, index) => (
+          <div
+            key={tab.basename}
+            className={`workspace-tab ${index === activeTab ? 'active' : ''}`}
+            onClick={() => dispatch(setActiveTabIndex(index))}
+            role="button"
+            tabIndex={index}
+            onKeyDown={(e) => handleKeyDown(e, index)}
+            style={{ opacity: index === activeTab ? 1 : 0.6 }}
+          >
+            <p className="title">{tab.basename}</p>
+            <div
+              className="icon"
+              style={{ display: index === activeTab ? 'block' : 'none' }}
+            >
+              <FaX onClick={() => dispatch(removeTab(index))} />
+            </div>
+          </div>
         ))}
       </div>
     </StyledWorkspaceTabHeader>

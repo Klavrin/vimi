@@ -1,13 +1,14 @@
 import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Flex } from 'antd';
+import { motion } from 'framer-motion';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
 
 import InteractiveZone from './sidebar-interactive-zone';
 import SidebarItem from './sidebar-item';
 import SidebarTabHeader from './sidebar-tab-header';
-import StyledSidebar from './styles/sidebar.styled';
+import SidebarDraggableZone from './sidebar-resizable-zone';
 
+import StyledSidebar from './styles/sidebar.styled';
 import { State } from '../types/state';
 
 // TODO: Poor TypeScript code, find a way to rewrite it!
@@ -41,12 +42,19 @@ function Sidebar() {
   const [interactiveZoneWasHovered, setInteractiveZoneWasHovered] =
     useState(false);
   const [directoryFiles, setDirectoryFiles] = useState([]);
+  const [sidebarWidth, setSidebarWidth] = useState(
+    localStorage.getItem('sidebar-width')
+      ? Number(localStorage.getItem('sidebar-width'))
+      : 220,
+  );
+  const [isDragging, setIsDragging] = useState(false);
+
   const sidebarActive = useSelector((state: State) => state.sidebar.isActive);
   const currentDirectoryPath = useSelector(
     (state: State) => state.currentDirectory.currentDirectoryPath,
   );
   const isEditing = useSelector((state: State) => state.workspace.isEditing);
-  const containerRef = useRef<HTMLButtonElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -67,10 +75,10 @@ function Sidebar() {
 
       if (containerRef.current) {
         const interactiveElements: HTMLButtonElement[] = Array.from(
-          containerRef.current.querySelectorAll('button'),
+          containerRef.current.querySelectorAll('.note'),
         );
 
-        if (e.key === 'j') {
+        if (e.key === 'j' || e.key === 'ArrowDown') {
           e.preventDefault();
           const currentIndex = interactiveElements.indexOf(
             document.activeElement as HTMLButtonElement,
@@ -81,7 +89,7 @@ function Sidebar() {
               : currentIndex + 1;
           if (interactiveElements[nextIndex])
             interactiveElements[nextIndex].focus();
-        } else if (e.key === 'k') {
+        } else if (e.key === 'k' || e.key === 'ArrowUp') {
           e.preventDefault();
           const currentIndex = interactiveElements.indexOf(
             document.activeElement as HTMLButtonElement,
@@ -120,17 +128,32 @@ function Sidebar() {
         interactiveZoneWasHovered={() => setInteractiveZoneWasHovered(true)}
       />
 
-      <StyledSidebar
-        onMouseLeave={handleMouseLeave}
-        style={{ width: sidebarActive ? 280 : 0 }}
-      >
-        <SidebarTabHeader />
-        <Flex className="container" ref={containerRef}>
-          {directoryFiles.map((dir: Directory | File) => (
-            <SidebarItem key={dir.name} item={dir} />
-          ))}
-        </Flex>
-      </StyledSidebar>
+      <div onMouseLeave={handleMouseLeave}>
+        <StyledSidebar
+          as={motion.div}
+          style={{ width: sidebarActive ? sidebarWidth : 0 }}
+          animate={{ width: sidebarActive ? sidebarWidth : 0 }}
+          transition={{ duration: !isDragging ? 0.2 : 0, ease: 'circInOut' }}
+        >
+          <SidebarTabHeader />
+          <div className="container">
+            <div className="sidebar-content" ref={containerRef}>
+              {directoryFiles.map((dir: Directory | File) => (
+                <SidebarItem key={dir.name} item={dir} />
+              ))}
+            </div>
+          </div>
+        </StyledSidebar>
+      </div>
+
+      {sidebarActive && (
+        <SidebarDraggableZone
+          sidebarWidth={sidebarWidth}
+          setSidebarWidth={setSidebarWidth}
+          isDragging={isDragging}
+          setIsDragging={setIsDragging}
+        />
+      )}
     </>
   );
 }

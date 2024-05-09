@@ -5,7 +5,8 @@ const initialState = {
 };
 
 const sidebarSlice = createSlice({
-  name: 'sidebarActive',
+  // name: 'sidebarActive',
+  name: 'sidebar',
   initialState,
   reducers: {
     toggleSidebar: (state) => {

@@ -2,26 +2,30 @@ import styled from 'styled-components';
 
 const StyledWorkspace = styled.div`
   width: 100%;
+  min-height: calc(100vh - 44px); /* 44px is the height of the sidebar */
+  background: ${(props) => props.theme.background.primary};
+  border-top-left-radius: 10px;
 
   .cm-editor {
     width: 100%;
-    min-height: 100%;
-    background: ${(props) => props.theme.backgroundColor};
-    color: ${(props) => props.theme.color};
+    min-height: calc(100vh - 44px);
+    background: ${(props) => props.theme.background.primary};
+    color: ${(props) => props.theme.text.primary};
   }
 
   .cm-editor * {
-    font-family: sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans',
+      Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
   }
 
   .cm-focused .cm-selectionBackground,
   ::selection {
     /* background: rgba(0, 0, 0, 0.4) !important; */
-    background: ${(props) => props.theme.borderColor} !important;
+    background: ${(props) => props.theme.border.primary} !important;
   }
 
   .cm-selectionMatch {
-    background: ${(props) => props.theme.borderColor} !important;
+    background: ${(props) => props.theme.border.primary} !important;
   }
 
   .cm-gutters {
@@ -29,8 +33,8 @@ const StyledWorkspace = styled.div`
   }
 
   .cm-gutter {
-    background: ${(props) => props.theme.backgroundColor};
-    color: ${(props) => props.theme.color};
+    background: ${(props) => props.theme.background.primary};
+    color: ${(props) => props.theme.text.primary};
   }
 
   .cm-gutterElement {
@@ -42,30 +46,31 @@ const StyledWorkspace = styled.div`
   }
 
   .cm-focused .cm-cursor {
-    border-left-color: ${(props) => props.theme.color};
+    border-left-color: ${(props) => props.theme.text.primary};
   }
 
   .cm-activeLine,
   .cm-activeLineGutter {
-    background: rgba(0, 0, 0, 0.1);
+    /* background: ${(props) => props.theme.border.secondary}; */
+    background: rgba(0, 0, 0, 0);
   }
 
   .md-editor-preview {
     width: 100%;
     height: 100%;
-    background: ${(props) => props.theme.backgroundColor};
-    color: ${(props) => props.theme.color};
+    background: ${(props) => props.theme.background.primary};
+    color: ${(props) => props.theme.text.primary};
   }
 
   .md-editor-preview * {
-    background: ${(props) => props.theme.backgroundColor};
-    color: ${(props) => props.theme.color};
+    background: ${(props) => props.theme.background.primary};
+    color: ${(props) => props.theme.text.primary};
   }
 
   .tab-list {
     width: 100%;
-    background-color: ${(props) => props.theme.backgroundColor};
-    border-bottom: 2px solid ${(props) => props.theme.borderColor};
+    background-color: ${(props) => props.theme.background.primary};
+    border-bottom: 2px solid ${(props) => props.theme.border.primary};
     position: fixed;
     top: 0;
     left: 0;

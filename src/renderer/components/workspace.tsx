@@ -4,11 +4,10 @@ import { addTab } from '../store/reducers/tab-bar';
 import useVimConfig from '../utils/use-vim-config';
 
 import TextEditor from './text-editor';
+import CommandMenu from './command-menu';
 
 import StyledWorkspace from './styles/workspace.styled';
 import { State } from '../types/state';
-
-// TODO: Establish communication between the TextEditor's vim and the layout
 
 function Workspace() {
   const tabs = useSelector((state: State) => state.tabBar.tabs);
@@ -42,6 +41,7 @@ function Workspace() {
 
   return (
     <StyledWorkspace>
+      <CommandMenu />
       {tabs.map((tab, index) => (
         <div
           key={tab.basename}
