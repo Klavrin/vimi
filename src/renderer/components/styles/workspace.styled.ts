@@ -2,8 +2,9 @@ import styled from 'styled-components';
 
 const StyledWorkspace = styled.div`
   width: 100%;
-  border-left: 1px solid ${(props) => props.theme.borderColor};
+  min-height: calc(100vh - 44px); /* 44px is the height of the sidebar */
   background: ${(props) => props.theme.backgroundPrimary};
+  border-top-left-radius: 10px;
 
   .cm-editor {
     width: 100%;

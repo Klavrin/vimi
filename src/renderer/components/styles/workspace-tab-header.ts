@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const StyledWorkspaceTabHeader = styled.div`
   height: 44px;
-  border-bottom: 1px solid ${(props) => props.theme.borderColor};
+  /* border-bottom: 1px solid ${(props) => props.theme.borderColor}; */
   user-select: none;
   background: ${(props) => props.theme.backgroundSecondary};
   padding-inline: 1rem;
