@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Command } from 'cmdk';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaMagnifyingGlass, FaRegFile } from 'react-icons/fa6';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import { setActiveTabIndex } from '../store/reducers/tab-bar';
 
@@ -32,45 +32,49 @@ function CommandMenu() {
   };
 
   return (
-    <Command.Dialog
-      open={open}
-      onOpenChange={setOpen}
-      label="Command Menu"
-      loop
-    >
-      <StyledCommandMenu
-        onClick={() => setOpen(false)}
-        as={motion.div}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.15 }}
-      >
-        <div className="container">
-          <div className="input-field">
-            <FaMagnifyingGlass className="magnifying-glass" />
-            <Command.Input placeholder="Search files" />
-          </div>
+    <AnimatePresence>
+      {open && (
+        <Command.Dialog
+          open={open}
+          onOpenChange={setOpen}
+          label="Command Menu"
+          loop
+        >
+          <StyledCommandMenu
+            onClick={() => setOpen(false)}
+            as={motion.div}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+          >
+            <div className="container">
+              <div className="input-field">
+                <FaMagnifyingGlass className="magnifying-glass" />
+                <Command.Input placeholder="Search files" />
+              </div>
 
-          <Command.List>
-            <Command.Empty className="command-item">
-              No results found.
-            </Command.Empty>
+              <Command.List>
+                <Command.Empty className="command-item">
+                  No results found.
+                </Command.Empty>
 
-            {tabs.map((tab, index) => (
-              <Command.Item
-                key={tab.basename}
-                className="command-item"
-                onSelect={() => handleCommandItemSelect(index)}
-              >
-                <FaRegFile />
-                {tab.basename}
-              </Command.Item>
-            ))}
-          </Command.List>
-        </div>
-      </StyledCommandMenu>
-    </Command.Dialog>
+                {tabs.map((tab, index) => (
+                  <Command.Item
+                    key={tab.basename}
+                    className="command-item"
+                    onSelect={() => handleCommandItemSelect(index)}
+                  >
+                    <FaRegFile />
+                    {tab.basename}
+                  </Command.Item>
+                ))}
+              </Command.List>
+            </div>
+          </StyledCommandMenu>
+        </Command.Dialog>
+      )}
+    </AnimatePresence>
   );
 }
 
