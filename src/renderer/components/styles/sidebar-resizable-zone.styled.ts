@@ -10,12 +10,12 @@ const StyledSidebarResizableZone = styled.div`
   z-index: 99;
 
   &:hover {
-    background: ${(props) => props.theme.secondary};
+    background: ${(props) => props.theme.text.secondary};
   }
 
   &:active {
-    /* background: ${(props) => props.theme.secondary}; */
-    background: #aa4a44;
+    /* background: #aa4a44; */
+    background: ${(props) => props.theme.red[700]};
   }
 `;
 

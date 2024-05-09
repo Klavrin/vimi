@@ -30,7 +30,7 @@ const StyledSidebar = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    outline-color: ${(props) => props.theme.secondary};
+    outline-color: ${(props) => props.theme.text.secondary};
     outline-width: 1px;
     white-space: nowrap;
     overflow: hidden;

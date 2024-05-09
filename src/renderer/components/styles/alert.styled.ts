@@ -5,8 +5,9 @@ const StyledAlert = styled.div`
   max-width: calc(100% - 4rem);
   padding: 1rem;
   margin-right: 2rem;
-  background: ${(props) => props.theme.backgroundSecondary};
-  border: 1px solid ${(props) => props.theme.secondary};
+  background: ${(props) => props.theme.background.secondary};
+  /* border: 1px solid ${(props) => props.theme.borderColor}; */
+  border: 1px solid ${(props) => props.theme.border.primary};
   border-radius: 10px;
   z-index: 99;
 

@@ -4,7 +4,7 @@ const StyledWorkspaceTabHeader = styled.div`
   height: 44px;
   /* border-bottom: 1px solid ${(props) => props.theme.borderColor}; */
   user-select: none;
-  background: ${(props) => props.theme.backgroundSecondary};
+  background: ${(props) => props.theme.background.secondary};
   padding-inline: 1rem;
   overflow: scroll;
 
@@ -20,7 +20,12 @@ const StyledWorkspaceTabHeader = styled.div`
     opacity: 0.8;
 
     &:hover {
-      background: ${(props) => props.theme.secondary};
+      background: ${(props) => props.theme.text.secondary};
+    }
+
+    .icon {
+      min-width: 20px;
+      color: ${(props) => props.theme.text.primary};
     }
   }
 
@@ -62,6 +67,11 @@ const StyledWorkspaceTabHeader = styled.div`
       outline: none;
       min-width: 20px;
     }
+  }
+
+  .active {
+    border: 1px solid ${(props) => props.theme.border.secondary};
+    background: ${(props) => props.theme.background.primary};
   }
 `;
 

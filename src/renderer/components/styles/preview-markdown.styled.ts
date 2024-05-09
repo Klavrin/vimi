@@ -11,8 +11,8 @@ const StyledPreviewMarkdown = styled.div`
   -webkit-text-size-adjust: 100%;
   margin: 0;
   /* color: #e6edf3; */
-  color: ${(props) => props.theme.primary};
-  background-color: ${(props) => props.theme.backgroundPrimary};
+  color: ${(props) => props.theme.text.primary};
+  background-color: ${(props) => props.theme.background.primary};
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans',
     Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
   font-size: 16px;

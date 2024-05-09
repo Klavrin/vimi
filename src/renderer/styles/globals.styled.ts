@@ -17,8 +17,8 @@ const GlobalStyles = createGlobalStyle`
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans',
     Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
 
-    background-color: ${(props) => props.theme.backgroundSecondary};
-    color: ${(props) => props.theme.color};
+    background-color: ${(props) => props.theme.background.secondary};
+    color: ${(props) => props.theme.text.primary};
   }
 
   img,

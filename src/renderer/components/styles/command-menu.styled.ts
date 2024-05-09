@@ -17,8 +17,8 @@ const StyledCommandMenu = styled.div`
 
   .container {
     width: 60%;
-    color: ${(props) => props.theme.primary};
-    border: 1px solid ${(props) => props.theme.secondary};
+    color: ${(props) => props.theme.text.primary};
+    border: 1px solid ${(props) => props.theme.text.secondary};
     border-radius: 10px;
 
     @media only screen and (max-width: 1248px) {
@@ -27,19 +27,19 @@ const StyledCommandMenu = styled.div`
   }
 
   .input-field {
-    background: ${(props) => props.theme.backgroundSecondary};
+    background: ${(props) => props.theme.background.secondary};
     padding-inline: 1rem;
     padding-block: 0.7rem;
     border-radius: 10px 10px 0 0;
     width: 100%;
-    border-bottom: 1px solid ${(props) => props.theme.secondary};
+    border-bottom: 1px solid ${(props) => props.theme.text.secondary};
 
     display: flex;
     align-items: center;
     gap: 8px;
 
     & .magnifying-glass {
-      color: ${(props) => props.theme.primary};
+      color: ${(props) => props.theme.text.primary};
     }
   }
 
@@ -47,6 +47,7 @@ const StyledCommandMenu = styled.div`
     background: none;
     outline: none;
     border: none;
+    color: ${(props) => props.theme.text.primary};
   }
 
   .command-item {
@@ -55,19 +56,19 @@ const StyledCommandMenu = styled.div`
     gap: 8px;
 
     text-align: start;
-    background: ${(props) => props.theme.backgroundSecondary};
+    background: ${(props) => props.theme.background.secondary};
     padding-inline: 1rem;
     padding-block: 0.6rem;
 
     & .separator {
       height: 1px;
-      background-color: ${(props) => props.theme.secondary};
+      background-color: ${(props) => props.theme.text.secondary};
       margin-block: 0.5rem;
     }
 
     &[data-selected='true'] {
       outline-width: 1px;
-      outline-color: ${(props) => props.theme.primary};
+      outline-color: ${(props) => props.theme.text.primary};
       outline-style: solid;
     }
 

@@ -13,7 +13,6 @@ import { setSidebarValue } from '../store/reducers/sidebar-active';
 import Tooltip from './tooltip';
 
 import StyledWorkspaceTabHeader from './styles/workspace-tab-header';
-import darkTheme from '../styles/themes/dark';
 import { State } from '../types/state';
 
 function WorkspaceTabHeader() {
@@ -51,14 +50,12 @@ function WorkspaceTabHeader() {
               onFocus={() => null}
               onClick={() => dispatch(setSidebarValue(true))}
             >
-              <PiSidebarFill size={20} style={{ minWidth: 20 }} />
+              <PiSidebarFill size={20} className="icon" />
             </button>
             <Tooltip
               innerText="Expand"
               visible={iconHovered}
-              style={{
-                transform: 'translate(-12px, 30px)',
-              }}
+              style={{ transform: 'translate(-12px, 30px)' }}
             />
           </>
         )}
@@ -66,22 +63,12 @@ function WorkspaceTabHeader() {
         {tabs.map((tab, index) => (
           <div
             key={tab.basename}
-            className="workspace-tab"
+            className={`workspace-tab ${index === activeTab ? 'active' : ''}`}
             onClick={() => dispatch(setActiveTabIndex(index))}
             role="button"
             tabIndex={index}
             onKeyDown={(e) => handleKeyDown(e, index)}
-            style={{
-              background:
-                index === activeTab
-                  ? darkTheme.backgroundPrimary
-                  : darkTheme.backgroundSecondary,
-              border:
-                index === activeTab
-                  ? `1px solid ${darkTheme.borderColor}`
-                  : '1px solid transparent',
-              opacity: index === activeTab ? 1 : 0.6,
-            }}
+            style={{ opacity: index === activeTab ? 1 : 0.6 }}
           >
             <p className="title">{tab.basename}</p>
             <div

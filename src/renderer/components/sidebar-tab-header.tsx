@@ -29,7 +29,7 @@ function SidebarTabHeader() {
         onMouseLeave={() => setIconHovered(false)}
         onFocus={() => null}
       >
-        <PiSidebarFill size={20} />
+        <PiSidebarFill size={20} className="icon" />
       </button>
     </StyledSidebarTabHeader>
   );

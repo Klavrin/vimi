@@ -18,7 +18,11 @@ const StyledSidebarTabHeader = styled.div`
   }
 
   button:hover {
-    background: ${(props) => props.theme.secondary};
+    background: ${(props) => props.theme.text.secondary};
+  }
+
+  .icon {
+    color: ${(props) => props.theme.text.primary};
   }
 `;
 

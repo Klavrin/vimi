@@ -35,10 +35,11 @@ function SidebarResizableZone({
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isDragging]);
+  }, [isDragging, setIsDragging, setSidebarWidth, sidebarWidth]);
 
   const handleMouseDown = () => {
     setIsDragging(true);
+    document.body.style.userSelect = 'none';
   };
 
   return (
