@@ -1,5 +1,5 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import Main from './components/main';
+import Main from './components/Main';
 import MainPage from './pages/main-page';
 import SettingsPage from './pages/settings-page';
 

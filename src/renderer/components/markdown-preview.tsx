@@ -13,42 +13,34 @@ type MarkdownPreviewProps = {
   previewMode: boolean;
 };
 
-type Production = { Fragment: any; jsx: any; jsxs: any };
-const production = { Fragment: prod.Fragment, jsx: prod.jsx, jsxs: prod.jsxs };
+type Production = {
+  Fragment: typeof Fragment;
+  jsx: any;
+  jsxs: any;
+};
+const production: Production = {
+  Fragment: prod.Fragment,
+  jsx: prod.jsx,
+  jsxs: prod.jsxs,
+};
 
 function MarkdownPreview({ innerText, previewMode }: MarkdownPreviewProps) {
   const [md, setMd] = useState(createElement(Fragment));
-  const [timeoutId, setTimeoutId] = useState<any>(null);
 
   useEffect(() => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-      setTimeoutId(null);
-    }
+    const handler = setTimeout(() => {
+      const processor: any = unified()
+        .use(remarkParse)
+        .use(remarkRehype)
+        .use(rehypeStringify)
+        .use(rehypeReact, production)
+        .processSync(innerText);
 
-    const timeout = setTimeout(() => {
-      (() => {
-        (async () => {
-          const processor: any = unified()
-            .use(remarkParse)
-            .use(remarkRehype)
-            .use(rehypeStringify)
-            .use(rehypeReact, production as Production)
-            .processSync(innerText);
+      setMd(processor.result);
+    }, 500);
 
-          setMd(processor.result);
-        })();
-      })();
-    }, 400);
-
-    setTimeoutId(timeout);
-
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, [innerText]); // ?
+    return () => clearTimeout(handler);
+  }, [innerText]);
 
   return (
     <StyledPreviewMarkdown style={{ display: previewMode ? 'block' : 'none' }}>
