@@ -6,6 +6,8 @@ import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
 import rehypeReact from 'rehype-react';
 
+import useDebounce from '../utils/use-debounce';
+
 import StyledPreviewMarkdown from './styles/preview-markdown.styled';
 
 type MarkdownPreviewProps = {
@@ -26,21 +28,17 @@ const production: Production = {
 
 function MarkdownPreview({ innerText, previewMode }: MarkdownPreviewProps) {
   const [md, setMd] = useState(createElement(Fragment));
+  const debouncedValue = useDebounce(innerText, 400);
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      const processor: any = unified()
-        .use(remarkParse)
-        .use(remarkRehype)
-        .use(rehypeStringify)
-        .use(rehypeReact, production)
-        .processSync(innerText);
-
-      setMd(processor.result);
-    }, 500);
-
-    return () => clearTimeout(handler);
-  }, [innerText]);
+    const processor: any = unified()
+      .use(remarkParse)
+      .use(remarkRehype)
+      .use(rehypeStringify)
+      .use(rehypeReact, production)
+      .processSync(innerText);
+    setMd(processor.result);
+  }, [debouncedValue]);
 
   return (
     <StyledPreviewMarkdown style={{ display: previewMode ? 'block' : 'none' }}>
