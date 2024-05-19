@@ -9,6 +9,7 @@ type MarkdownEditorProps = {
   markdownEditorRefs: any;
   index: number;
   previewMode: boolean;
+  setEditorContent: (value: string) => void;
 };
 
 function MarkdownEditor({
@@ -16,8 +17,11 @@ function MarkdownEditor({
   markdownEditorRefs,
   index,
   previewMode,
+  setEditorContent,
 }: MarkdownEditorProps) {
-  const [refContainer, editorView] = useCodemiror(value);
+  const [refContainer, editorView] = useCodemiror(value, (state: any) => {
+    setEditorContent(state.doc.toString());
+  });
   const dispatch = useDispatch();
 
   useEffect(() => {

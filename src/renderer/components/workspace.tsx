@@ -17,7 +17,7 @@ function Workspace() {
   const dispatch = useDispatch();
   useVimConfig();
 
-  console.log(markdownEditorRefs);
+  // console.log(markdownEditorRefs);
 
   useEffect(() => {
     window.electron.ipcRenderer.on('fileContents', (file: any) => {

@@ -56,10 +56,11 @@ function TextEditor({
   return (
     <>
       <MarkdownEditor
-        index={index}
-        markdownEditorRefs={markdownEditorRefs}
         value={editorContent}
+        setEditorContent={setEditorContent}
         previewMode={previewMode}
+        markdownEditorRefs={markdownEditorRefs}
+        index={index}
       />
       <MarkdownPreview previewMode={previewMode} innerText={editorContent} />
 
