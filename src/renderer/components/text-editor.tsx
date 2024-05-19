@@ -1,35 +1,29 @@
 import { useState, useEffect } from 'react';
-import MarkdownEditor, { MarkdownEditorRef } from '@uiw/react-markdown-editor';
 import { useDispatch } from 'react-redux';
-import { vim } from '@replit/codemirror-vim';
-import { EditorView } from '@codemirror/view';
 import { FaEye } from 'react-icons/fa6';
 import { togglePreviewMode, setPreviewMode } from '../store/reducers/tab-bar';
 
-import { setIsEditing } from '../store/reducers/workspace';
-
+import MarkdownEditor from './markdown-editor';
 import MarkdownPreview from './markdown-preview';
 
 type TextEditorProps = {
   contents: string;
-  handleTextEditorRef: (index: number, ref: MarkdownEditorRef) => void;
   index: number;
-  textEditorRefs: any;
+  markdownEditorRefs: any;
   previewMode: boolean;
 };
 
 function TextEditor({
   contents,
-  handleTextEditorRef,
   index,
-  textEditorRefs,
+  markdownEditorRefs,
   previewMode,
 }: TextEditorProps) {
   const [editorContent, setEditorContent] = useState(contents);
   const [spacePressed, setSpacePressed] = useState(false);
   const dispatch = useDispatch();
 
-  // Use vim mappings in the preview mode
+  // Use vim mappings in preview mode
   useEffect(() => {
     const handleKeyDown = (e: any) => {
       if (!previewMode) return;
@@ -40,7 +34,7 @@ function TextEditor({
         setSpacePressed(false);
         dispatch(setPreviewMode(false));
         setTimeout(() => {
-          textEditorRefs.current[index].editor.current.view.focus();
+          markdownEditorRefs.current[index].focus();
         });
         document.removeEventListener('keydown', handleKeyDown);
       }
@@ -54,7 +48,7 @@ function TextEditor({
     dispatch(togglePreviewMode());
     if (previewMode) {
       setTimeout(() => {
-        textEditorRefs.current[index].editor.current.view.focus();
+        markdownEditorRefs.current[index].focus();
       });
     }
   };
@@ -62,18 +56,10 @@ function TextEditor({
   return (
     <>
       <MarkdownEditor
-        // @ts-ignore
-        ref={(ref) => handleTextEditorRef(index, ref)}
-        className="editor"
-        style={{ display: !previewMode ? 'block' : 'none' }}
+        index={index}
+        markdownEditorRefs={markdownEditorRefs}
         value={editorContent}
-        onChange={(data: string) => setEditorContent(data)}
-        hideToolbar={false}
-        enablePreview={false}
-        editable={!previewMode}
-        extensions={[vim(), EditorView.lineWrapping]}
-        onFocus={() => dispatch(setIsEditing(true))}
-        onBlur={() => dispatch(setIsEditing(false))}
+        previewMode={previewMode}
       />
       <MarkdownPreview previewMode={previewMode} innerText={editorContent} />
 

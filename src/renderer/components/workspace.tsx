@@ -13,8 +13,11 @@ function Workspace() {
   const tabs = useSelector((state: State) => state.tabBar.tabs);
   const activeTab = useSelector((state: State) => state.tabBar.activeTabIndex);
   const textEditorRefs = useRef(Array(tabs.length).fill(null));
+  const markdownEditorRefs = useRef(Array(tabs.length).fill(null));
   const dispatch = useDispatch();
   useVimConfig();
+
+  console.log(markdownEditorRefs);
 
   useEffect(() => {
     window.electron.ipcRenderer.on('fileContents', (file: any) => {
@@ -30,14 +33,10 @@ function Workspace() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (textEditorRefs.current[activeTab])
-      if (textEditorRefs.current[activeTab].editor.current.view)
-        textEditorRefs.current[activeTab].editor.current.view.focus();
+    if (markdownEditorRefs.current[activeTab]) {
+      markdownEditorRefs.current[activeTab].focus();
+    }
   }, [activeTab]);
-
-  const handleTextEditorRef = (index: any, ref: any) => {
-    textEditorRefs.current[index] = ref;
-  };
 
   return (
     <StyledWorkspace>
@@ -49,9 +48,9 @@ function Workspace() {
         >
           <TextEditor
             contents={tab.contents}
-            handleTextEditorRef={handleTextEditorRef}
             index={index}
             textEditorRefs={textEditorRefs}
+            markdownEditorRefs={markdownEditorRefs}
             previewMode={tab.previewMode}
           />
         </div>

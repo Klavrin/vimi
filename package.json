@@ -97,6 +97,12 @@
     }
   },
   "dependencies": {
+    "@codemirror/commands": "^6.5.0",
+    "@codemirror/gutter": "^0.19.9",
+    "@codemirror/history": "^0.19.2",
+    "@codemirror/lang-javascript": "^6.2.2",
+    "@codemirror/language": "^6.10.1",
+    "@codemirror/state": "^6.4.1",
     "@codemirror/view": "^6.26.1",
     "@reduxjs/toolkit": "^2.2.2",
     "@replit/codemirror-vim": "^6.2.1",
