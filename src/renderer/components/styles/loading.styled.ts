@@ -8,6 +8,7 @@ const StyledLoading = styled.div`
 
   h1 {
     color: ${(props) => props.theme.text.primary};
+    font-size: 10em;
   }
 `;
 
