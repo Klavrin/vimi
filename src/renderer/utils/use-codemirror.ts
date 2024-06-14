@@ -21,6 +21,7 @@ const customSyntaxHighlighting = HighlightStyle.define([
     tag: tags.heading1,
     fontSize: '1.8em',
     fontWeight: 'bold',
+    lineHeight: '30px',
   },
   {
     tag: tags.heading2,
@@ -74,7 +75,7 @@ function useCodemiror(doc: string, onChange?: onChangeProps) {
         vim(),
         keymap.of([...defaultKeymap, ...historyKeymap]),
         history(),
-        lineNumbers(),
+        // lineNumbers(),
         indentOnInput(),
         bracketMatching(),
         // javascript(),

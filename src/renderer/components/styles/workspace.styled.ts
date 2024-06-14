@@ -14,8 +14,9 @@ const StyledWorkspace = styled.div`
   }
 
   .cm-editor * {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans',
-      Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans',
+      Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji'; */
+    font-family: 'Roboto Mono', monospace;
   }
 
   .cm-focused .cm-selectionBackground,
