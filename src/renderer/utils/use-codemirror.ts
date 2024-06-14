@@ -84,6 +84,7 @@ function useCodemiror(doc: string, onChange?: onChangeProps) {
           codeLanguages: languages,
         }),
         syntaxHighlighting(customSyntaxHighlighting),
+        // customTheme,
         EditorView.lineWrapping,
         EditorView.updateListener.of((update) => {
           if (update.changes) {

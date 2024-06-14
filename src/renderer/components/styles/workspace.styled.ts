@@ -47,13 +47,18 @@ const StyledWorkspace = styled.div`
   }
 
   .cm-focused .cm-cursor {
-    border-left-color: ${(props) => props.theme.text.primary};
+    /* border-left-color: ${(props) => props.theme.text.primary}; */
+    border-right-color: red !important;
   }
 
   .cm-activeLine,
   .cm-activeLineGutter {
     /* background: ${(props) => props.theme.border.secondary}; */
     background: rgba(0, 0, 0, 0);
+  }
+
+  .cm-content {
+    caret-color: ${(props) => props.theme.text.primary};
   }
 
   .md-editor-preview {

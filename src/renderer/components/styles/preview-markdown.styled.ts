@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 
 const StyledPreviewMarkdown = styled.div`
-  /*dark*/
-
   .hljs {
     display: block;
     padding: 0.5em;
@@ -175,11 +173,10 @@ const StyledPreviewMarkdown = styled.div`
     box-sizing: content-box;
     overflow: hidden;
     background: transparent;
-    border-bottom: 1px solid #21262d;
-    height: 0.25em;
+    height: 0.15em;
     padding: 0;
     margin: 24px 0;
-    background-color: #30363d;
+    background: ${(props) => props.theme.text.secondary};
     border: 0;
   }
 
