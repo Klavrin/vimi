@@ -18,7 +18,8 @@ const StyledPreviewMarkdown = styled.div`
     color: #007acc;
   }
   .hljs-attribute,
-  .hljs-meta {
+  .hljs-meta,
+  .hljs-built_in {
     color: #f08d49;
   }
   .hljs-number,

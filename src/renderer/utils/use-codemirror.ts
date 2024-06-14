@@ -58,6 +58,67 @@ const customSyntaxHighlighting = HighlightStyle.define([
     fontWeight: 'bold',
     color: '#F5761A',
   },
+  {
+    tag: [
+      // tags.name,
+      // tags.deleted,
+      // tags.character,
+      tags.propertyName,
+      tags.attributeName,
+      // tags.macroName,
+    ],
+    color: '#4078f2',
+  },
+  {
+    tag: [tags.comment, tags.string],
+    color: '#50a14f',
+  },
+  {
+    tag: tags.keyword,
+    color: '#007acc',
+  },
+  {
+    tag: tags.typeName,
+    color: '#f08d49',
+  },
+
+  // { tag: tags.keyword, color: 'violet' },
+  // {
+  //   tag: [tags.name, tags.deleted, tags.character, tags.propertyName, tags.macroName],
+  //   color: 'red', // this is for the thing
+  // },
+  // { tag: [tags.function(tags.variableName), tags.labelName], color: 'red' },
+  // { tag: [tags.color, tags.constant(tags.name), tags.standard(tags.name)], color: 'whyskey' },
+  // { tag: [tags.definition(tags.name), tags.separator], color: 'blue' },
+  // {
+  //   tag: [
+  //     tags.typeName,
+  //     tags.className,
+  //     tags.number,
+  //     tags.changed,
+  //     tags.annotation,
+  //     tags.modifier,
+  //     tags.self,
+  //     tags.namespace,
+  //   ],
+  //   color: 'tomato',
+  // },
+  // {
+  //   tag: [
+  //     tags.operator,
+  //     tags.operatorKeyword,
+  //     tags.url,
+  //     tags.escape,
+  //     tags.regexp,
+  //     tags.link,
+  //     tags.special(tags.string),
+  //   ],
+  //   color: 'cyan',
+  // },
+  // { tag: [tags.meta, tags.comment], color: 'brown' },
+  // { tag: [tags.atom, tags.bool, tags.special(tags.variableName)], color: 'lightblue' },
+  // { tag: [tags.processingInstruction, tags.string, tags.inserted], color: 'green' },
+  // { tag: tags.invalid, color: 'invalid' },
 ]);
 
 type onChangeProps = (value: EditorState) => void;
