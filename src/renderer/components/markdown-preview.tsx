@@ -5,6 +5,7 @@ import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
 import rehypeReact from 'rehype-react';
+import rehypeHighlight from 'rehype-highlight';
 
 import useDebounce from '../utils/use-debounce';
 
@@ -34,6 +35,7 @@ function MarkdownPreview({ innerText, previewMode }: MarkdownPreviewProps) {
     const processor: any = unified()
       .use(remarkParse)
       .use(remarkRehype)
+      .use(rehypeHighlight)
       .use(rehypeStringify)
       .use(rehypeReact, production)
       .processSync(innerText);
