@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { EditorState } from '@codemirror/state';
-import { EditorView, keymap } from '@codemirror/view';
+import { EditorView, keymap, drawSelection } from '@codemirror/view';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import {
   indentOnInput,
@@ -88,16 +88,14 @@ function useCodemiror(doc: string, onChange?: onChangeProps) {
         vim(),
         keymap.of([...defaultKeymap, ...historyKeymap]),
         history(),
-        // lineNumbers(),
         indentOnInput(),
         bracketMatching(),
-        // javascript(),
+        syntaxHighlighting(customSyntaxHighlighting),
+        drawSelection(),
         markdown({
           base: markdownLanguage,
           codeLanguages: languages,
         }),
-        syntaxHighlighting(customSyntaxHighlighting),
-        // customTheme,
         EditorView.lineWrapping,
         EditorView.updateListener.of((update) => {
           if (update.changes) {

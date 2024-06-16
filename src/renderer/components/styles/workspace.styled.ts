@@ -14,15 +14,16 @@ const StyledWorkspace = styled.div`
   }
 
   .cm-editor * {
-    /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans',
-      Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji'; */
     font-family: 'Roboto Mono', monospace;
   }
 
   .cm-focused .cm-selectionBackground,
   ::selection {
-    /* background: rgba(0, 0, 0, 0.4) !important; */
     background: ${(props) => props.theme.border.primary} !important;
+  }
+
+  .cm-selection {
+    background-color: red;
   }
 
   .cm-selectionMatch {
