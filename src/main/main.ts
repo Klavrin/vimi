@@ -1,9 +1,10 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 import fs from 'fs-extra';
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import pe from 'pluggable-electron/main';
 
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
@@ -149,6 +150,19 @@ app.on('window-all-closed', () => {
 app
   .whenReady()
   .then(() => {
+    pe.init({
+      confirmInstall: async (plugins) => {
+        const answer = await dialog.showMessageBox({
+          message: `Are you sure you want to install the plugins ${plugins.join(
+            ', ',
+          )}`,
+          buttons: ['OK', 'Cancel'],
+          cancelId: 1,
+        });
+        return answer.response === 0;
+      },
+    });
+
     createWindow();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
