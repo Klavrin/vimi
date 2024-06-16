@@ -71,6 +71,10 @@ const customSyntaxHighlighting = HighlightStyle.define([
     tag: tags.propertyName,
     class: 'cm-property',
   },
+  {
+    tag: tags.string,
+    class: 'cm-string',
+  },
 ]);
 
 type onChangeProps = (value: EditorState) => void;
