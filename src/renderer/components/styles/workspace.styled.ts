@@ -61,9 +61,19 @@ const StyledWorkspace = styled.div`
     caret-color: ${(props) => props.theme.text.primary};
   }
 
+  .cm-fat-cursor {
+    position: absolute;
+    background: ${(props) => props.theme.background.primary};
+    filter: invert();
+  }
+
+  .cm-editor:not(.cm-focused) .cm-fat-cursor {
+    background: none;
+    outline: solid 1px ${(props) => props.theme.background.primary};
+    color: transparent !important;
+  }
+
   .md-editor-preview {
-    width: 100%;
-    height: 100%;
     background: ${(props) => props.theme.background.primary};
     color: ${(props) => props.theme.text.primary};
   }
