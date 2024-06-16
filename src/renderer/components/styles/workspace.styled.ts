@@ -14,14 +14,16 @@ const StyledWorkspace = styled.div`
   }
 
   .cm-editor * {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans',
-      Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    font-family: 'Roboto Mono', monospace;
   }
 
   .cm-focused .cm-selectionBackground,
   ::selection {
-    /* background: rgba(0, 0, 0, 0.4) !important; */
     background: ${(props) => props.theme.border.primary} !important;
+  }
+
+  .cm-selection {
+    background-color: red;
   }
 
   .cm-selectionMatch {
@@ -46,7 +48,8 @@ const StyledWorkspace = styled.div`
   }
 
   .cm-focused .cm-cursor {
-    border-left-color: ${(props) => props.theme.text.primary};
+    /* border-left-color: ${(props) => props.theme.text.primary}; */
+    border-right-color: red !important;
   }
 
   .cm-activeLine,
@@ -55,9 +58,23 @@ const StyledWorkspace = styled.div`
     background: rgba(0, 0, 0, 0);
   }
 
+  .cm-content {
+    caret-color: ${(props) => props.theme.text.primary};
+  }
+
+  .cm-fat-cursor {
+    position: absolute;
+    background: ${(props) => props.theme.background.primary};
+    filter: invert();
+  }
+
+  .cm-editor:not(.cm-focused) .cm-fat-cursor {
+    background: none;
+    outline: solid 1px ${(props) => props.theme.background.primary};
+    color: transparent !important;
+  }
+
   .md-editor-preview {
-    width: 100%;
-    height: 100%;
     background: ${(props) => props.theme.background.primary};
     color: ${(props) => props.theme.text.primary};
   }

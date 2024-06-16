@@ -300,11 +300,13 @@ const lightTheme = {
   },
   background: {
     primary: colors.white[0],
-    secondary: colors.coolGray[200],
+    // secondary: colors.coolGray[200],
+    secondary: '#f7f7f5',
   },
   border: {
     primary: colors.black[300],
-    secondary: colors.black[100],
+    // secondary: colors.black[100],
+    secondary: '#f1f1ef',
   },
 };
 

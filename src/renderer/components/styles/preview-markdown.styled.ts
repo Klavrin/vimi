@@ -1,7 +1,48 @@
 import styled from 'styled-components';
 
 const StyledPreviewMarkdown = styled.div`
-  /*dark*/
+  .hljs {
+    display: block;
+    padding: 0.5em;
+    color: ${(props) => props.theme.text.primary};
+  }
+  .hljs-comment,
+  .hljs-quote {
+    color: ${(props) => props.theme.lime[700]};
+    font-style: italic;
+  }
+  .hljs-keyword,
+  .hljs-selector-tag,
+  .hljs-literal,
+  .hljs-name {
+    color: #007acc;
+  }
+  .hljs-attribute,
+  .hljs-meta,
+  .hljs-built_in {
+    color: #f08d49;
+  }
+  .hljs-number,
+  .hljs-regexp,
+  .hljs-link {
+    color: #d36363;
+  }
+  .hljs-string,
+  .hljs-symbol,
+  .hljs-bullet,
+  .hljs-subst {
+    color: #50a14f;
+  }
+  .hljs-title,
+  .hljs-section {
+    color: #4078f2;
+  }
+  .hljs-emphasis {
+    font-style: italic;
+  }
+  .hljs-strong {
+    font-weight: bold;
+  }
 
   max-width: 100%;
   min-height: calc(100vh - 44px);
@@ -133,11 +174,10 @@ const StyledPreviewMarkdown = styled.div`
     box-sizing: content-box;
     overflow: hidden;
     background: transparent;
-    border-bottom: 1px solid #21262d;
-    height: 0.25em;
+    height: 0.15em;
     padding: 0;
     margin: 24px 0;
-    background-color: #30363d;
+    background: ${(props) => props.theme.text.secondary};
     border: 0;
   }
 
@@ -774,8 +814,8 @@ const StyledPreviewMarkdown = styled.div`
     overflow: auto;
     font-size: 85%;
     line-height: 1.45;
-    color: #e6edf3;
-    background-color: #161b22;
+    color: ${(props) => props.theme.text.primary};
+    background-color: ${(props) => props.theme.background.secondary};
     border-radius: 6px;
   }
 
