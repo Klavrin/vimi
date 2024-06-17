@@ -8,6 +8,7 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import readDirectory from './utils/read-directory';
+import { ensureAndRunInitFile } from './utils/ensure-init-file';
 
 class AppUpdater {
   constructor() {
@@ -17,6 +18,7 @@ class AppUpdater {
   }
 }
 
+const initFilePath = path.join(app.getPath('userData'), 'init.js');
 let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
@@ -149,6 +151,7 @@ app.on('window-all-closed', () => {
 app
   .whenReady()
   .then(() => {
+    ensureAndRunInitFile(initFilePath);
     createWindow();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
