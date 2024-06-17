@@ -7,7 +7,7 @@ import log from 'electron-log';
 
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import readDirectory from './utils/read-directory';
+import { readDirectory } from './utils/read-directory';
 import { ensureAndRunInitFile } from './utils/ensure-init-file';
 
 class AppUpdater {
@@ -18,6 +18,7 @@ class AppUpdater {
   }
 }
 
+// is this a good place to place this constant?
 const initFilePath = path.join(app.getPath('userData'), 'init.js');
 let mainWindow: BrowserWindow | null = null;
 

@@ -5,7 +5,12 @@ type DirItems =
   | { name: string; path: string; type: 'file' }
   | { name: string; children: DirItems[]; type: 'directory' };
 
-const readDirectory = (dirPath: string) => {
+/**
+ * Reads a directory recursively, checking for files with the `.md` extension.
+ * @param {string} dirPath
+ * @returns {array}
+ */
+export const readDirectory = (dirPath: string) => {
   const items: DirItems[] = [];
 
   fs.readdirSync(dirPath).forEach((item: string) => {
@@ -31,5 +36,3 @@ const readDirectory = (dirPath: string) => {
 
   return items;
 };
-
-export default readDirectory;
