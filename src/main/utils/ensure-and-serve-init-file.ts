@@ -17,11 +17,11 @@ export const ensureAndServeInitFile = (initFilePath: string) => {
       );
     }
 
-    // Server to renderer process
+    // Serve to renderer process
     ipcMain.on('getInitFilePath', (event) => {
       event.reply('sendInitFilePath', initFilePath);
     });
-    console.log('init.js loaded and executed successfully.');
+    console.log('init.js loaded successfully.');
   } catch (err) {
     console.error('Failed to load init.js', err);
   }

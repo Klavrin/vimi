@@ -9,6 +9,7 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import { readDirectory } from './utils/read-directory';
 import { ensureAndServeInitFile } from './utils/ensure-and-serve-init-file';
+import { killServer, startServer } from './server';
 
 class AppUpdater {
   constructor() {
@@ -144,6 +145,7 @@ app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
   if (process.platform !== 'darwin') {
+    killServer();
     app.quit();
   }
 });
@@ -151,6 +153,7 @@ app.on('window-all-closed', () => {
 app
   .whenReady()
   .then(() => {
+    startServer(initFilePath);
     ensureAndServeInitFile(initFilePath);
     createWindow();
     app.on('activate', () => {
