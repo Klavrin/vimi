@@ -1,10 +1,11 @@
 import fs from 'fs';
+import { ipcMain } from 'electron';
 
 /**
- * Ensures init.js exists, or creates it if it doesn't, and executes it.
- * @param initFilePath
+ * Ensures init.js exists, or creates it if it doesn't, then serves it to the renderer process.
+ * @param {string} initFilePath
  */
-export const ensureAndRunInitFile = (initFilePath: string) => {
+export const ensureAndServeInitFile = (initFilePath: string) => {
   try {
     if (!fs.existsSync(initFilePath)) {
       fs.writeFile(
@@ -16,7 +17,10 @@ export const ensureAndRunInitFile = (initFilePath: string) => {
       );
     }
 
-    require(initFilePath);
+    // Server to renderer process
+    ipcMain.on('getInitFilePath', (event) => {
+      event.reply('sendInitFilePath', initFilePath);
+    });
     console.log('init.js loaded and executed successfully.');
   } catch (err) {
     console.error('Failed to load init.js', err);
