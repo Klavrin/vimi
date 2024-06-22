@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isActive: false,
@@ -12,7 +12,7 @@ const sidebarSlice = createSlice({
     toggleSidebar: (state) => {
       state.isActive = !state.isActive;
     },
-    setSidebarValue: (state, action) => {
+    setSidebarValue: (state, action: PayloadAction<boolean>) => {
       state.isActive = action.payload;
     },
   },
