@@ -27,3 +27,6 @@ npm-debug.log.*
 *.css.d.ts
 *.sass.d.ts
 *.scss.d.ts
+
+# Ignore init.js in src/renderer/config
+src/renderer/config/init.js
