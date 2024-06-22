@@ -8,8 +8,12 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import { readDirectory } from './utils/read-directory';
-import { ensureAndServeInitFile } from './utils/ensure-and-serve-init-file';
+import { ensureInitFile } from './utils/ensure-init-file';
 import { killServer, startServer } from './server';
+import {
+  readAndWriteInitFile,
+  emptyInitFile,
+} from './utils/read-and-write-init-file';
 
 class AppUpdater {
   constructor() {
@@ -141,11 +145,22 @@ ipcMain.on('readFile', (event, filePath) => {
   });
 });
 
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+  emptyInitFile();
+  // killServer();
+  process.exit(1);
+});
+
+app.on('quit', () => {
+  emptyInitFile();
+  // killServer();
+});
+
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
   if (process.platform !== 'darwin') {
-    killServer();
     app.quit();
   }
 });
@@ -153,8 +168,9 @@ app.on('window-all-closed', () => {
 app
   .whenReady()
   .then(() => {
-    startServer(initFilePath);
-    ensureAndServeInitFile(initFilePath);
+    // startServer(initFilePath);
+    ensureInitFile(initFilePath);
+    readAndWriteInitFile(initFilePath);
     createWindow();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
