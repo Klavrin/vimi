@@ -5,6 +5,8 @@ import store from './store';
 import App from './App';
 import ThemeProvider from './components/theme-provider';
 
+import './config/theme.css';
+
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
 

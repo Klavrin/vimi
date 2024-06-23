@@ -8,12 +8,16 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import { readDirectory } from './utils/read-directory';
-import { ensureInitFile } from './utils/ensure-init-file';
+import { ensureInitFile, ensureThemeFile } from './utils/ensure-file';
 import { killServer, startServer } from './server';
 import {
   readAndWriteInitFile,
   emptyInitFile,
 } from './utils/read-and-write-init-file';
+import {
+  readAndWriteThemeFile,
+  emptyThemeFile,
+} from './utils/read-and-write-theme-file';
 
 class AppUpdater {
   constructor() {
@@ -24,6 +28,7 @@ class AppUpdater {
 }
 
 const initFilePath = path.join(app.getPath('userData'), 'init.js');
+const themeFilePath = path.join(app.getPath('userData'), 'theme.css');
 let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
@@ -148,12 +153,14 @@ ipcMain.on('readFile', (event, filePath) => {
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
   emptyInitFile();
+  emptyThemeFile();
   // killServer();
   process.exit(1);
 });
 
 app.on('quit', () => {
   emptyInitFile();
+  emptyThemeFile();
   // killServer();
 });
 
@@ -170,7 +177,9 @@ app
   .then(() => {
     // startServer(initFilePath);
     ensureInitFile(initFilePath);
+    ensureThemeFile(themeFilePath);
     readAndWriteInitFile(initFilePath);
+    readAndWriteThemeFile(themeFilePath);
     createWindow();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
