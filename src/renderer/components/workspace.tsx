@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 import { addTab } from '../store/reducers/tab-bar';
 import useVimConfig from '../utils/use-vim-config';
 
@@ -17,16 +18,18 @@ function Workspace() {
   const dispatch = useDispatch();
   useVimConfig();
 
-  // console.log(markdownEditorRefs);
-
   useEffect(() => {
     window.electron.ipcRenderer.on('fileContents', (file: any) => {
+      console.log('i just ran');
       dispatch(
         addTab({
+          _id: uuidv4(),
           path: file.path,
-          basename: file.basename,
+          title: file.fileName, // temporary
           contents: file.contents,
           previewMode: false,
+          tags: [],
+          pinned: false,
         }),
       );
     });
@@ -43,7 +46,7 @@ function Workspace() {
       <CommandMenu />
       {tabs.map((tab, index) => (
         <div
-          key={tab.basename}
+          key={tab._id}
           style={{ display: index === activeTab ? 'block' : 'none' }}
         >
           <TextEditor

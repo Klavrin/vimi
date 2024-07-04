@@ -62,7 +62,7 @@ function WorkspaceTabHeader() {
 
         {tabs.map((tab, index) => (
           <div
-            key={tab.basename}
+            key={tab.title}
             className={`workspace-tab ${index === activeTab ? 'active' : ''}`}
             onClick={() => dispatch(setActiveTabIndex(index))}
             role="button"
@@ -70,12 +70,16 @@ function WorkspaceTabHeader() {
             onKeyDown={(e) => handleKeyDown(e, index)}
             style={{ opacity: index === activeTab ? 1 : 0.6 }}
           >
-            <p className="title">{tab.basename}</p>
+            <p className="title">{tab.title}</p>
             <div
               className="icon"
               style={{ display: index === activeTab ? 'block' : 'none' }}
             >
-              <FaX onClick={() => dispatch(removeTab(index))} />
+              <FaX
+                onClick={() => {
+                  dispatch(removeTab(index));
+                }}
+              />
             </div>
           </div>
         ))}

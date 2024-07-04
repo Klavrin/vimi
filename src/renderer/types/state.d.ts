@@ -16,10 +16,13 @@ export type State = {
   tabBar: {
     activeTabIndex: number;
     tabs: {
+      _id: string;
       path: string;
-      basename: string;
+      title: string;
       contents: string;
       previewMode: boolean;
+      tags: string[];
+      pinned: boolean;
     }[];
   };
 };

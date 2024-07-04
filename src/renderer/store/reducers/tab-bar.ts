@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PiNewspaperThin } from 'react-icons/pi';
 
 const initialState = {
   activeTabIndex: 0,
@@ -26,10 +27,13 @@ const tabBarSlice = createSlice({
     addTab: (
       state,
       action: PayloadAction<{
+        _id: string;
         path: string;
-        basename: string;
+        title: string;
         contents: string;
         previewMode: boolean;
+        tags: string[];
+        pinned: boolean;
       }>,
     ) => {
       state.tabs.push(action.payload);

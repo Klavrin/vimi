@@ -132,7 +132,7 @@ ipcMain.on('readFile', (event, filePath) => {
 
     event.reply('fileContents', {
       path: filePath,
-      basename: path.basename(filePath),
+      fileName: path.parse(path.basename(filePath)).name,
       contents: data,
     });
   });
