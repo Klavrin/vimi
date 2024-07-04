@@ -18,7 +18,8 @@ const StyledSidebar = styled.div`
     gap: 10px;
   }
 
-  .note {
+  .note,
+  .sidebar-item {
     width: 100%;
     border: none;
     border-radius: 5px;

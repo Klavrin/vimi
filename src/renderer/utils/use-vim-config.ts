@@ -18,7 +18,7 @@ function useVimConfig() {
     // Toggle sidebar
     Vim.defineAction('toggleSidebar', () => {
       dispatch(setSidebarValue(true));
-      const sidebar: any = document.querySelector('.note');
+      const sidebar: any = document.querySelector('.focusable');
       sidebar?.focus();
     });
     Vim.mapCommand('<Space>e', 'action', 'toggleSidebar');

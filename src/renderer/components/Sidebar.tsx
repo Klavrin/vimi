@@ -75,7 +75,7 @@ function Sidebar() {
 
       if (containerRef.current) {
         const interactiveElements: HTMLButtonElement[] = Array.from(
-          containerRef.current.querySelectorAll('.note'),
+          containerRef.current.querySelectorAll('.focusable'),
         );
 
         if (e.key === 'j' || e.key === 'ArrowDown') {
@@ -89,6 +89,8 @@ function Sidebar() {
               : currentIndex + 1;
           if (interactiveElements[nextIndex])
             interactiveElements[nextIndex].focus();
+          else if (interactiveElements[nextIndex].tabIndex !== 0)
+            interactiveElements[nextIndex + 1].focus();
         } else if (e.key === 'k' || e.key === 'ArrowUp') {
           e.preventDefault();
           const currentIndex = interactiveElements.indexOf(

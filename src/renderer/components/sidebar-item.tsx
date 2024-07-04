@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FaRegFolderClosed, FaRegFolderOpen, FaRegFile } from 'react-icons/fa6';
@@ -23,6 +23,7 @@ type SidebarItemProps = {
 function SidebarItem({ item }: SidebarItemProps) {
   const [dirFilesVisible, setDirFilesVisible] = useState(false);
   const tabs = useSelector((state: State) => state.tabBar.tabs);
+  const parentSidebarItem = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
   const handleDirectoryClick = (
@@ -59,7 +60,7 @@ function SidebarItem({ item }: SidebarItemProps) {
         role="button"
         tabIndex={0}
         key={item.path}
-        className="note"
+        className="focusable sidebar-item"
         onClick={(event) => handleFileClick(item.path, event)}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') handleFileClick(item.path, e);
@@ -72,13 +73,26 @@ function SidebarItem({ item }: SidebarItemProps) {
       </div>
     );
 
+  useEffect(() => {
+    const focusableChildItems =
+      parentSidebarItem.current?.querySelectorAll('.focusable');
+
+    // Do not focus directory child items when the directory is closing
+    if (!dirFilesVisible) {
+      focusableChildItems?.forEach((item) => {
+        item.classList.remove('focusable');
+      });
+    }
+  }, [dirFilesVisible]);
+
   // Render directory
   return (
     <div
       role="button"
       tabIndex={0}
       key={item.name}
-      className="note"
+      ref={parentSidebarItem}
+      className="focusable sidebar-item"
       onClick={handleDirectoryClick}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') handleDirectoryClick(e);
