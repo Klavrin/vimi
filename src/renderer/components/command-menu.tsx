@@ -61,12 +61,12 @@ function CommandMenu() {
 
                 {tabs.map((tab, index) => (
                   <Command.Item
-                    key={tab.basename}
+                    key={tab._id}
                     className="command-item"
                     onSelect={() => handleCommandItemSelect(index)}
                   >
                     <FaRegFile />
-                    {tab.basename}
+                    {tab.title}
                   </Command.Item>
                 ))}
               </Command.List>
