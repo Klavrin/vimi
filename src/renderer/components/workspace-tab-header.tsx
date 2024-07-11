@@ -5,10 +5,11 @@ import { PiSidebarFill } from 'react-icons/pi';
 
 import {
   setActiveTabIndex,
-  removeTab,
   removeCurrentTab,
+  decrementActiveTabIndex,
 } from '../store/reducers/tab-bar';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
+import store from '../store';
 
 import Tooltip from './tooltip';
 
@@ -22,13 +23,32 @@ function WorkspaceTabHeader() {
   const [iconHovered, setIconHovered] = useState(false);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    window.electron.ipcRenderer.on('closeCurrentTab', () => {
-      dispatch(removeCurrentTab());
-    });
-  }, [dispatch]);
+  console.log('activeTab', activeTab);
 
-  const handleKeyDown = (e: any, index: number) => {
+  useEffect(() => {
+    const handleIpcCloseCurrentTab = () => {
+      const state = store.getState();
+      const currentActiveTab = state.tabBar.activeTabIndex;
+      const currentTabs = state.tabBar.tabs;
+
+      dispatch(removeCurrentTab());
+      if (currentActiveTab === currentTabs.length - 1) {
+        dispatch(decrementActiveTabIndex());
+      }
+    };
+
+    window.electron.ipcRenderer.on('closeCurrentTab', handleIpcCloseCurrentTab);
+  }, []);
+
+  const handleCloseTab = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    dispatch(removeCurrentTab());
+    if (activeTab === tabs.length - 1) {
+      dispatch(decrementActiveTabIndex());
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
     if (e.key === 'Enter') {
       dispatch(setActiveTabIndex(index));
     }
@@ -74,12 +94,9 @@ function WorkspaceTabHeader() {
             <div
               className="icon"
               style={{ display: index === activeTab ? 'block' : 'none' }}
+              onClick={handleCloseTab}
             >
-              <FaX
-                onClick={() => {
-                  dispatch(removeTab(index));
-                }}
-              />
+              <FaX />
             </div>
           </div>
         ))}

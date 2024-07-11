@@ -1,5 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PiNewspaperThin } from 'react-icons/pi';
+
+interface NoteType {
+  _id: string;
+  path: string;
+  title: string;
+  contents: string;
+  previewMode: boolean;
+  tags: string[];
+  pinned: boolean;
+}
 
 const initialState = {
   activeTabIndex: 0,
@@ -39,8 +48,11 @@ const tabBarSlice = createSlice({
       state.tabs.push(action.payload);
       localStorage.setItem('tabs', JSON.stringify(state.tabs));
     },
-    removeTab: (state, action: PayloadAction<number>) => {
-      state.tabs.splice(action.payload, 1);
+    removeTab: (state, action: PayloadAction<string>) => {
+      const newTabsArray = state.tabs.filter(
+        (tab: NoteType) => tab._id !== action.payload,
+      );
+      state.tabs = newTabsArray;
       localStorage.setItem('tabs', JSON.stringify(state.tabs));
     },
     removeCurrentTab: (state) => {

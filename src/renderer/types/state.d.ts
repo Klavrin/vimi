@@ -12,6 +12,7 @@ export type State = {
   };
   workspace: {
     isEditing: boolean;
+    allowFocusing: boolean;
   };
   tabBar: {
     activeTabIndex: number;
