@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import { addTab, setActiveTabIndex } from '../store/reducers/tab-bar';
+import { addTab } from '../store/reducers/tab-bar';
 import { setAllowFocusing } from '../store/reducers/workspace';
 import useVimConfig from '../utils/use-vim-config';
 

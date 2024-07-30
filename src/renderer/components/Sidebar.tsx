@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
 import { setFileTree } from '../store/reducers/workspace';
+import { sortFileTree } from '../utils/sort-file-tree';
 
 import InteractiveZone from './sidebar-interactive-zone';
 import SidebarItem from './sidebar-item';
@@ -70,7 +71,7 @@ function Sidebar() {
       );
       window.electron.ipcRenderer.on('dirPathContents', (dirItems: any) => {
         setDirectoryFiles(dirItems);
-        dispatch(setFileTree(dirItems));
+        dispatch(setFileTree(sortFileTree(dirItems)));
       });
     }
   }, [currentDirectoryPath]);
