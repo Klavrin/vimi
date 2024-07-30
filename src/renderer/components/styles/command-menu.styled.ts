@@ -48,17 +48,52 @@ const StyledCommandMenu = styled.div`
     outline: none;
     border: none;
     color: ${(props) => props.theme.text.primary};
+    width: 100%;
   }
 
   .command-item {
     display: flex;
     align-items: center;
-    gap: 8px;
 
-    text-align: start;
     background: ${(props) => props.theme.background.secondary};
     padding-inline: 1rem;
     padding-block: 0.6rem;
+
+    .sidebar-item-directory-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 10px;
+    }
+
+    .command-item-tag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-inline: 0.3rem;
+      background-color: ${(props) => props.theme.white[100]};
+      font-size: 0.8rem;
+      border-radius: 4px;
+    }
+
+    .command-item-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    @media screen and (max-width: 500px) {
+      .command-item-tag {
+        font-size: 0.6rem;
+      }
+
+      .command-item-title {
+        font-size: 0.8rem;
+        line-height: 1rem;
+      }
+    }
 
     & .separator {
       height: 1px;
@@ -75,6 +110,12 @@ const StyledCommandMenu = styled.div`
     &:last-child {
       border-radius: 0 0 10px 10px;
     }
+  }
+
+  hr {
+    height: 0.35rem;
+    border: none;
+    background-color: ${(props) => props.theme.white[100]};
   }
 `;
 

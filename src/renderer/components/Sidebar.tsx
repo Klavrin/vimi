@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
+import { setFileTree } from '../store/reducers/workspace';
 
 import InteractiveZone from './sidebar-interactive-zone';
 import SidebarItem from './sidebar-item';
@@ -15,24 +16,28 @@ import { State } from '../types/state';
 type SidebarItemProps = {
   item:
     | {
+        _id: string;
         name: string;
         path: string;
         type: 'file';
       }
     | {
+        _id: string;
         name: string;
         children: SidebarItemProps[];
         type: 'directory';
       };
 };
 
-type File = {
+export type File = {
+  _id: string;
   name: string;
   path: string;
   type: 'file';
 };
 
-type Directory = {
+export type Directory = {
+  _id: string;
   name: string;
   children: SidebarItemProps[];
   type: 'directory';
@@ -65,6 +70,7 @@ function Sidebar() {
       );
       window.electron.ipcRenderer.on('dirPathContents', (dirItems: any) => {
         setDirectoryFiles(dirItems);
+        dispatch(setFileTree(dirItems));
       });
     }
   }, [currentDirectoryPath]);

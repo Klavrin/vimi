@@ -23,8 +23,6 @@ function WorkspaceTabHeader() {
   const [iconHovered, setIconHovered] = useState(false);
   const dispatch = useDispatch();
 
-  console.log('activeTab', activeTab);
-
   useEffect(() => {
     const handleIpcCloseCurrentTab = () => {
       const state = store.getState();

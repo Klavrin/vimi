@@ -6,16 +6,32 @@ import { setActiveTabIndex } from '../store/reducers/tab-bar';
 
 import { State } from '../types/state';
 
+export type FileTree =
+  | {
+      _id: string;
+      name: string;
+      path: string;
+      type: 'file';
+    }
+  | {
+      _id: string;
+      name: string;
+      children: FileTree[];
+      type: 'directory';
+    };
+
 type SidebarItemProps = {
   item:
     | {
+        _id: string;
         name: string;
         path: string;
         type: 'file';
       }
     | {
+        _id: string;
         name: string;
-        children: SidebarItemProps[];
+        children: FileTree[];
         type: 'directory';
       };
 };

@@ -1,9 +1,10 @@
 import fs from 'fs-extra';
 import path from 'path';
+import { type V4Options, v4 as uuidv4 } from 'uuid';
 
 type DirItems =
-  | { name: string; path: string; type: 'file' }
-  | { name: string; children: DirItems[]; type: 'directory' };
+  | { _id: string; name: string; path: string; type: 'file' }
+  | { _id: string; name: string; children: DirItems[]; type: 'directory' };
 
 const readDirectory = (dirPath: string) => {
   const items: DirItems[] = [];
@@ -19,9 +20,15 @@ const readDirectory = (dirPath: string) => {
       const extension = path.extname(fullPath);
       if (extension !== '.md') return;
 
-      items.push({ name: basename, path: fullPath, type: 'file' });
+      items.push({
+        _id: uuidv4(),
+        name: basename,
+        path: fullPath,
+        type: 'file',
+      });
     } else if (stat.isDirectory()) {
       items.push({
+        _id: uuidv4(),
         name: basename,
         children: readDirectory(fullPath),
         type: 'directory',

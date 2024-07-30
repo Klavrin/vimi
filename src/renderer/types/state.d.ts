@@ -1,4 +1,5 @@
 import type { Theme } from './themes';
+import type { FileTree } from '../components/sidebar-item';
 
 export type State = {
   sidebar: {
@@ -11,6 +12,7 @@ export type State = {
     currentDirectoryPath: string;
   };
   workspace: {
+    fileTree: FileTree[];
     isEditing: boolean;
     allowFocusing: boolean;
   };
