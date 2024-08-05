@@ -4,14 +4,14 @@ import type { FileTree } from './sidebar-item';
 
 type CommandMenuItemProps = {
   tab: FileTree;
-  handleCommandItemSelect: any;
+  handleCommandItemClick: any;
   index: number;
   dirName?: string;
 };
 
 function CommandMenuItem({
   tab,
-  handleCommandItemSelect,
+  handleCommandItemClick,
   index,
   dirName,
 }: CommandMenuItemProps) {
@@ -20,7 +20,7 @@ function CommandMenuItem({
       <Command.Item
         key={tab._id}
         className="command-item"
-        onSelect={() => handleCommandItemSelect(tab, index)}
+        onSelect={() => handleCommandItemClick(tab, index)}
       >
         <div className="command-item-title">
           <FaRegFile style={{ minWidth: 15 }} />
@@ -41,7 +41,7 @@ function CommandMenuItem({
           <CommandMenuItem
             key={child.name}
             tab={child}
-            handleCommandItemSelect={handleCommandItemSelect}
+            handleCommandItemClick={handleCommandItemClick}
             index={index}
             dirName={tab.name}
           />
