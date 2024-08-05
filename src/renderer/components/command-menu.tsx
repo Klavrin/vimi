@@ -79,6 +79,7 @@ function CommandMenu() {
     if (!tabExists) {
       window.electron.ipcRenderer.sendMessage('readFile', tab.path);
       dispatch(setActiveTabIndex(tabs.length));
+      setEscapeKeyPressedTimes(0);
     } else {
       dispatch(setActiveTabIndex(index));
     }
