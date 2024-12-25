@@ -1,4 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  addTab as addTabToDB,
+  deleteTab as deleteTabFromDB,
+} from '../../utils/db';
 
 interface NoteType {
   _id: string;
@@ -47,6 +51,7 @@ const tabBarSlice = createSlice({
     ) => {
       state.tabs.push(action.payload);
       localStorage.setItem('tabs', JSON.stringify(state.tabs));
+      addTabToDB(action.payload);
     },
     removeTab: (state, action: PayloadAction<string>) => {
       const newTabsArray = state.tabs.filter(
