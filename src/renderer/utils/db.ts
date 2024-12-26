@@ -63,7 +63,7 @@ export const addTab = (tab: Tab) => {
   });
 };
 
-export const updateTab = (key: string, tab: Tab) => {
+export const updateTab = (tab: Tab) => {
   return new Promise((resolve, reject) => {
     request = indexedDB.open('active-tabs', version);
 
@@ -73,7 +73,8 @@ export const updateTab = (key: string, tab: Tab) => {
       const transaction = db.transaction('active-tabs', 'readwrite');
       const store = transaction.objectStore('active-tabs');
 
-      store.put(tab, key);
+      // store.put(tab, key);
+      store.put(tab);
       resolve(tab);
     };
 

@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   addTab as addTabToDB,
   deleteTab as deleteTabFromDB,
+  updateTab as updateTabInDB,
+  getAllTabs,
 } from '../../utils/db';
 
 interface NoteType {
@@ -59,8 +61,10 @@ const tabBarSlice = createSlice({
       );
       state.tabs = newTabsArray;
       localStorage.setItem('tabs', JSON.stringify(state.tabs));
+      deleteTabFromDB(action.payload);
     },
     removeCurrentTab: (state) => {
+      deleteTabFromDB(state.tabs[state.activeTabIndex]._id);
       state.tabs.splice(state.activeTabIndex, 1);
       localStorage.setItem('tabs', JSON.stringify(state.tabs));
     },
@@ -69,10 +73,16 @@ const tabBarSlice = createSlice({
       state.tabs[state.activeTabIndex].previewMode =
         !state.tabs[state.activeTabIndex].previewMode;
       localStorage.setItem('tabs', JSON.stringify(state.tabs));
+      updateTabInDB(
+        JSON.parse(JSON.stringify(state.tabs[state.activeTabIndex])),
+      );
     },
     setPreviewMode: (state, action: PayloadAction<boolean>) => {
       state.tabs[state.activeTabIndex].previewMode = action.payload;
       localStorage.setItem('tabs', JSON.stringify(state.tabs));
+      updateTabInDB(
+        JSON.parse(JSON.stringify(state.tabs[state.activeTabIndex])),
+      );
     },
   },
 });
