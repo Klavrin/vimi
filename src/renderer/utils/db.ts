@@ -114,10 +114,10 @@ export const deleteTab = (_id: string) => {
 
 export const getAllTabs = () => {
   return new Promise((resolve, reject) => {
-    request = indexedDB.open('active-tabs', version);
+    const req = indexedDB.open('active-tabs', version);
 
-    request.onsuccess = () => {
-      db = request.result;
+    req.onsuccess = () => {
+      db = req.result;
 
       const transaction = db.transaction('active-tabs', 'readwrite');
       const store = transaction.objectStore('active-tabs');

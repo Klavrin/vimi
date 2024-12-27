@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setCurrentDirectoryPath } from '../store/reducers/current-directory';
+import { fetchTabs } from '../store/reducers/tab-bar';
 
 import Alert from './alert';
 
@@ -46,6 +47,10 @@ function Main({ children }: MainProps) {
       },
     );
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchTabs() as any);
+  }, []);
 
   return (
     <StyledMain onDragOver={handleDragOver} onDrop={handleDrop}>
