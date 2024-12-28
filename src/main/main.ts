@@ -138,6 +138,12 @@ ipcMain.on('readFile', (event, filePath) => {
   });
 });
 
+ipcMain.on('renameFile', (event, { oldFileName, newFileName }) => {
+  fs.rename(oldFileName, newFileName, (err) => {
+    if (err) throw err;
+  });
+});
+
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed

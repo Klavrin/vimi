@@ -80,6 +80,9 @@ function SidebarItem({ item }: SidebarItemProps) {
         onClick={(event) => handleFileClick(item.path, event)}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') handleFileClick(item.path, e);
+          else if (e.key === 'r') console.log('rename file');
+          else if (e.key === 'd') console.log('delete file');
+          else if (e.key === 'a') console.log('create new file');
         }}
       >
         <div className="title">
