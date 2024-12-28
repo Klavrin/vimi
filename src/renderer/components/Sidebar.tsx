@@ -112,7 +112,7 @@ function Sidebar() {
               : currentIndex - 1;
           if (interactiveElements[prevIndex])
             interactiveElements[prevIndex].focus();
-        } else if (e.key === '/') {
+        } else if (e.ctrlKey && e.key === 'l') {
           e.preventDefault();
           if (editorRefs[activeTab]) {
             editorRefs[activeTab].focus();
