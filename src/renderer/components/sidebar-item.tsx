@@ -38,9 +38,15 @@ type SidebarItemProps = {
 
 function SidebarItem({ item }: SidebarItemProps) {
   const [dirFilesVisible, setDirFilesVisible] = useState(false);
+  const [isRenaming, setIsRenaming] = useState(false);
+  const [renamedFileValue, setRenamedFileValue] = useState(item.name);
   const tabs = useSelector((state: State) => state.tabBar.tabs);
   const parentSidebarItem = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
+
+  const currentDirectoryPath = useSelector(
+    (state: State) => state.currentDirectory.currentDirectoryPath,
+  );
 
   const handleDirectoryClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.KeyboardEvent,
@@ -69,6 +75,27 @@ function SidebarItem({ item }: SidebarItemProps) {
     window.electron.ipcRenderer.sendMessage('readFile', filePath);
   };
 
+  const handleFileRenaming = (e: React.KeyboardEvent) => {
+    e.preventDefault();
+    setIsRenaming(true);
+  };
+
+  const handleInputKeydown = (e: React.KeyboardEvent, path: string) => {
+    e.stopPropagation();
+    if (e.key === 'Enter') {
+      window.electron.ipcRenderer.sendMessage('renameFile', {
+        filePath: path,
+        newFileName: renamedFileValue,
+      });
+      window.electron.ipcRenderer.sendMessage(
+        'readDirectory',
+        currentDirectoryPath,
+      );
+    } else if (e.key === 'Escape') {
+      setIsRenaming(false);
+    }
+  };
+
   // Render file
   if (item.type === 'file')
     return (
@@ -79,15 +106,28 @@ function SidebarItem({ item }: SidebarItemProps) {
         className="focusable sidebar-item"
         onClick={(event) => handleFileClick(item.path, event)}
         onKeyDown={(e) => {
+          if (isRenaming) return;
           if (e.key === 'Enter' || e.key === ' ') handleFileClick(item.path, e);
-          else if (e.key === 'r') console.log('rename file');
+          else if (e.key === 'r') handleFileRenaming(e);
           else if (e.key === 'd') console.log('delete file');
           else if (e.key === 'a') console.log('create new file');
         }}
       >
         <div className="title">
           <FaRegFile style={{ minWidth: 15 }} />
-          {item.name}
+          {isRenaming ? (
+            <input
+              type="text"
+              className="file-input-renaming"
+              value={renamedFileValue}
+              onClick={(e) => e.stopPropagation()}
+              onChange={(e) => setRenamedFileValue(e.target.value)}
+              onKeyDown={(e) => handleInputKeydown(e, item.path)}
+              autoFocus
+            />
+          ) : (
+            <p>{item.name}</p>
+          )}
         </div>
       </div>
     );

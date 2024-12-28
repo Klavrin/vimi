@@ -59,6 +59,14 @@ const StyledSidebar = styled.div`
     gap: 10px;
     padding-top: 10px;
   }
+
+  .file-input-renaming {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+  }
 `;
 
 export default StyledSidebar;

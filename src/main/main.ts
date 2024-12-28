@@ -138,8 +138,8 @@ ipcMain.on('readFile', (event, filePath) => {
   });
 });
 
-ipcMain.on('renameFile', (event, { oldFileName, newFileName }) => {
-  fs.rename(oldFileName, newFileName, (err) => {
+ipcMain.on('renameFile', (event, { filePath, newFileName }) => {
+  fs.rename(filePath, `${path.dirname(filePath)}/${newFileName}.md`, (err) => {
     if (err) throw err;
   });
 });
