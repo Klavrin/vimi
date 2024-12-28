@@ -138,8 +138,16 @@ ipcMain.on('readFile', (event, filePath) => {
   });
 });
 
-ipcMain.on('renameFile', (event, { filePath, newFileName }) => {
+ipcMain.on('renameFile', (_event, { filePath, newFileName }) => {
   fs.rename(filePath, `${path.dirname(filePath)}/${newFileName}.md`, (err) => {
+    if (err) throw err;
+  });
+});
+
+ipcMain.on('createFile', (_event, { filePath, fileName }) => {
+  // TODO: check if filePath comes from a file or a directory
+
+  fs.createFile(`${path.dirname(filePath)}/${fileName}.md`, (err) => {
     if (err) throw err;
   });
 });

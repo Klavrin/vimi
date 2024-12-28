@@ -11,7 +11,8 @@ export type Channels =
   | 'readFile'
   | 'fileContents'
   | 'closeCurrentTab'
-  | 'renameFile';
+  | 'renameFile'
+  | 'createFile';
 
 const electronHandler = {
   ipcRenderer: {

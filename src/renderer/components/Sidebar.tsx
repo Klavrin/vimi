@@ -26,6 +26,7 @@ type SidebarItemProps = {
         _id: string;
         name: string;
         children: SidebarItemProps[];
+        path: string;
         type: 'directory';
       };
 };

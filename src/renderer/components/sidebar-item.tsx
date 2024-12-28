@@ -17,6 +17,7 @@ export type FileTree =
       _id: string;
       name: string;
       children: FileTree[];
+      path: string;
       type: 'directory';
     };
 
@@ -32,6 +33,7 @@ type SidebarItemProps = {
         _id: string;
         name: string;
         children: FileTree[];
+        path: string;
         type: 'directory';
       };
 };
@@ -41,12 +43,11 @@ function SidebarItem({ item }: SidebarItemProps) {
   const [isRenaming, setIsRenaming] = useState(false);
   const [renamedFileValue, setRenamedFileValue] = useState(item.name);
   const tabs = useSelector((state: State) => state.tabBar.tabs);
-  const parentSidebarItem = useRef<HTMLDivElement>(null);
-  const dispatch = useDispatch();
-
   const currentDirectoryPath = useSelector(
     (state: State) => state.currentDirectory.currentDirectoryPath,
   );
+  const parentSidebarItem = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch();
 
   const handleDirectoryClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.KeyboardEvent,
@@ -110,7 +111,6 @@ function SidebarItem({ item }: SidebarItemProps) {
           if (e.key === 'Enter' || e.key === ' ') handleFileClick(item.path, e);
           else if (e.key === 'r') handleFileRenaming(e);
           else if (e.key === 'd') console.log('delete file');
-          else if (e.key === 'a') console.log('create new file');
         }}
       >
         <div className="title">
@@ -155,6 +155,7 @@ function SidebarItem({ item }: SidebarItemProps) {
       onClick={handleDirectoryClick}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') handleDirectoryClick(e);
+        else if (e.key === 'a') console.log(item.path);
       }}
     >
       <div className="title">
