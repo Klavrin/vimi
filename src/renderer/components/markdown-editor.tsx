@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setIsEditing } from '../store/reducers/workspace';
+import { setIsEditing, setEditorRefs } from '../store/reducers/workspace';
 import useCodemiror from '../utils/use-codemirror';
 
 type MarkdownEditorProps = {
@@ -25,7 +25,11 @@ function MarkdownEditor({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (editorView) markdownEditorRefs.current[index] = editorView;
+    if (editorView) {
+      markdownEditorRefs.current[index] = editorView;
+      // Store the markdownEditorRef in the redux store so that it can be used in the sidebar component (you store the refs in redux and also have a useRef, this is not optimal, might potentially be improved later)
+      dispatch(setEditorRefs(Array.from(markdownEditorRefs.current))); // might be causing the double rendering bug
+    }
   }, [editorView, index, markdownEditorRefs]);
 
   return (

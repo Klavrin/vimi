@@ -61,6 +61,9 @@ function Sidebar() {
   );
   const isEditing = useSelector((state: State) => state.workspace.isEditing);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const editorRefs = useSelector((state: State) => state.workspace.editorRefs);
+  const activeTab = useSelector((state: State) => state.tabBar.activeTabIndex);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -109,6 +112,11 @@ function Sidebar() {
               : currentIndex - 1;
           if (interactiveElements[prevIndex])
             interactiveElements[prevIndex].focus();
+        } else if (e.ctrlKey && e.key === 'l') {
+          e.preventDefault();
+          if (editorRefs[activeTab]) {
+            editorRefs[activeTab].focus();
+          }
         }
       }
     };
