@@ -13,4 +13,7 @@ export default configureStore({
     workspace,
     tabBar,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false
+  })
 });
