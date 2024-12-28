@@ -15,6 +15,7 @@ export type State = {
     fileTree: FileTree[];
     isEditing: boolean;
     allowFocusing: boolean;
+    editorRefs: any[];
   };
   tabBar: {
     activeTabIndex: number;

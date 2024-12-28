@@ -5,6 +5,7 @@ const initialState = {
   fileTree: [] as FileTree[],
   isEditing: false,
   allowFocusing: true,
+  editorRefs: null,
 };
 
 const workspaceSlice = createSlice({
@@ -23,10 +24,18 @@ const workspaceSlice = createSlice({
     setAllowFocusing: (state, action: PayloadAction<boolean>) => {
       state.allowFocusing = action.payload;
     },
+    setEditorRefs: (state, action) => {
+      state.editorRefs = action.payload;
+    },
   },
 });
 
-export const { setFileTree, toggleIsEditing, setIsEditing, setAllowFocusing } =
-  workspaceSlice.actions;
+export const {
+  setFileTree,
+  toggleIsEditing,
+  setIsEditing,
+  setAllowFocusing,
+  setEditorRefs,
+} = workspaceSlice.actions;
 
 export default workspaceSlice.reducer;
