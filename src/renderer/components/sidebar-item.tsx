@@ -126,6 +126,21 @@ function SidebarItem({ item }: SidebarItemProps) {
     }
   };
 
+  const handleFileDeletion = (filePath: string) => {
+    window.electron.ipcRenderer.sendMessage('showConfirmDialog');
+    window.electron.ipcRenderer.on('showConfirmDialogReply', (isConfirmed) => {
+      if (isConfirmed) {
+        window.electron.ipcRenderer.sendMessage('deleteFile', filePath);
+        setTimeout(() => {
+          window.electron.ipcRenderer.sendMessage(
+            'readDirectory',
+            currentDirectoryPath,
+          );
+        });
+      }
+    });
+  };
+
   // Render file
   if (item.type === 'file')
     return (
@@ -139,7 +154,7 @@ function SidebarItem({ item }: SidebarItemProps) {
           if (isRenaming) return;
           if (e.key === 'Enter' || e.key === ' ') handleFileClick(item.path, e);
           else if (e.key === 'r') handleFileRenaming(e);
-          else if (e.key === 'd') console.log('delete file');
+          else if (e.key === 'd') handleFileDeletion(item.path);
         }}
       >
         <div className="title">

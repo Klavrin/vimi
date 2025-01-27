@@ -1,7 +1,7 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 import fs from 'fs-extra';
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 
@@ -150,6 +150,23 @@ ipcMain.on('createFile', (_event, { filePath, fileName }) => {
   fs.createFile(`${filePath}/${fileName}.md`, (err) => {
     if (err) throw err;
   });
+});
+
+ipcMain.on('deleteFile', (_event, filePath) => {
+  fs.unlink(filePath, (err) => {
+    if (err) throw err;
+  });
+});
+
+ipcMain.on('showConfirmDialog', async (event) => {
+  const res = await dialog.showMessageBox(mainWindow as BrowserWindow, {
+    type: 'question',
+    buttons: ['Yes', 'No'],
+    defaultId: 0,
+    cancelId: 1,
+    message: 'Are you sure you want to delete this file?',
+  });
+  event.reply('showConfirmDialogReply', res.response === 0);
 });
 
 app.on('window-all-closed', () => {

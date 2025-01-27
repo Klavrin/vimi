@@ -12,7 +12,10 @@ export type Channels =
   | 'fileContents'
   | 'closeCurrentTab'
   | 'renameFile'
-  | 'createFile';
+  | 'createFile'
+  | 'deleteFile'
+  | 'showConfirmDialog'
+  | 'showConfirmDialogReply';
 
 const electronHandler = {
   ipcRenderer: {
