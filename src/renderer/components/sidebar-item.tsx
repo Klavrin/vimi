@@ -123,6 +123,8 @@ function SidebarItem({ item }: SidebarItemProps) {
         );
       });
       setIsCreatingFile(false);
+    } else if (e.key === 'Escape') {
+      setIsCreatingFile(false);
     }
   };
 
