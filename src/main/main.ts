@@ -147,7 +147,7 @@ ipcMain.on('renameFile', (_event, { filePath, newFileName }) => {
 ipcMain.on('createFile', (_event, { filePath, fileName }) => {
   // TODO: check if filePath comes from a file or a directory
 
-  fs.createFile(`${path.dirname(filePath)}/${fileName}.md`, (err) => {
+  fs.createFile(`${filePath}/${fileName}.md`, (err) => {
     if (err) throw err;
   });
 });
