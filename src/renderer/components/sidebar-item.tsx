@@ -131,11 +131,13 @@ function SidebarItem({ item }: SidebarItemProps) {
     window.electron.ipcRenderer.on('showConfirmDialogReply', (isConfirmed) => {
       if (isConfirmed) {
         window.electron.ipcRenderer.sendMessage('deleteFile', filePath);
-        setTimeout(() => {
-          window.electron.ipcRenderer.sendMessage(
-            'readDirectory',
-            currentDirectoryPath,
-          );
+        window.electron.ipcRenderer.on('fileSuccessfullyDeleted', () => {
+          setTimeout(() => {
+            window.electron.ipcRenderer.sendMessage(
+              'readDirectory',
+              currentDirectoryPath,
+            );
+          });
         });
       }
     });

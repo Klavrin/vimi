@@ -14,6 +14,7 @@ export type Channels =
   | 'renameFile'
   | 'createFile'
   | 'deleteFile'
+  | 'fileSuccessfullyDeleted'
   | 'showConfirmDialog'
   | 'showConfirmDialogReply';
 

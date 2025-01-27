@@ -152,10 +152,13 @@ ipcMain.on('createFile', (_event, { filePath, fileName }) => {
   });
 });
 
-ipcMain.on('deleteFile', (_event, filePath) => {
-  fs.unlink(filePath, (err) => {
+ipcMain.on('deleteFile', async (event, filePath) => {
+  try {
+    await shell.trashItem(filePath);
+    event.reply('fileSuccessfullyDeleted');
+  } catch (err) {
     if (err) throw err;
-  });
+  }
 });
 
 ipcMain.on('showConfirmDialog', async (event) => {
