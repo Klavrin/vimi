@@ -192,6 +192,26 @@ function SidebarItem({ item }: SidebarItemProps) {
     }
   }, [dirFilesVisible]);
 
+  const handleDirRenaming = (e: React.KeyboardEvent) => {
+    e.preventDefault();
+    setIsRenaming(true);
+  };
+
+  const handleDirInputKeydown = (e: React.KeyboardEvent, path: string) => {
+    e.stopPropagation();
+    if (e.key === 'Enter') {
+      window.electron.ipcRenderer.sendMessage('renameDirectory', {
+        dirPath: path,
+        newDirectoryName: renamedFileValue,
+      });
+      window.electron.ipcRenderer.sendMessage(
+        'readDirectory',
+        currentDirectoryPath,
+      );
+    } else if (e.key === 'Escape') {
+      setIsRenaming(false);
+    }
+  };
   // Render directory
   return (
     <div
@@ -202,8 +222,10 @@ function SidebarItem({ item }: SidebarItemProps) {
       className="focusable sidebar-item"
       onClick={handleDirectoryClick}
       onKeyDown={(e) => {
+        if (isRenaming) return;
         if (e.key === 'Enter' || e.key === ' ') handleDirectoryClick(e);
         else if (e.key === 'a') handleFileCreation(e);
+        else if (e.key === 'r') handleDirRenaming(e);
       }}
     >
       <div className="title">
@@ -212,7 +234,19 @@ function SidebarItem({ item }: SidebarItemProps) {
         ) : (
           <FaRegFolderClosed style={{ minWidth: 15 }} />
         )}
-        <p>{item.name}</p>
+        {isRenaming ? (
+          <input
+            type="text"
+            className="file-input-renaming"
+            value={renamedFileValue}
+            onClick={(e) => e.stopPropagation()}
+            onChange={(e) => setRenamedFileValue(e.target.value)}
+            onKeyDown={(e) => handleDirInputKeydown(e, item.path)}
+            autoFocus
+          />
+        ) : (
+          <p>{item.name}</p>
+        )}
       </div>
 
       <AnimatePresence>

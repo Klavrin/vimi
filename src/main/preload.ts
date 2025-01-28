@@ -16,7 +16,8 @@ export type Channels =
   | 'deleteFile'
   | 'fileSuccessfullyDeleted'
   | 'showConfirmDialog'
-  | 'showConfirmDialogReply';
+  | 'showConfirmDialogReply'
+  | 'renameDirectory';
 
 const electronHandler = {
   ipcRenderer: {
