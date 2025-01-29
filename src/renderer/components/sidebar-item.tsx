@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FaRegFolderClosed, FaRegFolderOpen, FaRegFile } from 'react-icons/fa6';
-import { setActiveTabIndex } from '../store/reducers/tab-bar';
+import { removeTab, setActiveTabIndex } from '../store/reducers/tab-bar';
 
 import { State } from '../types/state';
 
@@ -133,6 +133,7 @@ function SidebarItem({ item }: SidebarItemProps) {
 
   const handleFileDeletion = (
     filePath: string,
+    fileId: string,
     e: React.KeyboardEvent<HTMLDivElement>,
   ) => {
     e.stopPropagation();
@@ -146,6 +147,13 @@ function SidebarItem({ item }: SidebarItemProps) {
               'readDirectory',
               currentDirectoryPath,
             );
+          });
+
+          // Remove the deleted file from the tabs array
+          tabs.some((tab) => {
+            if (tab.path === filePath) {
+              dispatch(removeTab(tab._id));
+            }
           });
         });
       }
@@ -239,7 +247,7 @@ function SidebarItem({ item }: SidebarItemProps) {
           if (isRenaming) return;
           if (e.key === 'Enter' || e.key === ' ') handleFileClick(item.path, e);
           else if (e.key === 'r') handleFileRenaming(e);
-          else if (e.key === 'd') handleFileDeletion(item.path, e);
+          else if (e.key === 'd') handleFileDeletion(item.path, item._id, e);
         }}
       >
         <div className="title">
