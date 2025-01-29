@@ -131,7 +131,11 @@ function SidebarItem({ item }: SidebarItemProps) {
     }
   };
 
-  const handleFileDeletion = (filePath: string) => {
+  const handleFileDeletion = (
+    filePath: string,
+    e: React.KeyboardEvent<HTMLDivElement>,
+  ) => {
+    e.stopPropagation();
     window.electron.ipcRenderer.sendMessage('showConfirmDialog');
     window.electron.ipcRenderer.on('showConfirmDialogReply', (isConfirmed) => {
       if (isConfirmed) {
@@ -147,53 +151,6 @@ function SidebarItem({ item }: SidebarItemProps) {
       }
     });
   };
-
-  // Render file
-  if (item.type === 'file')
-    return (
-      <div
-        role="button"
-        tabIndex={0}
-        key={item.path}
-        className="focusable sidebar-item"
-        onClick={(event) => handleFileClick(item.path, event)}
-        onKeyDown={(e) => {
-          if (isRenaming) return;
-          if (e.key === 'Enter' || e.key === ' ') handleFileClick(item.path, e);
-          else if (e.key === 'r') handleFileRenaming(e);
-          else if (e.key === 'd') handleFileDeletion(item.path);
-        }}
-      >
-        <div className="title">
-          <FaRegFile style={{ minWidth: 15 }} />
-          {isRenaming ? (
-            <input
-              type="text"
-              className="file-input-renaming"
-              value={renamedFileValue}
-              onClick={(e) => e.stopPropagation()}
-              onChange={(e) => setRenamedFileValue(e.target.value)}
-              onKeyDown={(e) => handleInputKeydown(e, item.path)}
-              autoFocus
-            />
-          ) : (
-            <p>{item.name}</p>
-          )}
-        </div>
-      </div>
-    );
-
-  useEffect(() => {
-    const focusableChildItems =
-      parentSidebarItem.current?.querySelectorAll('.focusable');
-
-    // Do not focus directory child items when the directory is closing
-    if (!dirFilesVisible) {
-      focusableChildItems?.forEach((item) => {
-        item.classList.remove('focusable');
-      });
-    }
-  }, [dirFilesVisible]);
 
   const handleDirRenaming = (e: React.KeyboardEvent) => {
     e.preventDefault();
@@ -248,6 +205,74 @@ function SidebarItem({ item }: SidebarItemProps) {
     }
   };
 
+  const handleDirDeletion = (
+    dirPath: string,
+    e: React.KeyboardEvent<HTMLDivElement>,
+  ) => {
+    e.stopPropagation();
+    window.electron.ipcRenderer.sendMessage('showConfirmDialog');
+    window.electron.ipcRenderer.on('showConfirmDialogReply', (isConfirmed) => {
+      if (isConfirmed) {
+        window.electron.ipcRenderer.sendMessage('deleteFile', dirPath);
+        window.electron.ipcRenderer.on('fileSuccessfullyDeleted', () => {
+          setTimeout(() => {
+            window.electron.ipcRenderer.sendMessage(
+              'readDirectory',
+              currentDirectoryPath,
+            );
+          });
+        });
+      }
+    });
+  };
+
+  // Render file
+  if (item.type === 'file')
+    return (
+      <div
+        role="button"
+        tabIndex={0}
+        key={item.path}
+        className="focusable sidebar-item"
+        onClick={(event) => handleFileClick(item.path, event)}
+        onKeyDown={(e) => {
+          if (isRenaming) return;
+          if (e.key === 'Enter' || e.key === ' ') handleFileClick(item.path, e);
+          else if (e.key === 'r') handleFileRenaming(e);
+          else if (e.key === 'd') handleFileDeletion(item.path, e);
+        }}
+      >
+        <div className="title">
+          <FaRegFile style={{ minWidth: 15 }} />
+          {isRenaming ? (
+            <input
+              type="text"
+              className="file-input-renaming"
+              value={renamedFileValue}
+              onClick={(e) => e.stopPropagation()}
+              onChange={(e) => setRenamedFileValue(e.target.value)}
+              onKeyDown={(e) => handleInputKeydown(e, item.path)}
+              autoFocus
+            />
+          ) : (
+            <p>{item.name}</p>
+          )}
+        </div>
+      </div>
+    );
+
+  useEffect(() => {
+    const focusableChildItems =
+      parentSidebarItem.current?.querySelectorAll('.focusable');
+
+    // Do not focus directory child items when the directory is closing
+    if (!dirFilesVisible) {
+      focusableChildItems?.forEach((item) => {
+        item.classList.remove('focusable');
+      });
+    }
+  }, [dirFilesVisible]);
+
   // Render directory
   return (
     <div
@@ -263,6 +288,7 @@ function SidebarItem({ item }: SidebarItemProps) {
         else if (e.key === 'a') handleFileCreation(e);
         else if (e.key === 'r') handleDirRenaming(e);
         else if (e.key === 'D') handleDirCreation(e);
+        else if (e.key === 'd') handleDirDeletion(item.path, e);
       }}
     >
       <div className="title">
@@ -282,10 +308,7 @@ function SidebarItem({ item }: SidebarItemProps) {
             autoFocus
           />
         ) : (
-          <>
-            <p>{item.name}</p>
-            <p>{item.path}</p> {/* temporary */}
-          </>
+          <p>{item.name}</p>
         )}
       </div>
 
