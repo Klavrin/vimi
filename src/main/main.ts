@@ -158,6 +158,12 @@ ipcMain.on('createFile', (_event, { filePath, fileName }) => {
   });
 });
 
+ipcMain.on('createDirectory', (_event, { dirPath, dirName }) => {
+  fs.mkdir(`${dirPath}/${dirName}`, (err) => {
+    if (err) throw err;
+  });
+});
+
 ipcMain.on('deleteFile', async (event, filePath) => {
   try {
     await shell.trashItem(filePath);

@@ -42,6 +42,7 @@ function SidebarItem({ item }: SidebarItemProps) {
   const [dirFilesVisible, setDirFilesVisible] = useState(false);
   const [isRenaming, setIsRenaming] = useState(false);
   const [isCreatingFile, setIsCreatingFile] = useState(false);
+  const [isCreatingDir, setIsCreatingDir] = useState(false);
   const [renamedFileValue, setRenamedFileValue] = useState(item.name);
   const tabs = useSelector((state: State) => state.tabBar.tabs);
   const currentDirectoryPath = useSelector(
@@ -100,6 +101,8 @@ function SidebarItem({ item }: SidebarItemProps) {
 
   const handleFileCreation = (e: React.KeyboardEvent) => {
     e.preventDefault();
+    e.stopPropagation();
+    setDirFilesVisible(true);
     setRenamedFileValue('');
     setIsCreatingFile(true);
   };
@@ -212,6 +215,39 @@ function SidebarItem({ item }: SidebarItemProps) {
       setIsRenaming(false);
     }
   };
+
+  const handleDirCreation = (e: React.KeyboardEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDirFilesVisible(true);
+    setRenamedFileValue('');
+    setIsCreatingDir(true);
+  };
+
+  const handleDirCreationInputKeydown = (
+    e: React.KeyboardEvent,
+    path: string,
+    dirName: string,
+  ) => {
+    e.stopPropagation();
+    if (e.key === 'Enter') {
+      console.log(path);
+      window.electron.ipcRenderer.sendMessage('createDirectory', {
+        dirPath: path,
+        dirName,
+      });
+      setTimeout(() => {
+        window.electron.ipcRenderer.sendMessage(
+          'readDirectory',
+          currentDirectoryPath,
+        );
+      });
+      setIsCreatingDir(false);
+    } else if (e.key === 'Escape') {
+      setIsCreatingDir(false);
+    }
+  };
+
   // Render directory
   return (
     <div
@@ -226,6 +262,7 @@ function SidebarItem({ item }: SidebarItemProps) {
         if (e.key === 'Enter' || e.key === ' ') handleDirectoryClick(e);
         else if (e.key === 'a') handleFileCreation(e);
         else if (e.key === 'r') handleDirRenaming(e);
+        else if (e.key === 'D') handleDirCreation(e);
       }}
     >
       <div className="title">
@@ -245,7 +282,10 @@ function SidebarItem({ item }: SidebarItemProps) {
             autoFocus
           />
         ) : (
-          <p>{item.name}</p>
+          <>
+            <p>{item.name}</p>
+            <p>{item.path}</p> {/* temporary */}
+          </>
         )}
       </div>
 
@@ -262,23 +302,36 @@ function SidebarItem({ item }: SidebarItemProps) {
               {item.children.map((child: any) => (
                 <SidebarItem key={child.name} item={child} />
               ))}
-              {isCreatingFile && (
+              {(isCreatingFile || isCreatingDir) && (
                 <div className="sidebar-item focusable">
                   <div className="title">
-                    <FaRegFile style={{ minWidth: 15 }} />
+                    {isCreatingFile ? (
+                      <FaRegFile style={{ minWidth: 15 }} />
+                    ) : (
+                      <FaRegFolderClosed style={{ minWidth: 15 }} />
+                    )}
                     <input
                       type="text"
                       className="file-input-renaming"
                       value={renamedFileValue}
                       onClick={(e) => e.stopPropagation()}
                       onChange={(e) => setRenamedFileValue(e.target.value)}
-                      onKeyDown={(e) =>
-                        handleFileCreationInputKeydown(
-                          e,
-                          item.path,
-                          renamedFileValue,
-                        )
-                      }
+                      onKeyDown={(e) => {
+                        if (!isCreatingDir) {
+                          console.log(item.path);
+                          handleFileCreationInputKeydown(
+                            e,
+                            item.path,
+                            renamedFileValue,
+                          );
+                        } else {
+                          handleDirCreationInputKeydown(
+                            e,
+                            item.path,
+                            renamedFileValue,
+                          );
+                        }
+                      }}
                       autoFocus
                     />
                   </div>
