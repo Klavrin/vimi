@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FaX } from 'react-icons/fa6';
+import { FaX, FaEye } from 'react-icons/fa6';
 import { PiSidebarFill } from 'react-icons/pi';
 
 import {
@@ -69,7 +69,7 @@ function WorkspaceTabHeader() {
               onClick={() => dispatch(setSidebarValue(true))}
             >
               <PiSidebarFill size={20} className="icon" />
-            </button>
+            </button>{' '}
             <Tooltip
               innerText="Expand"
               visible={iconHovered}
@@ -77,7 +77,6 @@ function WorkspaceTabHeader() {
             />
           </>
         )}
-
         {tabs.map((tab, index) => (
           <div
             key={tab.title}

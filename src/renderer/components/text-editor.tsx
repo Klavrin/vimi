@@ -65,17 +65,18 @@ function TextEditor({
       />
       <MarkdownPreview previewMode={previewMode} innerText={editorContent} />
 
-      <button
-        type="button"
-        onClick={handlePreviewButton}
+      <div
+        className="editor-actions"
         style={{
           position: 'fixed',
           bottom: 20,
           right: 20,
         }}
       >
-        <FaEye size={30} opacity={0.4} />
-      </button>
+        <button type="button" onClick={handlePreviewButton}>
+          <FaEye size={18} opacity={0.4} />
+        </button>
+      </div>
     </>
   );
 }

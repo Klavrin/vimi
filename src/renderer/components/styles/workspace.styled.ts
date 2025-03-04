@@ -95,6 +95,27 @@ const StyledWorkspace = styled.div`
     z-index: 99;
     -webkit-app-region: no-drag;
   }
+
+  .editor-actions {
+    padding: 0.2rem;
+    border: 1px solid ${(props) => props.theme.border.secondary};
+    border-radius: 8px;
+    background: ${(props) => props.theme.background.secondary};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.4;
+    transition: opacity 100ms ease-in-out;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    button {
+      width: 30px;
+      height: 30px;
+    }
+  }
 `;
 
 export default StyledWorkspace;

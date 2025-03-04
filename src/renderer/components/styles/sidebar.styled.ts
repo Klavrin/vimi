@@ -12,7 +12,7 @@ const StyledSidebar = styled.div`
   }
 
   .sidebar-content {
-    height: 94.5%;
+    height: 95%;
     padding: 2px 10px 10px 10px;
     display: flex;
     flex-direction: column;
