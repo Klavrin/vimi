@@ -12,6 +12,7 @@ const StyledSidebar = styled.div`
   }
 
   .sidebar-content {
+    height: 94.5%;
     padding: 2px 10px 10px 10px;
     display: flex;
     flex-direction: column;
@@ -66,6 +67,23 @@ const StyledSidebar = styled.div`
     padding: 0;
     background: none;
     border: none;
+  }
+
+  .sidebar-footer {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding-inline: 10px;
+
+    .settings-icon {
+      padding: 4px;
+      border-radius: 4px;
+      opacity: 0.8;
+
+      &:hover {
+        background: ${(props) => props.theme.text.secondary};
+      }
+    }
   }
 `;
 

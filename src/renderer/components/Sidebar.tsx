@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
 import { setFileTree } from '../store/reducers/workspace';
 import { sortFileTree } from '../utils/sort-file-tree';
+import { IoSettingsOutline } from 'react-icons/io5';
 
 import InteractiveZone from './sidebar-interactive-zone';
 import SidebarItem from './sidebar-item';
@@ -159,6 +160,18 @@ function Sidebar() {
               {directoryFiles.map((dir: Directory | File) => (
                 <SidebarItem key={dir.name} item={dir} />
               ))}
+            </div>
+            <div className="sidebar-footer">
+              <button
+                type="button"
+                className="settings-icon"
+                // onMouseOver={() => setIconHovered(true)}
+                // onMouseLeave={() => setIconHovered(false)}
+                onFocus={() => null}
+                onClick={() => dispatch(setSidebarValue(true))}
+              >
+                <IoSettingsOutline size={22} />
+              </button>
             </div>
           </div>
         </StyledSidebar>
