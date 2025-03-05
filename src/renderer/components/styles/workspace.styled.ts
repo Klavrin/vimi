@@ -115,6 +115,10 @@ const StyledWorkspace = styled.div`
       width: 30px;
       height: 30px;
     }
+
+    .icon {
+      color: ${(props) => props.theme.text.primary};
+    }
   }
 `;
 

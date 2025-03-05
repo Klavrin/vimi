@@ -85,6 +85,10 @@ const StyledSidebar = styled.div`
       }
     }
   }
+
+  .icon {
+    color: ${(props) => props.theme.text.primary};
+  }
 `;
 
 export default StyledSidebar;

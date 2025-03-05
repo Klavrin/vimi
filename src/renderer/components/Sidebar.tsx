@@ -170,7 +170,7 @@ function Sidebar() {
                 onFocus={() => null}
                 onClick={() => dispatch(setSidebarValue(true))}
               >
-                <IoSettingsOutline size={22} />
+                <IoSettingsOutline size={22} className="icon" />
               </button>
             </div>
           </div>

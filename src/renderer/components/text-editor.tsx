@@ -74,7 +74,7 @@ function TextEditor({
         }}
       >
         <button type="button" onClick={handlePreviewButton}>
-          <FaEye size={18} opacity={0.4} />
+          <FaEye size={18} opacity={0.4} className="icon" />
         </button>
       </div>
     </>
