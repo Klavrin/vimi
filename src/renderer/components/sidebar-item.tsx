@@ -324,10 +324,9 @@ function SidebarItem({ item }: SidebarItemProps) {
         {dirFilesVisible && (
           <motion.div
             initial={{ height: 0 }}
-            animate={{ height: '77%' }}
+            animate={{ height: '100%' }}
             exit={{ height: 0 }}
-            // transition={{ duration: 0.25, ease: 'backInOut' }}
-            transition={{ duration: 5, ease: 'backInOut' }}
+            transition={{ duration: 0.25, ease: 'backInOut' }}
           >
             <div className="directory-container">
               {/* TODO: Write a type for the child prop */}

@@ -156,12 +156,15 @@ function Sidebar() {
         >
           <SidebarTabHeader />
           <div className="container">
-            <div className="sidebar-content" ref={containerRef}>
-              {directoryFiles.map((dir: Directory | File) => (
-                <SidebarItem key={dir.name} item={dir} />
-              ))}
+            <div style={{ height: 'calc(100% - 44px)', overflowY: 'scroll' }}>
+              <div className="sidebar-content" ref={containerRef}>
+                {directoryFiles.map((dir: Directory | File) => (
+                  <SidebarItem key={dir.name} item={dir} />
+                ))}
+              </div>
             </div>
-            <div className="sidebar-footer">
+
+            <div className="sidebar-footer" style={{ height: 44 }}>
               <button
                 type="button"
                 className="settings-icon"

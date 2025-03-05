@@ -7,16 +7,17 @@ const StyledSidebar = styled.div`
 
   .container {
     height: calc(100% - 44px);
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     /* border-right: 1px solid ${(props) => props.theme.borderColor}; */
   }
 
   .sidebar-content {
-    height: 95%;
+    /* height: 95%; */
     padding: 2px 10px 10px 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow-y: scroll;
   }
 
   .note,
