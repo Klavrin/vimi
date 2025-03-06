@@ -75,6 +75,7 @@ const StyledSidebar = styled.div`
     align-items: center;
     justify-content: end;
     padding-inline: 10px;
+    border-top: 1px solid ${(props) => props.theme.border.secondary};
 
     .settings-icon {
       padding: 4px;
