@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FaRegFolderClosed, FaRegFolderOpen, FaRegFile } from 'react-icons/fa6';
 import { removeTab, setActiveTabIndex } from '../store/reducers/tab-bar';
+import { removeFileFromPath } from '../utils/remove-file-from-path';
 
 import { State } from '../types/state';
 
@@ -237,36 +238,77 @@ function SidebarItem({ item }: SidebarItemProps) {
   // Render file
   if (item.type === 'file')
     return (
-      <div
-        role="button"
-        tabIndex={0}
-        key={item.path}
-        className="focusable sidebar-item"
-        onClick={(event) => handleFileClick(item.path, event)}
-        onKeyDown={(e) => {
-          if (isRenaming) return;
-          if (e.key === 'Enter' || e.key === ' ') handleFileClick(item.path, e);
-          else if (e.key === 'r') handleFileRenaming(e);
-          else if (e.key === 'd') handleFileDeletion(item.path, item._id, e);
-        }}
-      >
-        <div className="title">
-          <FaRegFile style={{ minWidth: 15 }} />
-          {isRenaming ? (
-            <input
-              type="text"
-              className="file-input-renaming"
-              value={renamedFileValue}
-              onClick={(e) => e.stopPropagation()}
-              onChange={(e) => setRenamedFileValue(e.target.value)}
-              onKeyDown={(e) => handleInputKeydown(e, item.path)}
-              autoFocus
-            />
-          ) : (
-            <p>{item.name}</p>
-          )}
+      <>
+        <div
+          role="button"
+          tabIndex={0}
+          key={item.path}
+          className="focusable sidebar-item"
+          onClick={(event) => handleFileClick(item.path, event)}
+          onKeyDown={(e) => {
+            if (isRenaming) return;
+            if (e.key === 'Enter' || e.key === ' ')
+              handleFileClick(item.path, e);
+            else if (e.key === 'r') handleFileRenaming(e);
+            else if (e.key === 'd') handleFileDeletion(item.path, item._id, e);
+            else if (e.key === 'a') handleFileCreation(e);
+            else if (e.key === 'D') handleDirCreation(e);
+          }}
+        >
+          <div className="title">
+            <FaRegFile style={{ minWidth: 15 }} />
+            {isRenaming ? (
+              <input
+                type="text"
+                className="file-input-renaming"
+                value={renamedFileValue}
+                onClick={(e) => e.stopPropagation()}
+                onChange={(e) => setRenamedFileValue(e.target.value)}
+                onKeyDown={(e) => handleInputKeydown(e, item.path)}
+                autoFocus
+              />
+            ) : (
+              <p>{item.name}</p>
+            )}
+          </div>
         </div>
-      </div>
+
+        {(isCreatingFile || isCreatingDir) && (
+          <div className="sidebar-item focusable">
+            <div className="title">
+              {isCreatingFile ? (
+                <FaRegFile style={{ minWidth: 15 }} />
+              ) : (
+                <FaRegFolderClosed style={{ minWidth: 15 }} />
+              )}
+              <input
+                type="text"
+                className="file-input-renaming"
+                value={renamedFileValue}
+                onClick={(e) => e.stopPropagation()}
+                onChange={(e) => setRenamedFileValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (!isCreatingDir) {
+                    console.log(item.path);
+                    handleFileCreationInputKeydown(
+                      e,
+                      removeFileFromPath(item.path),
+                      renamedFileValue,
+                    );
+                  } else {
+                    handleDirCreationInputKeydown(
+                      e,
+                      removeFileFromPath(item.path),
+                      renamedFileValue,
+                    );
+                  }
+                }}
+                autoFocus
+              />
+            </div>
+          </div>
+        )}
+      </>
     );
 
   useEffect(() => {
