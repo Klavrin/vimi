@@ -119,6 +119,9 @@ function Sidebar() {
           if (editorRefs[activeTab]) {
             editorRefs[activeTab].focus();
           }
+        } else if (e.key === 'a') {
+          // TODO: create file
+          console.log('create file');
         }
       }
     };
