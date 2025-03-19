@@ -10,7 +10,15 @@ export type Channels =
   | 'dirPathContents'
   | 'readFile'
   | 'fileContents'
-  | 'closeCurrentTab';
+  | 'closeCurrentTab'
+  | 'renameFile'
+  | 'createFile'
+  | 'deleteFile'
+  | 'fileSuccessfullyDeleted'
+  | 'showConfirmDialog'
+  | 'showConfirmDialogReply'
+  | 'renameDirectory'
+  | 'createDirectory';
 
 const electronHandler = {
   ipcRenderer: {

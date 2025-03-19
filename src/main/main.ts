@@ -1,7 +1,7 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 import fs from 'fs-extra';
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 
@@ -136,6 +136,52 @@ ipcMain.on('readFile', (event, filePath) => {
       contents: data,
     });
   });
+});
+
+ipcMain.on('renameFile', (_event, { filePath, newFileName }) => {
+  fs.rename(filePath, `${path.dirname(filePath)}/${newFileName}.md`, (err) => {
+    if (err) throw err;
+  });
+});
+
+ipcMain.on('renameDirectory', (_event, { dirPath, newDirectoryName }) => {
+  fs.rename(dirPath, `${path.dirname(dirPath)}/${newDirectoryName}`, (err) => {
+    if (err) throw err;
+  });
+});
+
+ipcMain.on('createFile', (_event, { filePath, fileName }) => {
+  // TODO: check if filePath comes from a file or a directory
+
+  fs.createFile(`${filePath}/${fileName}.md`, (err) => {
+    if (err) throw err;
+  });
+});
+
+ipcMain.on('createDirectory', (_event, { dirPath, dirName }) => {
+  fs.mkdir(`${dirPath}/${dirName}`, (err) => {
+    if (err) throw err;
+  });
+});
+
+ipcMain.on('deleteFile', async (event, filePath) => {
+  try {
+    await shell.trashItem(filePath);
+    event.reply('fileSuccessfullyDeleted');
+  } catch (err) {
+    if (err) throw err;
+  }
+});
+
+ipcMain.on('showConfirmDialog', async (event) => {
+  const res = await dialog.showMessageBox(mainWindow as BrowserWindow, {
+    type: 'question',
+    buttons: ['Yes', 'No'],
+    defaultId: 0,
+    cancelId: 1,
+    message: 'Are you sure you want to delete this file?',
+  });
+  event.reply('showConfirmDialogReply', res.response === 0);
 });
 
 app.on('window-all-closed', () => {

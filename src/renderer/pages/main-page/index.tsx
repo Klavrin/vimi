@@ -15,6 +15,7 @@ function MainPage() {
   const currentDirectoryPath = useSelector(
     (state: State) => state.currentDirectory.currentDirectoryPath,
   );
+  const sidebarActive = useSelector((state: State) => state.sidebar.isActive);
 
   useEffect(() => {
     const init = async () => {
@@ -31,7 +32,7 @@ function MainPage() {
       <div style={{ overflow: 'hidden', width: '100%' }}>
         <WorkspaceTabHeader />
 
-        <StyledMainPage>
+        <StyledMainPage style={{ borderTopLeftRadius: sidebarActive ? 8 : 0 }}>
           {currentDirectoryPath === '' ? (
             'Drag a folder from your computer to get started.'
           ) : (

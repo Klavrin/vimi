@@ -7,15 +7,17 @@ const StyledSidebar = styled.div`
 
   .container {
     height: calc(100% - 44px);
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     /* border-right: 1px solid ${(props) => props.theme.borderColor}; */
   }
 
   .sidebar-content {
+    /* height: 95%; */
     padding: 2px 10px 10px 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow-y: scroll;
   }
 
   .note,
@@ -58,6 +60,36 @@ const StyledSidebar = styled.div`
     flex-direction: column;
     gap: 10px;
     padding-top: 10px;
+  }
+
+  .file-input-renaming {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+  }
+
+  .sidebar-footer {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding-inline: 10px;
+    border-top: 1px solid ${(props) => props.theme.border.secondary};
+
+    .settings-icon {
+      padding: 4px;
+      border-radius: 4px;
+      opacity: 0.8;
+
+      &:hover {
+        background: ${(props) => props.theme.text.secondary};
+      }
+    }
+  }
+
+  .icon {
+    color: ${(props) => props.theme.text.primary};
   }
 `;
 

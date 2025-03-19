@@ -4,7 +4,13 @@ import { type V4Options, v4 as uuidv4 } from 'uuid';
 
 type DirItems =
   | { _id: string; name: string; path: string; type: 'file' }
-  | { _id: string; name: string; children: DirItems[]; type: 'directory' };
+  | {
+      _id: string;
+      name: string;
+      children: DirItems[];
+      path: string;
+      type: 'directory';
+    };
 
 const readDirectory = (dirPath: string) => {
   const items: DirItems[] = [];
@@ -31,6 +37,7 @@ const readDirectory = (dirPath: string) => {
         _id: uuidv4(),
         name: basename,
         children: readDirectory(fullPath),
+        path: fullPath,
         type: 'directory',
       });
     }

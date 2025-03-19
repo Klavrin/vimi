@@ -25,12 +25,13 @@ function TextEditor({
 
   // Use vim mappings in preview mode
   useEffect(() => {
-    const handleKeyDown = (e: any) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (!previewMode) return;
 
       // Toggle preview
       if (e.code === 'Space') setSpacePressed(true);
       if (e.key === 'p' && spacePressed) {
+        e.preventDefault();
         setSpacePressed(false);
         dispatch(setPreviewMode(false));
         setTimeout(() => {
@@ -64,17 +65,18 @@ function TextEditor({
       />
       <MarkdownPreview previewMode={previewMode} innerText={editorContent} />
 
-      <button
-        type="button"
-        onClick={handlePreviewButton}
+      <div
+        className="editor-actions"
         style={{
           position: 'fixed',
           bottom: 20,
           right: 20,
         }}
       >
-        <FaEye size={30} opacity={0.4} />
-      </button>
+        <button type="button" onClick={handlePreviewButton}>
+          <FaEye size={18} opacity={0.4} className="icon" />
+        </button>
+      </div>
     </>
   );
 }

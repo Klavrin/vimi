@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
 import { setFileTree } from '../store/reducers/workspace';
 import { sortFileTree } from '../utils/sort-file-tree';
+import { IoSettingsOutline } from 'react-icons/io5';
 
 import InteractiveZone from './sidebar-interactive-zone';
 import SidebarItem from './sidebar-item';
@@ -26,6 +27,7 @@ type SidebarItemProps = {
         _id: string;
         name: string;
         children: SidebarItemProps[];
+        path: string;
         type: 'directory';
       };
 };
@@ -117,6 +119,9 @@ function Sidebar() {
           if (editorRefs[activeTab]) {
             editorRefs[activeTab].focus();
           }
+        } else if (e.key === 'a') {
+          // TODO: create file
+          console.log('create file');
         }
       }
     };
@@ -154,10 +159,25 @@ function Sidebar() {
         >
           <SidebarTabHeader />
           <div className="container">
-            <div className="sidebar-content" ref={containerRef}>
-              {directoryFiles.map((dir: Directory | File) => (
-                <SidebarItem key={dir.name} item={dir} />
-              ))}
+            <div style={{ height: 'calc(100% - 44px)', overflowY: 'scroll' }}>
+              <div className="sidebar-content" ref={containerRef}>
+                {directoryFiles.map((dir: Directory | File) => (
+                  <SidebarItem key={dir.name} item={dir} />
+                ))}
+              </div>
+            </div>
+
+            <div className="sidebar-footer" style={{ height: 44 }}>
+              <button
+                type="button"
+                className="settings-icon"
+                // onMouseOver={() => setIconHovered(true)}
+                // onMouseLeave={() => setIconHovered(false)}
+                onFocus={() => null}
+                onClick={() => dispatch(setSidebarValue(true))}
+              >
+                <IoSettingsOutline size={22} className="icon" />
+              </button>
             </div>
           </div>
         </StyledSidebar>

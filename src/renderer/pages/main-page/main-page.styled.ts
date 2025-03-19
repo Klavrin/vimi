@@ -5,7 +5,7 @@ const StyledMainPage = styled.div`
   max-height: calc(100vh - 44px);
   overflow-y: scroll;
 
-  border-top-left-radius: 8px;
+  /* border-top-left-radius: 0px; */
   border-top: 1px solid ${(props) => props.theme.border.secondary};
   border-left: 1px solid ${(props) => props.theme.border.secondary};
   z-index: 9999;
