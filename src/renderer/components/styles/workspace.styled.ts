@@ -48,8 +48,8 @@ const StyledWorkspace = styled.div`
   }
 
   .cm-focused .cm-cursor {
-    /* border-left-color: ${(props) => props.theme.text.primary}; */
-    border-right-color: red !important;
+    border-left-color: ${(props) => props.theme.text.primary} !important;
+    /* border-left-color: red !important; */
   }
 
   .cm-activeLine,
