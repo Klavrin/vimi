@@ -10,12 +10,12 @@ const Settings = () => {
   );
   const dispatch = useDispatch();
 
-  console.log(settingsVisible);
-
   return (
     settingsVisible && (
       <StyledSettings onClick={() => dispatch(toggleSettings())}>
-        sdofjdsoijf
+        <div className="container" onClick={(e) => e.stopPropagation()}>
+          settings view
+        </div>
       </StyledSettings>
     )
   );
