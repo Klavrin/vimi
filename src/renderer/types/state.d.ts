@@ -16,6 +16,7 @@ export type State = {
     isEditing: boolean;
     allowFocusing: boolean;
     editorRefs: any[];
+    settingsVisible: boolean;
   };
   tabBar: {
     activeTabIndex: number;

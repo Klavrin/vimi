@@ -9,6 +9,7 @@ import Sidebar from '../../components/sidebar';
 import StyledMainPage from './main-page.styled';
 
 import type { State } from '../../types/state';
+import Settings from '../../components/settings';
 
 function MainPage() {
   const [isDBReady, setIsDBReady] = useState(false);
@@ -28,6 +29,7 @@ function MainPage() {
 
   return (
     <>
+      <Settings />
       <Sidebar />
       <div style={{ overflow: 'hidden', width: '100%' }}>
         <WorkspaceTabHeader />
