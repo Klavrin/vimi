@@ -2,9 +2,9 @@ import StyledSettings from './styles/settings.styled';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleSettings } from '../store/reducers/workspace';
 import { AnimatePresence, motion } from 'framer-motion';
-
 import { FaX } from 'react-icons/fa6';
 
+import SettingsOption from './settings-option';
 import { State } from '../types/state';
 
 const Settings = () => {
@@ -31,7 +31,9 @@ const Settings = () => {
               </button>
             </div>
 
-            <div className="settings-box">settings</div>
+            <div className="settings-box">
+              <SettingsOption innerText="Hello world" />
+            </div>
           </div>
         </StyledSettings>
       )}

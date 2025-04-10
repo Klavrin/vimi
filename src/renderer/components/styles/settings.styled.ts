@@ -51,6 +51,12 @@ const StyledSettings = styled.div`
   .settings-box {
     padding-inline: 1rem;
   }
+
+  .settings-option {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
 `;
 
 export default StyledSettings;
