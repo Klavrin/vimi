@@ -32,7 +32,9 @@ const Settings = () => {
             </div>
 
             <div className="settings-box">
-              <SettingsOption innerText="Hello world" />
+              <SettingsOption innerText="Hello world 1" />
+              <SettingsOption innerText="Hello world 2" />
+              <SettingsOption innerText="Hello world 3" />
             </div>
           </div>
         </StyledSettings>

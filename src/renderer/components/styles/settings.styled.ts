@@ -50,12 +50,22 @@ const StyledSettings = styled.div`
 
   .settings-box {
     padding-inline: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
   }
 
   .settings-option {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    padding-block: 0.5rem;
+    padding-inline: 1rem;
+    border-radius: 4px;
+
+    &:hover {
+      background: ${(props) => props.theme.text.secondary};
+    }
   }
 `;
 
