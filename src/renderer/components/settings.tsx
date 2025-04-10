@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toggleSettings } from '../store/reducers/workspace';
 import { AnimatePresence, motion } from 'framer-motion';
 
+import { FaX } from 'react-icons/fa6';
+
 import { State } from '../types/state';
 
 const Settings = () => {
@@ -23,7 +25,13 @@ const Settings = () => {
           transition={{ duration: 0.15 }}
         >
           <div className="container" onClick={(e) => e.stopPropagation()}>
-            settings view
+            <div className="top-bar">
+              <button onClick={() => dispatch(toggleSettings())}>
+                <FaX className="icon" />
+              </button>
+            </div>
+
+            <div className="settings-box">settings</div>
           </div>
         </StyledSettings>
       )}
