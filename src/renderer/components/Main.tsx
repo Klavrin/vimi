@@ -3,6 +3,12 @@ import { useDispatch } from 'react-redux';
 import { setCurrentDirectoryPath } from '../store/reducers/current-directory';
 import { fetchTabs } from '../store/reducers/tab-bar';
 
+import {
+  handleFileSaved,
+  handleFileSaveError,
+  handleUnsavedCloseReply,
+} from '../utils/save-tab';
+
 import Alert from './alert';
 
 import StyledMain from './styles/main.styled';
@@ -13,6 +19,10 @@ type MainProps = {
 
 function Main({ children }: MainProps) {
   const [showAlert, setShowAlert] = useState(false);
+  const [alertContent, setAlertContent] = useState({
+    heading: 'Oops...',
+    innerText: 'It seems like whatever you have dragged in is not a directory!',
+  });
   const dispatch = useDispatch();
 
   const handleDragOver = (e: any) => {
@@ -42,11 +52,45 @@ function Main({ children }: MainProps) {
           dispatch(setCurrentDirectoryPath(path));
         } else {
           // Show a message that warns the user that whatever they dragged and dropped might not be a direcory.
+          setAlertContent({
+            heading: 'Oops...',
+            innerText:
+              'It seems like whatever you have dragged in is not a directory!',
+          });
           setShowAlert(true);
         }
       },
     );
   }, [dispatch]);
+
+  useEffect(() => {
+    const removeSavedListener = window.electron.ipcRenderer.on(
+      'fileSaved',
+      (file: any) => handleFileSaved(file),
+    );
+    const removeErrorListener = window.electron.ipcRenderer.on(
+      'fileSaveError',
+      (error: any) => {
+        handleFileSaveError(error);
+        setAlertContent({
+          heading: 'Could not save file',
+          innerText: `${error.path}: ${error.message}`,
+        });
+        setShowAlert(true);
+      },
+    );
+
+    const removeCloseReplyListener = window.electron.ipcRenderer.on(
+      'confirmUnsavedCloseReply',
+      (reply: any) => handleUnsavedCloseReply(reply),
+    );
+
+    return () => {
+      removeSavedListener?.();
+      removeErrorListener?.();
+      removeCloseReplyListener?.();
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(fetchTabs() as any);
@@ -55,8 +99,8 @@ function Main({ children }: MainProps) {
   return (
     <StyledMain onDragOver={handleDragOver} onDrop={handleDrop}>
       <Alert
-        heading="Oops..."
-        innerText="It seems like whatever you have dragged in is not a directory!"
+        heading={alertContent.heading}
+        innerText={alertContent.innerText}
         showAlert={showAlert}
         setShowAlert={setShowAlert}
       />

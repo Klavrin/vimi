@@ -1,55 +1,79 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FaEye } from 'react-icons/fa6';
-import { togglePreviewMode, setPreviewMode } from '../store/reducers/tab-bar';
+import {
+  togglePreviewMode,
+  setPreviewMode,
+  updateTabContents,
+} from '../store/reducers/tab-bar';
 
+import type { State } from '../types/state';
+import { expandLeader, keyMatchesToken, tokenizeKeys } from '../utils/vim-keys';
 import MarkdownEditor from './markdown-editor';
 import MarkdownPreview from './markdown-preview';
 
 type TextEditorProps = {
+  tabId: string;
   contents: string;
-  index: number;
   markdownEditorRefs: any;
   previewMode: boolean;
 };
 
 function TextEditor({
+  tabId,
   contents,
-  index,
   markdownEditorRefs,
   previewMode,
 }: TextEditorProps) {
   const [editorContent, setEditorContent] = useState(contents);
-  const [spacePressed, setSpacePressed] = useState(false);
   const dispatch = useDispatch();
+  const vimEnabled = useSelector((state: State) => state.settings.vim.enabled);
+  const leader = useSelector((state: State) => state.settings.vim.leader);
+  const togglePreviewKeys = useSelector(
+    (state: State) => state.settings.vim.actions.togglePreview,
+  );
 
-  // Use vim mappings in preview mode
+  // Use the configured toggle-preview mapping in preview mode, where the editor is hidden
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!previewMode) return;
+    if (!previewMode || !vimEnabled) return undefined;
 
-      // Toggle preview
-      if (e.code === 'Space') setSpacePressed(true);
-      if (e.key === 'p' && spacePressed) {
+    const sequence = tokenizeKeys(expandLeader(togglePreviewKeys, leader));
+    if (sequence.length === 0) return undefined;
+    let position = 0;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (['Shift', 'Control', 'Alt', 'Meta'].includes(e.key)) return;
+
+      if (keyMatchesToken(sequence[position], e)) {
+        position += 1;
+      } else {
+        position = keyMatchesToken(sequence[0], e) ? 1 : 0;
+      }
+
+      if (position === sequence.length) {
+        position = 0;
         e.preventDefault();
-        setSpacePressed(false);
         dispatch(setPreviewMode(false));
         setTimeout(() => {
-          markdownEditorRefs.current[index].focus();
+          markdownEditorRefs.current[tabId]?.focus();
         });
-        document.removeEventListener('keydown', handleKeyDown);
       }
     };
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [previewMode, spacePressed]);
+  }, [previewMode, vimEnabled, leader, togglePreviewKeys, tabId]);
+
+  const handleContentChange = (newContents: string) => {
+    setEditorContent(newContents);
+    dispatch(updateTabContents({ _id: tabId, contents: newContents }));
+  };
 
   const handlePreviewButton = () => {
     dispatch(togglePreviewMode());
     if (previewMode) {
       setTimeout(() => {
-        markdownEditorRefs.current[index].focus();
+        markdownEditorRefs.current[tabId].focus();
       });
     }
   };
@@ -58,10 +82,10 @@ function TextEditor({
     <>
       <MarkdownEditor
         value={editorContent}
-        setEditorContent={setEditorContent}
+        setEditorContent={handleContentChange}
         previewMode={previewMode}
         markdownEditorRefs={markdownEditorRefs}
-        index={index}
+        tabId={tabId}
       />
       <MarkdownPreview previewMode={previewMode} innerText={editorContent} />
 

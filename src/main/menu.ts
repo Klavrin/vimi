@@ -91,6 +91,13 @@ export default class MenuBuilder {
           selector: 'selectAll:',
         },
         {
+          label: 'Save',
+          accelerator: 'Command+S',
+          click: () => {
+            this.mainWindow.webContents.send('saveCurrentFile');
+          },
+        },
+        {
           label: 'Close Current Tab',
           accelerator: 'Command+W',
           click: () => {
@@ -199,6 +206,13 @@ export default class MenuBuilder {
           {
             label: '&Open',
             accelerator: 'Ctrl+O',
+          },
+          {
+            label: '&Save',
+            accelerator: 'Ctrl+S',
+            click: () => {
+              this.mainWindow.webContents.send('saveCurrentFile');
+            },
           },
           {
             label: '&Close',

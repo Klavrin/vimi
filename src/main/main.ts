@@ -138,6 +138,18 @@ ipcMain.on('readFile', (event, filePath) => {
   });
 });
 
+ipcMain.on('writeFile', async (event, { path: filePath, contents }) => {
+  try {
+    await fs.writeFile(filePath, contents, 'utf8');
+    event.reply('fileSaved', { path: filePath, contents });
+  } catch (err) {
+    event.reply('fileSaveError', {
+      path: filePath,
+      message: err instanceof Error ? err.message : String(err),
+    });
+  }
+});
+
 ipcMain.on('renameFile', (_event, { filePath, newFileName }) => {
   fs.rename(filePath, `${path.dirname(filePath)}/${newFileName}.md`, (err) => {
     if (err) throw err;
@@ -182,6 +194,32 @@ ipcMain.on('showConfirmDialog', async (event) => {
     message: 'Are you sure you want to delete this file?',
   });
   event.reply('showConfirmDialogReply', res.response === 0);
+});
+
+ipcMain.on('confirmUnsavedClose', async (event, { _id, title }) => {
+  const window =
+    BrowserWindow.fromWebContents(event.sender) ?? mainWindow ?? undefined;
+  const options = {
+    type: 'question' as const,
+    buttons: ['Save', "Don't Save", 'Cancel'],
+    defaultId: 0,
+    cancelId: 2,
+    message: `Do you want to save the changes you made to ${title}?`,
+    detail: "Your changes will be lost if you don't save them.",
+  };
+
+  try {
+    const res = window
+      ? await dialog.showMessageBox(window, options)
+      : await dialog.showMessageBox(options);
+    const responses = ['save', 'discard', 'cancel'];
+    event.reply('confirmUnsavedCloseReply', {
+      _id,
+      response: responses[res.response] ?? 'cancel',
+    });
+  } catch (err) {
+    event.reply('confirmUnsavedCloseReply', { _id, response: 'cancel' });
+  }
 });
 
 app.on('window-all-closed', () => {

@@ -4,6 +4,7 @@ import theme from './reducers/theme';
 import currentDirectory from './reducers/current-directory';
 import workspace from './reducers/workspace';
 import tabBar from './reducers/tab-bar';
+import settings from './reducers/settings';
 
 export default configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export default configureStore({
     currentDirectory,
     workspace,
     tabBar,
+    settings,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: false

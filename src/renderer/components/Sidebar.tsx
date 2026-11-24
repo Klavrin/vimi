@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
-import { setFileTree } from '../store/reducers/workspace';
+import { setFileTree, toggleSettings } from '../store/reducers/workspace';
 import { sortFileTree } from '../utils/sort-file-tree';
 import { IoSettingsOutline } from 'react-icons/io5';
 
@@ -65,8 +65,14 @@ function Sidebar() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const editorRefs = useSelector((state: State) => state.workspace.editorRefs);
-  const activeTab = useSelector((state: State) => state.tabBar.activeTabIndex);
+  const activeTabId = useSelector(
+    (state: State) => state.tabBar.tabs[state.tabBar.activeTabIndex]?._id,
+  );
   const dispatch = useDispatch();
+
+  const settingsVisible = useSelector(
+    (state: State) => state.workspace.settingsVisible,
+  );
 
   useEffect(() => {
     if (currentDirectoryPath) {
@@ -116,8 +122,8 @@ function Sidebar() {
             interactiveElements[prevIndex].focus();
         } else if (e.ctrlKey && e.key === 'l') {
           e.preventDefault();
-          if (editorRefs[activeTab]) {
-            editorRefs[activeTab].focus();
+          if (activeTabId && editorRefs?.[activeTabId]) {
+            editorRefs[activeTabId].focus();
           }
         } else if (e.key === 'a') {
           // TODO: create file
@@ -128,7 +134,7 @@ function Sidebar() {
 
     document.addEventListener('keydown', handleVimNavigation);
     return () => document.removeEventListener('keydown', handleVimNavigation);
-  }, [isEditing, dispatch]);
+  }, [isEditing, dispatch, editorRefs, activeTabId]);
 
   /**
    * If the user hovered the interactive zone, a.k.a used their
@@ -174,7 +180,8 @@ function Sidebar() {
                 // onMouseOver={() => setIconHovered(true)}
                 // onMouseLeave={() => setIconHovered(false)}
                 onFocus={() => null}
-                onClick={() => dispatch(setSidebarValue(true))}
+                // onClick={() => dispatch(setSidebarValue(true))}
+                onClick={() => dispatch(toggleSettings())}
               >
                 <IoSettingsOutline size={22} className="icon" />
               </button>

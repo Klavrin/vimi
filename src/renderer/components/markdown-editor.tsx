@@ -7,7 +7,7 @@ type MarkdownEditorProps = {
   value: string;
   // TODO: type
   markdownEditorRefs: any;
-  index: number;
+  tabId: string;
   previewMode: boolean;
   setEditorContent: (value: string) => void;
 };
@@ -15,7 +15,7 @@ type MarkdownEditorProps = {
 function MarkdownEditor({
   value,
   markdownEditorRefs,
-  index,
+  tabId,
   previewMode,
   setEditorContent,
 }: MarkdownEditorProps) {
@@ -26,11 +26,11 @@ function MarkdownEditor({
 
   useEffect(() => {
     if (editorView) {
-      markdownEditorRefs.current[index] = editorView;
+      markdownEditorRefs.current[tabId] = editorView;
       // Store the markdownEditorRef in the redux store so that it can be used in the sidebar component (you store the refs in redux and also have a useRef, this is not optimal, might potentially be improved later)
-      dispatch(setEditorRefs(Array.from(markdownEditorRefs.current))); // might be causing the double rendering bug
+      dispatch(setEditorRefs({ ...markdownEditorRefs.current })); // might be causing the double rendering bug
     }
-  }, [editorView, index, markdownEditorRefs]);
+  }, [editorView, tabId, markdownEditorRefs]);
 
   return (
     <div

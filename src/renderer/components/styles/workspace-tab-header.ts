@@ -36,6 +36,13 @@ const StyledWorkspaceTabHeader = styled.div`
     gap: 5px;
   }
 
+  .workspace-tab-list {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
   .workspace-tab {
     min-width: 6rem;
     max-width: 12rem;
@@ -66,6 +73,44 @@ const StyledWorkspaceTabHeader = styled.div`
     & .icon {
       outline: none;
       min-width: 20px;
+    }
+
+    & .close-icon {
+      display: none;
+    }
+
+    & .dirty-dot {
+      display: none;
+      justify-content: center;
+      align-items: center;
+
+      span {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: ${(props) => props.theme.text.primary};
+      }
+    }
+
+    &.active .close-icon {
+      display: block;
+    }
+
+    /* Unsaved changes: show a dot, which turns into the close button on hover. */
+    &.dirty .dirty-dot {
+      display: flex;
+    }
+
+    &.dirty .close-icon {
+      display: none;
+    }
+
+    &.dirty.active:hover .dirty-dot {
+      display: none;
+    }
+
+    &.dirty.active:hover .close-icon {
+      display: block;
     }
   }
 

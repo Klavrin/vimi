@@ -1,7 +1,23 @@
+import darkTheme from './dark';
+
 const primaryBackground = '#101720';
 const primaryText = '#fff';
 
+// Same shape as the dark and light themes so every styled component can read it
 const midnightBlueTheme = {
+  ...darkTheme,
+  text: {
+    primary: '#e6edf5',
+    secondary: '#2a3a50',
+  },
+  background: {
+    primary: '#0b1119',
+    secondary: primaryBackground,
+  },
+  border: {
+    primary: '#3a4b63',
+    secondary: '#1d2a3a',
+  },
   backgroundColor: primaryBackground,
   color: primaryText,
   borderColor: 'rgba(255, 255, 255, 0.1)',
