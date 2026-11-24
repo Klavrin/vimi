@@ -4,6 +4,7 @@ import { initDB } from '../../utils/db';
 
 import Workspace from '../../components/workspace';
 import WorkspaceTabHeader from '../../components/workspace-tab-header';
+import IntroPage from '../../components/intro-page';
 import Sidebar from '../../components/sidebar';
 
 import StyledMainPage from './main-page.styled';
@@ -35,11 +36,7 @@ function MainPage() {
         <WorkspaceTabHeader />
 
         <StyledMainPage style={{ borderTopLeftRadius: sidebarActive ? 8 : 0 }}>
-          {currentDirectoryPath === '' ? (
-            'Drag a folder from your computer to get started.'
-          ) : (
-            <Workspace />
-          )}
+          {currentDirectoryPath === '' ? <IntroPage /> : <Workspace />}
         </StyledMainPage>
       </div>
     </>

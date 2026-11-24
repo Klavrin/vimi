@@ -5,6 +5,7 @@ import {
   BrowserWindow,
   MenuItemConstructorOptions,
 } from 'electron';
+import { showOpenFileDialog, showOpenFolderDialog } from './utils/open-dialogs';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -60,7 +61,7 @@ export default class MenuBuilder {
           label: 'About Vimi',
           selector: 'orderFrontStandardAboutPanel:',
         },
-        { type: 'separator' },
+        { type: 'separator' as const },
         {
           label: 'Hide Vimi',
           accelerator: 'Command+H',
@@ -72,6 +73,32 @@ export default class MenuBuilder {
           accelerator: 'Command+Q',
           click: () => {
             app.quit();
+          },
+        },
+      ],
+    };
+    const subMenuFile: DarwinMenuItemConstructorOptions = {
+      label: 'File',
+      submenu: [
+        {
+          label: 'Open Folder…',
+          accelerator: 'Command+O',
+          click: () => {
+            showOpenFolderDialog(this.mainWindow, this.mainWindow.webContents);
+          },
+        },
+        {
+          label: 'Open File…',
+          click: () => {
+            showOpenFileDialog(this.mainWindow, this.mainWindow.webContents);
+          },
+        },
+        { type: 'separator' },
+        {
+          label: 'Close Folder',
+          accelerator: 'Command+Shift+W',
+          click: () => {
+            this.mainWindow.webContents.send('closeFolder');
           },
         },
       ],
@@ -195,17 +222,44 @@ export default class MenuBuilder {
         ? subMenuViewDev
         : subMenuViewProd;
 
-    return [subMenuAbout, subMenuEdit, subMenuView, subMenuWindow, subMenuHelp];
+    return [
+      subMenuAbout,
+      subMenuFile,
+      subMenuEdit,
+      subMenuView,
+      subMenuWindow,
+      subMenuHelp,
+    ];
   }
 
-  buildDefaultTemplate() {
-    const templateDefault = [
+  buildDefaultTemplate(): MenuItemConstructorOptions[] {
+    const templateDefault: MenuItemConstructorOptions[] = [
       {
         label: '&File',
         submenu: [
           {
-            label: '&Open',
+            label: '&Open Folder…',
             accelerator: 'Ctrl+O',
+            click: () => {
+              showOpenFolderDialog(
+                this.mainWindow,
+                this.mainWindow.webContents,
+              );
+            },
+          },
+          {
+            label: 'Open File…',
+            click: () => {
+              showOpenFileDialog(this.mainWindow, this.mainWindow.webContents);
+            },
+          },
+          { type: 'separator' },
+          {
+            label: 'Close Folder',
+            accelerator: 'Ctrl+Shift+W',
+            click: () => {
+              this.mainWindow.webContents.send('closeFolder');
+            },
           },
           {
             label: '&Save',

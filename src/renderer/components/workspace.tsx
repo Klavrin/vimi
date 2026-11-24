@@ -1,9 +1,7 @@
 import { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
-import { addTab, isTabDirty } from '../store/reducers/tab-bar';
+import { useSelector } from 'react-redux';
+import { isTabDirty } from '../store/reducers/tab-bar';
 import { saveTab } from '../utils/save-tab';
-import { setAllowFocusing } from '../store/reducers/workspace';
 import useVimConfig from '../utils/use-vim-config';
 
 import TextEditor from './text-editor';
@@ -21,30 +19,7 @@ function Workspace() {
   // Editor views keyed by tab _id, so reordering tabs doesn't mix them up
   const autosave = useSelector((state: State) => state.settings.autosave);
   const markdownEditorRefs = useRef<Record<string, any>>({});
-  const dispatch = useDispatch();
   useVimConfig();
-
-  useEffect(() => {
-    window.electron.ipcRenderer.on('fileContents', (file: any) => {
-      dispatch(setAllowFocusing(false)); // Do not focus the current tab when a new file is opened
-      dispatch(
-        addTab({
-          _id: uuidv4(),
-          path: file.path,
-          title: file.fileName, // temporary
-          contents: file.contents,
-          previewMode: false,
-          tags: [],
-          pinned: false,
-          savedContents: file.contents,
-        }),
-      );
-      setTimeout(() => {
-        dispatch(setAllowFocusing(true)); // doesn't work without a timeout
-      });
-      console.log('!!!!!!!!!!');
-    });
-  }, []);
 
   // Autosave dirty tabs once the user stops typing for `delay` ms
   useEffect(() => {

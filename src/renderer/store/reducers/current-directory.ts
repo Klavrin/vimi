@@ -14,9 +14,14 @@ const currentDirectorySlice = createSlice({
       state.currentDirectoryPath = action.payload;
       localStorage.setItem('currentDirectoryPath', action.payload);
     },
+    clearCurrentDirectoryPath: (state) => {
+      state.currentDirectoryPath = '';
+      localStorage.removeItem('currentDirectoryPath');
+    },
   },
 });
 
-export const { setCurrentDirectoryPath } = currentDirectorySlice.actions;
+export const { setCurrentDirectoryPath, clearCurrentDirectoryPath } =
+  currentDirectorySlice.actions;
 
 export default currentDirectorySlice.reducer;

@@ -8,6 +8,7 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import readDirectory from './utils/read-directory';
+import { showOpenFileDialog, showOpenFolderDialog } from './utils/open-dialogs';
 
 class AppUpdater {
   constructor() {
@@ -194,6 +195,17 @@ ipcMain.on('showConfirmDialog', async (event) => {
     message: 'Are you sure you want to delete this file?',
   });
   event.reply('showConfirmDialogReply', res.response === 0);
+});
+
+ipcMain.on('openFolderDialog', (event) => {
+  showOpenFolderDialog(
+    BrowserWindow.fromWebContents(event.sender),
+    event.sender,
+  );
+});
+
+ipcMain.on('openFileDialog', (event) => {
+  showOpenFileDialog(BrowserWindow.fromWebContents(event.sender), event.sender);
 });
 
 ipcMain.on('confirmUnsavedClose', async (event, { _id, title }) => {
