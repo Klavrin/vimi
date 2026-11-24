@@ -196,6 +196,32 @@ ipcMain.on('showConfirmDialog', async (event) => {
   event.reply('showConfirmDialogReply', res.response === 0);
 });
 
+ipcMain.on('confirmUnsavedClose', async (event, { _id, title }) => {
+  const window =
+    BrowserWindow.fromWebContents(event.sender) ?? mainWindow ?? undefined;
+  const options = {
+    type: 'question' as const,
+    buttons: ['Save', "Don't Save", 'Cancel'],
+    defaultId: 0,
+    cancelId: 2,
+    message: `Do you want to save the changes you made to ${title}?`,
+    detail: "Your changes will be lost if you don't save them.",
+  };
+
+  try {
+    const res = window
+      ? await dialog.showMessageBox(window, options)
+      : await dialog.showMessageBox(options);
+    const responses = ['save', 'discard', 'cancel'];
+    event.reply('confirmUnsavedCloseReply', {
+      _id,
+      response: responses[res.response] ?? 'cancel',
+    });
+  } catch (err) {
+    event.reply('confirmUnsavedCloseReply', { _id, response: 'cancel' });
+  }
+});
+
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed

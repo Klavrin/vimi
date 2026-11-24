@@ -7,7 +7,12 @@ import {
   incrementActiveTabIndex,
   togglePreviewMode,
 } from '../store/reducers/tab-bar';
-import { getCurrentTab, saveAndCloseTab, saveCurrentTab } from './save-tab';
+import {
+  getCurrentTab,
+  requestCloseTab,
+  saveAndCloseTab,
+  saveCurrentTab,
+} from './save-tab';
 
 function useVimConfig() {
   const dispatch = useDispatch();
@@ -43,6 +48,10 @@ function useVimConfig() {
     // :w saves the current file, :wq saves it and closes the tab
     Vim.defineEx('write', 'w', () => {
       saveCurrentTab();
+    });
+    Vim.defineEx('quit', 'q', () => {
+      const tab = getCurrentTab();
+      if (tab) requestCloseTab(tab._id);
     });
     const saveAndQuit = () => {
       const tab = getCurrentTab();

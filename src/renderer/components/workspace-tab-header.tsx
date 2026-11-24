@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FaX, FaEye } from 'react-icons/fa6';
 import { PiSidebarFill } from 'react-icons/pi';
 
-import { setActiveTabIndex } from '../store/reducers/tab-bar';
+import { setActiveTabIndex, isTabDirty } from '../store/reducers/tab-bar';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
 import store from '../store';
-import { closeTab, saveCurrentTab } from '../utils/save-tab';
+import { requestCloseTab, saveCurrentTab } from '../utils/save-tab';
 
 import Tooltip from './tooltip';
 
@@ -24,7 +24,7 @@ function WorkspaceTabHeader() {
     const handleIpcCloseCurrentTab = () => {
       const { tabs: currentTabs, activeTabIndex } = store.getState().tabBar;
       const currentTab = currentTabs[activeTabIndex];
-      if (currentTab) closeTab(currentTab._id);
+      if (currentTab) requestCloseTab(currentTab._id);
     };
 
     const removeCloseListener = window.electron.ipcRenderer.on(
@@ -44,7 +44,7 @@ function WorkspaceTabHeader() {
 
   const handleCloseTab = (e: React.MouseEvent, _id: string) => {
     e.stopPropagation();
-    closeTab(_id);
+    requestCloseTab(_id);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
@@ -81,7 +81,9 @@ function WorkspaceTabHeader() {
         {tabs.map((tab, index) => (
           <div
             key={tab._id}
-            className={`workspace-tab ${index === activeTab ? 'active' : ''}`}
+            className={`workspace-tab ${index === activeTab ? 'active' : ''} ${
+              isTabDirty(tab) ? 'dirty' : ''
+            }`}
             onClick={() => dispatch(setActiveTabIndex(index))}
             role="button"
             tabIndex={index}
@@ -90,8 +92,14 @@ function WorkspaceTabHeader() {
           >
             <p className="title">{tab.title}</p>
             <div
-              className="icon"
-              style={{ display: index === activeTab ? 'block' : 'none' }}
+              className="icon dirty-dot"
+              role="img"
+              aria-label="Unsaved changes"
+            >
+              <span />
+            </div>
+            <div
+              className="icon close-icon"
               onClick={(e) => handleCloseTab(e, tab._id)}
             >
               <FaX />

@@ -1,5 +1,5 @@
 import store from '../store';
-import { removeTab, markTabSaved } from '../store/reducers/tab-bar';
+import { removeTab, markTabSaved, isTabDirty } from '../store/reducers/tab-bar';
 
 /** Asks the main process to write the tab's contents to its file. */
 export const saveTab = (tab: { path: string; contents: string }) => {
@@ -50,4 +50,38 @@ export const handleFileSaved = (file: { path: string; contents: string }) => {
 /** Called when the main process failed to write a file. */
 export const handleFileSaveError = (error: { path: string }) => {
   closeAfterSave.delete(error.path);
+};
+
+/**
+ * Closes a tab, asking the user what to do with unsaved changes first.
+ * This is what the close button, Cmd+W and :q use.
+ */
+export const requestCloseTab = (_id: string) => {
+  const tab = store.getState().tabBar.tabs.find((t) => t._id === _id);
+  if (!tab) return;
+
+  if (!isTabDirty(tab)) {
+    closeTab(_id);
+    return;
+  }
+
+  window.electron.ipcRenderer.sendMessage('confirmUnsavedClose', {
+    _id,
+    title: tab.title,
+  });
+};
+
+/** Called with the user's answer to the Save / Don't Save / Cancel dialog. */
+export const handleUnsavedCloseReply = ({
+  _id,
+  response,
+}: {
+  _id: string;
+  response: 'save' | 'discard' | 'cancel';
+}) => {
+  const tab = store.getState().tabBar.tabs.find((t) => t._id === _id);
+  if (!tab) return;
+
+  if (response === 'save') saveAndCloseTab(tab);
+  else if (response === 'discard') closeTab(_id);
 };

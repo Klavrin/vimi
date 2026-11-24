@@ -3,7 +3,11 @@ import { useDispatch } from 'react-redux';
 import { setCurrentDirectoryPath } from '../store/reducers/current-directory';
 import { fetchTabs } from '../store/reducers/tab-bar';
 
-import { handleFileSaved, handleFileSaveError } from '../utils/save-tab';
+import {
+  handleFileSaved,
+  handleFileSaveError,
+  handleUnsavedCloseReply,
+} from '../utils/save-tab';
 
 import Alert from './alert';
 
@@ -76,9 +80,15 @@ function Main({ children }: MainProps) {
       },
     );
 
+    const removeCloseReplyListener = window.electron.ipcRenderer.on(
+      'confirmUnsavedCloseReply',
+      (reply: any) => handleUnsavedCloseReply(reply),
+    );
+
     return () => {
       removeSavedListener?.();
       removeErrorListener?.();
+      removeCloseReplyListener?.();
     };
   }, []);
 
