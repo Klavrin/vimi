@@ -61,7 +61,7 @@ export default class MenuBuilder {
           label: 'About Vimi',
           selector: 'orderFrontStandardAboutPanel:',
         },
-        { type: 'separator' },
+        { type: 'separator' as const },
         {
           label: 'Hide Vimi',
           accelerator: 'Command+H',
@@ -232,8 +232,8 @@ export default class MenuBuilder {
     ];
   }
 
-  buildDefaultTemplate() {
-    const templateDefault = [
+  buildDefaultTemplate(): MenuItemConstructorOptions[] {
+    const templateDefault: MenuItemConstructorOptions[] = [
       {
         label: '&File',
         submenu: [

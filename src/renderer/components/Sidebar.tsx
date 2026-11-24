@@ -84,6 +84,10 @@ function Sidebar() {
         setDirectoryFiles(dirItems);
         dispatch(setFileTree(sortFileTree(dirItems)));
       });
+    } else {
+      // The folder was closed: stop showing its items
+      setDirectoryFiles([]);
+      dispatch(setFileTree([]));
     }
   }, [currentDirectoryPath]);
 

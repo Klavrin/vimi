@@ -12,6 +12,7 @@ import {
 import { setSidebarValue } from '../store/reducers/sidebar-active';
 import store from '../store';
 import { requestCloseTab, saveCurrentTab } from '../utils/save-tab';
+import closeFolder from '../utils/close-folder';
 
 import Tooltip from './tooltip';
 
@@ -41,10 +42,17 @@ function WorkspaceTabHeader() {
       'saveCurrentFile',
       saveCurrentTab,
     );
+    const removeCloseFolderListener = window.electron.ipcRenderer.on(
+      'closeFolder',
+      () => {
+        closeFolder();
+      },
+    );
 
     return () => {
       removeCloseListener?.();
       removeSaveListener?.();
+      removeCloseFolderListener?.();
     };
   }, []);
 

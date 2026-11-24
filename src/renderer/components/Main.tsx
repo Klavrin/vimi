@@ -1,7 +1,15 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+import { setSidebarValue } from '../store/reducers/sidebar-active';
+import { setAllowFocusing } from '../store/reducers/workspace';
+import store from '../store';
 import { setCurrentDirectoryPath } from '../store/reducers/current-directory';
-import { fetchTabs } from '../store/reducers/tab-bar';
+import {
+  addTab,
+  fetchTabs,
+  setActiveTabIndex,
+} from '../store/reducers/tab-bar';
 
 import {
   handleFileSaved,
@@ -91,6 +99,68 @@ function Main({ children }: MainProps) {
       removeCloseReplyListener?.();
     };
   }, []);
+
+  // These live here (not in Workspace) because Workspace only mounts once a
+  // directory is set, and "Open File" sends readFile right after setting it.
+  useEffect(() => {
+    const removeFileContentsListener = window.electron.ipcRenderer.on(
+      'fileContents',
+      (file: any) => {
+        dispatch(setAllowFocusing(false)); // Do not focus the current tab when a new file is opened
+        dispatch(
+          addTab({
+            _id: uuidv4(),
+            path: file.path,
+            title: file.fileName, // temporary
+            contents: file.contents,
+            previewMode: false,
+            tags: [],
+            pinned: false,
+            savedContents: file.contents,
+          }),
+        );
+        setTimeout(() => {
+          dispatch(setAllowFocusing(true)); // doesn't work without a timeout
+        });
+      },
+    );
+
+    const removeFolderOpenedListener = window.electron.ipcRenderer.on(
+      'folderOpened',
+      ({ path }: any) => {
+        dispatch(setCurrentDirectoryPath(path));
+        dispatch(setSidebarValue(true));
+      },
+    );
+
+    const removeFileOpenedListener = window.electron.ipcRenderer.on(
+      'fileOpenedFromDialog',
+      ({ path, dirPath }: any) => {
+        dispatch(setCurrentDirectoryPath(dirPath));
+        dispatch(setSidebarValue(true));
+
+        const { tabs } = store.getState().tabBar;
+        const index = tabs.findIndex((tab) => tab.path === path);
+        if (index !== -1) dispatch(setActiveTabIndex(index));
+        else window.electron.ipcRenderer.sendMessage('readFile', path);
+      },
+    );
+
+    const removeDialogErrorListener = window.electron.ipcRenderer.on(
+      'openDialogError',
+      ({ message }: any) => {
+        setAlertContent({ heading: 'Could not open', innerText: message });
+        setShowAlert(true);
+      },
+    );
+
+    return () => {
+      removeFileContentsListener?.();
+      removeFolderOpenedListener?.();
+      removeFileOpenedListener?.();
+      removeDialogErrorListener?.();
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchTabs() as any);
