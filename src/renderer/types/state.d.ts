@@ -1,5 +1,6 @@
 import type { Theme } from './themes';
 import type { FileTree } from '../components/sidebar-item';
+import type { SettingsState } from '../store/reducers/settings';
 
 export type State = {
   sidebar: {
@@ -18,6 +19,7 @@ export type State = {
     editorRefs: Record<string, any> | null;
     settingsVisible: boolean;
   };
+  settings: SettingsState;
   tabBar: {
     activeTabIndex: number;
     tabs: {

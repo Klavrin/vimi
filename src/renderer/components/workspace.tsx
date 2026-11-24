@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import { addTab } from '../store/reducers/tab-bar';
+import { addTab, isTabDirty } from '../store/reducers/tab-bar';
+import { saveTab } from '../utils/save-tab';
 import { setAllowFocusing } from '../store/reducers/workspace';
 import useVimConfig from '../utils/use-vim-config';
 
@@ -18,6 +19,7 @@ function Workspace() {
     (state: State) => state.workspace.allowFocusing,
   );
   // Editor views keyed by tab _id, so reordering tabs doesn't mix them up
+  const autosave = useSelector((state: State) => state.settings.autosave);
   const markdownEditorRefs = useRef<Record<string, any>>({});
   const dispatch = useDispatch();
   useVimConfig();
@@ -43,6 +45,16 @@ function Workspace() {
       console.log('!!!!!!!!!!');
     });
   }, []);
+
+  // Autosave dirty tabs once the user stops typing for `delay` ms
+  useEffect(() => {
+    if (!autosave.enabled) return undefined;
+
+    const timeout = setTimeout(() => {
+      tabs.filter(isTabDirty).forEach(saveTab);
+    }, autosave.delay);
+    return () => clearTimeout(timeout);
+  }, [tabs, autosave.enabled, autosave.delay]);
 
   useEffect(() => {
     const activeTabId = tabs[activeTab]?._id;

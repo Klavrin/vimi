@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { EditorState } from '@codemirror/state';
+import { Compartment, EditorState, Extension } from '@codemirror/state';
+import { useSelector } from 'react-redux';
 import { EditorView, keymap, drawSelection } from '@codemirror/view';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import {
@@ -13,6 +14,12 @@ import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { languages } from '@codemirror/language-data';
 
 import { vim } from '@replit/codemirror-vim';
+import type { State } from '../types/state';
+import {
+  fontSizeExtension,
+  lineNumbersExtension,
+  lineWrappingExtension,
+} from './editor-config';
 
 const customSyntaxHighlighting = HighlightStyle.define([
   {
@@ -82,14 +89,44 @@ type onChangeProps = (value: EditorState) => void;
 function useCodemiror(doc: string, onChange?: onChangeProps) {
   const refContainer = useRef<HTMLDivElement>(null);
   const [editorView, setEditorView] = useState<EditorView>();
+  const editorSettings = useSelector((state: State) => state.settings.editor);
+  const vimEnabled = useSelector((state: State) => state.settings.vim.enabled);
+
+  // One set of compartments per editor, so settings can be swapped in live
+  const compartments = useRef({
+    vim: new Compartment(),
+    lineWrapping: new Compartment(),
+    lineNumbers: new Compartment(),
+    fontSize: new Compartment(),
+  });
+  const settingsRef = useRef({ editorSettings, vimEnabled });
+  settingsRef.current = { editorSettings, vimEnabled };
+  // The settings the editor was last configured with
+  const appliedSettings = useRef(settingsRef.current);
+
+  // Relative line numbers need to rebuild themselves when the cursor moves
+  const reconfigureRelativeNumbers = (
+    extension: Extension,
+    view: EditorView,
+  ) => {
+    if (settingsRef.current.editorSettings.lineNumbers !== 'relative') return;
+    view.dispatch({
+      effects: compartments.current.lineNumbers.reconfigure(extension),
+    });
+  };
 
   useEffect(() => {
     if (!refContainer.current) return;
 
+    // eslint-disable-next-line prefer-const
+    let view: EditorView;
+    const { vim: vimCompartment } = compartments.current;
+    const initial = settingsRef.current;
+
     const startState = EditorState.create({
       doc,
       extensions: [
-        vim(),
+        vimCompartment.of(initial.vimEnabled ? vim() : []),
         keymap.of([...defaultKeymap, ...historyKeymap]),
         history(),
         indentOnInput(),
@@ -100,7 +137,18 @@ function useCodemiror(doc: string, onChange?: onChangeProps) {
           base: markdownLanguage,
           codeLanguages: languages,
         }),
-        EditorView.lineWrapping,
+        compartments.current.lineWrapping.of(
+          lineWrappingExtension(initial.editorSettings.lineWrapping),
+        ),
+        compartments.current.lineNumbers.of(
+          lineNumbersExtension(
+            initial.editorSettings.lineNumbers,
+            (extension) => reconfigureRelativeNumbers(extension, view),
+          ),
+        ),
+        compartments.current.fontSize.of(
+          fontSizeExtension(initial.editorSettings.fontSize),
+        ),
         EditorView.updateListener.of((update) => {
           if (update.changes) {
             if (onChange) {
@@ -111,13 +159,51 @@ function useCodemiror(doc: string, onChange?: onChangeProps) {
       ],
     });
 
-    const view = new EditorView({
+    view = new EditorView({
       state: startState,
       parent: refContainer.current,
     });
 
     setEditorView(view);
   }, []);
+
+  // Apply settings changes to the existing editor, touching only what changed
+  useEffect(() => {
+    if (!editorView) return;
+
+    const previous = appliedSettings.current;
+    const {
+      vim: vimCompartment,
+      lineWrapping,
+      lineNumbers,
+      fontSize,
+    } = compartments.current;
+    const effects = [];
+
+    if (previous.vimEnabled !== vimEnabled)
+      effects.push(vimCompartment.reconfigure(vimEnabled ? vim() : []));
+    if (previous.editorSettings.lineWrapping !== editorSettings.lineWrapping)
+      effects.push(
+        lineWrapping.reconfigure(
+          lineWrappingExtension(editorSettings.lineWrapping),
+        ),
+      );
+    if (previous.editorSettings.lineNumbers !== editorSettings.lineNumbers)
+      effects.push(
+        lineNumbers.reconfigure(
+          lineNumbersExtension(editorSettings.lineNumbers, (extension) =>
+            reconfigureRelativeNumbers(extension, editorView),
+          ),
+        ),
+      );
+    if (previous.editorSettings.fontSize !== editorSettings.fontSize)
+      effects.push(
+        fontSize.reconfigure(fontSizeExtension(editorSettings.fontSize)),
+      );
+
+    appliedSettings.current = { editorSettings, vimEnabled };
+    if (effects.length) editorView.dispatch({ effects });
+  }, [editorView, editorSettings, vimEnabled]);
 
   return [refContainer, editorView] as const;
 }
