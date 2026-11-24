@@ -1,6 +1,7 @@
-let request: IDBOpenDBRequest;
-let db: IDBDatabase;
-let version = 1;
+const DB_NAME = 'active-tabs';
+const STORE_NAME = 'active-tabs';
+
+let dbPromise: Promise<IDBDatabase> | null = null;
 
 export interface Tab {
   _id: string;
@@ -14,124 +15,90 @@ export interface Tab {
   order: number;
 }
 
-export const initDB = () => {
-  return new Promise((resolve, reject) => {
-    request = indexedDB.open('active-tabs');
+const openDB = (): Promise<IDBDatabase> => {
+  if (dbPromise) return dbPromise;
 
-    request.onupgradeneeded = () => {
-      db = request.result;
+  const opened = new Promise<IDBDatabase>((resolve, reject) => {
+    const openRequest = indexedDB.open(DB_NAME);
 
-      // if the object store doesn't exist, create it
-      if (!db.objectStoreNames.contains('active-tabs')) {
-        db.createObjectStore('active-tabs', { keyPath: '_id' });
+    openRequest.onupgradeneeded = () => {
+      const upgradeDb = openRequest.result;
+      if (!upgradeDb.objectStoreNames.contains(STORE_NAME)) {
+        upgradeDb.createObjectStore(STORE_NAME, { keyPath: '_id' });
       }
     };
 
-    request.onsuccess = () => {
-      db = request.result;
-      version = db.version;
-      resolve(true);
+    openRequest.onsuccess = () => {
+      const database = openRequest.result;
+      // Allow the connection to be replaced if another context upgrades it
+      database.onversionchange = () => {
+        database.close();
+        dbPromise = null;
+      };
+      resolve(database);
     };
 
-    request.onerror = () => {
-      reject(false);
+    openRequest.onerror = () => {
+      reject(openRequest.error?.message ?? 'Failed to open database.');
     };
+  });
+
+  // Don't cache a failed open, so a later call can retry
+  opened.catch(() => {
+    if (dbPromise === opened) dbPromise = null;
+  });
+  dbPromise = opened;
+  return opened;
+};
+
+/**
+ * Runs `work` inside its own readwrite transaction and resolves with `result`
+ * once the transaction has actually committed.
+ */
+const writeTransaction = async <T>(
+  work: (store: IDBObjectStore) => void,
+  result: T,
+  failure: string,
+): Promise<T> => {
+  const db = await openDB();
+  return new Promise<T>((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, 'readwrite');
+    transaction.oncomplete = () => resolve(result);
+    transaction.onerror = () => reject(transaction.error?.message ?? failure);
+    transaction.onabort = () => reject(transaction.error?.message ?? failure);
+    work(transaction.objectStore(STORE_NAME));
   });
 };
 
-export const addTab = (tab: Tab) => {
-  return new Promise((resolve, reject) => {
-    request = indexedDB.open('active-tabs', version);
-
-    request.onsuccess = () => {
-      db = request.result;
-
-      const transaction = db.transaction('active-tabs', 'readwrite');
-      const store = transaction.objectStore('active-tabs');
-
-      store.add(tab);
-      resolve(tab);
-    };
-
-    request.onerror = () => {
-      const error = request.error?.message;
-
-      if (error) {
-        reject(error);
-      } else {
-        reject('Failed to add new tab.');
-      }
-    };
-  });
+export const initDB = async () => {
+  await openDB();
+  return true;
 };
 
-export const updateTab = (tab: Tab) => {
-  return new Promise((resolve, reject) => {
-    request = indexedDB.open('active-tabs', version);
+export const addTab = (tab: Tab) =>
+  writeTransaction((store) => store.add(tab), tab, 'Failed to add new tab.');
 
-    request.onsuccess = () => {
-      db = request.result;
+export const updateTab = (tab: Tab) =>
+  writeTransaction((store) => store.put(tab), tab, 'Failed to update tab.');
 
-      const transaction = db.transaction('active-tabs', 'readwrite');
-      const store = transaction.objectStore('active-tabs');
+/** Updates several tabs atomically in a single transaction. */
+export const updateTabs = (tabs: Tab[]) =>
+  writeTransaction(
+    (store) => tabs.forEach((tab) => store.put(tab)),
+    tabs,
+    'Failed to update tabs.',
+  );
 
-      // store.put(tab, key);
-      store.put(tab);
-      resolve(tab);
-    };
+export const deleteTab = (_id: string) =>
+  writeTransaction((store) => store.delete(_id), true, 'Failed to delete tab.');
 
-    request.onerror = () => {
-      const error = request.error?.message;
-
-      if (error) {
-        reject(error);
-      } else {
-        reject('Failed to update tab.');
-      }
-    };
-  });
-};
-
-export const deleteTab = (_id: string) => {
-  return new Promise((resolve, reject) => {
-    request = indexedDB.open('active-tabs');
-
-    request.onsuccess = () => {
-      db = request.result;
-
-      const transaction = db.transaction('active-tabs', 'readwrite');
-      const store = transaction.objectStore('active-tabs');
-      const res = store.delete(_id);
-
-      res.onsuccess = () => {
-        resolve(true);
-      };
-
-      res.onerror = () => {
-        reject(false);
-      };
-    };
-  });
-};
-
-export const getAllTabs = () => {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open('active-tabs', version);
-
-    req.onsuccess = () => {
-      db = req.result;
-
-      const transaction = db.transaction('active-tabs', 'readwrite');
-      const store = transaction.objectStore('active-tabs');
-      const res = store.getAll();
-
-      res.onsuccess = () => {
-        resolve(res.result);
-      };
-
-      res.onerror = () => {
-        reject('Failed to get all tabs.');
-      };
-    };
+export const getAllTabs = async () => {
+  const db = await openDB();
+  return new Promise<Tab[]>((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, 'readonly');
+    const req = transaction.objectStore(STORE_NAME).getAll();
+    transaction.oncomplete = () => resolve(req.result);
+    transaction.onerror = () => reject(new Error('Failed to get all tabs.'));
+    transaction.onabort = () => reject(new Error('Failed to get all tabs.'));
   });
 };

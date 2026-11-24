@@ -16,6 +16,7 @@ jest.mock('../renderer/utils/db', () => ({
   addTab: jest.fn(),
   deleteTab: jest.fn(),
   updateTab: jest.fn(),
+  updateTabs: jest.fn(),
   getAllTabs: jest.fn(),
 }));
 
@@ -195,8 +196,10 @@ describe('tab-bar reducer', () => {
       const state = stateWith(['a', 'b', 'c'], 0);
       jest.clearAllMocks();
       reducer(state, setTabOrder(['a', 'c', 'b']));
-      const persisted = (db.updateTab as jest.Mock).mock.calls.map(
-        ([tab]) => tab._id,
+      expect(db.updateTab).not.toHaveBeenCalled();
+      expect(db.updateTabs).toHaveBeenCalledTimes(1);
+      const persisted = (db.updateTabs as jest.Mock).mock.calls[0][0].map(
+        (tab: { _id: string }) => tab._id,
       );
       expect(persisted.sort()).toEqual(['b', 'c']);
     });

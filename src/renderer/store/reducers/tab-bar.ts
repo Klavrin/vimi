@@ -3,6 +3,7 @@ import {
   addTab as addTabToDB,
   deleteTab as deleteTabFromDB,
   updateTab as updateTabInDB,
+  updateTabs as updateTabsInDB,
   getAllTabs,
 } from '../../utils/db';
 
@@ -93,12 +94,18 @@ const applyTabOrder = (
 ) => {
   const activeId = state.tabs[state.activeTabIndex]?._id;
   state.tabs = newTabs;
+  const changed: NoteType[] = [];
   state.tabs.forEach((tab, index) => {
     if (tab.order !== index) {
       tab.order = index;
-      persistNow(tab);
+      changed.push(tab);
     }
   });
+  if (changed.length > 0) {
+    // One transaction for the whole reorder; plain copies, not Immer drafts
+    changed.forEach((tab) => cancelPendingPersist(tab._id));
+    updateTabsInDB(JSON.parse(JSON.stringify(changed)));
+  }
   const newActiveIndex = state.tabs.findIndex((tab) => tab._id === activeId);
   state.activeTabIndex = newActiveIndex === -1 ? 0 : newActiveIndex;
 };
