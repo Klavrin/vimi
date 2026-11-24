@@ -7,6 +7,8 @@ import reducer, {
   normalizeTabs,
   fetchTabs,
   setActiveTabIndex,
+  setTabOrder,
+  moveTab,
 } from '../renderer/store/reducers/tab-bar';
 import * as db from '../renderer/utils/db';
 
@@ -172,6 +174,58 @@ describe('tab-bar reducer', () => {
       const state = reducer(undefined, action);
       expect(state.tabs).toHaveLength(1);
       expect(state.tabs[0]).toMatchObject({ savedContents: 'hello', order: 0 });
+    });
+  });
+
+  describe('reordering tabs', () => {
+    it('setTabOrder reorders, rewrites order and keeps the active tab', () => {
+      let state = stateWith(['a', 'b', 'c'], 1);
+      state = reducer(state, setTabOrder(['c', 'b', 'a']));
+
+      expect(state.tabs.map((t) => t._id)).toEqual(['c', 'b', 'a']);
+      expect(state.tabs.map((t) => t.order)).toEqual([0, 1, 2]);
+      expect(state.tabs[state.activeTabIndex]._id).toBe('b');
+
+      state = reducer(state, setTabOrder(['b', 'a', 'c']));
+      expect(state.tabs[state.activeTabIndex]._id).toBe('b');
+      expect(state.activeTabIndex).toBe(0);
+    });
+
+    it('persists the tabs whose position changed', () => {
+      const state = stateWith(['a', 'b', 'c'], 0);
+      jest.clearAllMocks();
+      reducer(state, setTabOrder(['a', 'c', 'b']));
+      const persisted = (db.updateTab as jest.Mock).mock.calls.map(
+        ([tab]) => tab._id,
+      );
+      expect(persisted.sort()).toEqual(['b', 'c']);
+    });
+
+    it('ignores an order that does not match the current tabs', () => {
+      const state = stateWith(['a', 'b'], 0);
+      expect(reducer(state, setTabOrder(['a']))).toEqual(state);
+      expect(reducer(state, setTabOrder(['a', 'a']))).toEqual(state);
+      expect(reducer(state, setTabOrder(['a', 'x']))).toEqual(state);
+    });
+
+    it('moveTab moves the active tab and keeps it active', () => {
+      let state = stateWith(['a', 'b', 'c'], 0);
+      state = reducer(state, moveTab({ from: 0, to: 1 }));
+      expect(state.tabs.map((t) => t._id)).toEqual(['b', 'a', 'c']);
+      expect(state.tabs[state.activeTabIndex]._id).toBe('a');
+    });
+
+    it('moveTab keeps another tab active when a different tab moves past it', () => {
+      let state = stateWith(['a', 'b', 'c'], 1);
+      state = reducer(state, moveTab({ from: 2, to: 0 }));
+      expect(state.tabs.map((t) => t._id)).toEqual(['c', 'a', 'b']);
+      expect(state.tabs[state.activeTabIndex]._id).toBe('b');
+    });
+
+    it('moveTab ignores out of range moves', () => {
+      const state = stateWith(['a', 'b'], 0);
+      expect(reducer(state, moveTab({ from: 0, to: -1 }))).toEqual(state);
+      expect(reducer(state, moveTab({ from: 1, to: 2 }))).toEqual(state);
     });
   });
 

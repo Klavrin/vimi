@@ -65,7 +65,9 @@ function Sidebar() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const editorRefs = useSelector((state: State) => state.workspace.editorRefs);
-  const activeTab = useSelector((state: State) => state.tabBar.activeTabIndex);
+  const activeTabId = useSelector(
+    (state: State) => state.tabBar.tabs[state.tabBar.activeTabIndex]?._id,
+  );
   const dispatch = useDispatch();
 
   const settingsVisible = useSelector(
@@ -120,8 +122,8 @@ function Sidebar() {
             interactiveElements[prevIndex].focus();
         } else if (e.ctrlKey && e.key === 'l') {
           e.preventDefault();
-          if (editorRefs[activeTab]) {
-            editorRefs[activeTab].focus();
+          if (activeTabId && editorRefs?.[activeTabId]) {
+            editorRefs[activeTabId].focus();
           }
         } else if (e.key === 'a') {
           // TODO: create file
@@ -132,7 +134,7 @@ function Sidebar() {
 
     document.addEventListener('keydown', handleVimNavigation);
     return () => document.removeEventListener('keydown', handleVimNavigation);
-  }, [isEditing, dispatch]);
+  }, [isEditing, dispatch, editorRefs, activeTabId]);
 
   /**
    * If the user hovered the interactive zone, a.k.a used their

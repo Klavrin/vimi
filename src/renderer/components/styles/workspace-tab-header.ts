@@ -36,6 +36,13 @@ const StyledWorkspaceTabHeader = styled.div`
     gap: 5px;
   }
 
+  .workspace-tab-list {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
   .workspace-tab {
     min-width: 6rem;
     max-width: 12rem;

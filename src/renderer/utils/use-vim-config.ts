@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import { Vim } from '@replit/codemirror-vim';
 import { useDispatch } from 'react-redux';
+import store from '../store';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
 import {
   decrementActiveTabIndex,
   incrementActiveTabIndex,
+  moveTab,
   togglePreviewMode,
 } from '../store/reducers/tab-bar';
 import {
@@ -38,6 +40,18 @@ function useVimConfig() {
     });
     Vim.mapCommand('L', 'action', 'moveToNextTab');
     Vim.mapCommand('H', 'action', 'moveToPrevTab');
+
+    // Reorder tabs
+    Vim.defineAction('moveTabRight', () => {
+      const { activeTabIndex } = store.getState().tabBar;
+      dispatch(moveTab({ from: activeTabIndex, to: activeTabIndex + 1 }));
+    });
+    Vim.defineAction('moveTabLeft', () => {
+      const { activeTabIndex } = store.getState().tabBar;
+      dispatch(moveTab({ from: activeTabIndex, to: activeTabIndex - 1 }));
+    });
+    Vim.mapCommand('<Space>>', 'action', 'moveTabRight');
+    Vim.mapCommand('<Space><', 'action', 'moveTabLeft');
 
     // Toggle preview mode
     Vim.defineAction('togglePreviewMode', () => {

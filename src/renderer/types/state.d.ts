@@ -15,7 +15,7 @@ export type State = {
     fileTree: FileTree[];
     isEditing: boolean;
     allowFocusing: boolean;
-    editorRefs: any[];
+    editorRefs: Record<string, any> | null;
     settingsVisible: boolean;
   };
   tabBar: {

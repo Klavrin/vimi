@@ -5,7 +5,7 @@ const initialState = {
   fileTree: [] as FileTree[],
   isEditing: false,
   allowFocusing: true,
-  editorRefs: null,
+  editorRefs: null as Record<string, any> | null,
   settingsVisible: false,
 };
 

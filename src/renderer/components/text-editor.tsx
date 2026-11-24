@@ -13,7 +13,6 @@ import MarkdownPreview from './markdown-preview';
 type TextEditorProps = {
   tabId: string;
   contents: string;
-  index: number;
   markdownEditorRefs: any;
   previewMode: boolean;
 };
@@ -21,7 +20,6 @@ type TextEditorProps = {
 function TextEditor({
   tabId,
   contents,
-  index,
   markdownEditorRefs,
   previewMode,
 }: TextEditorProps) {
@@ -41,7 +39,7 @@ function TextEditor({
         setSpacePressed(false);
         dispatch(setPreviewMode(false));
         setTimeout(() => {
-          markdownEditorRefs.current[index].focus();
+          markdownEditorRefs.current[tabId].focus();
         });
         document.removeEventListener('keydown', handleKeyDown);
       }
@@ -60,7 +58,7 @@ function TextEditor({
     dispatch(togglePreviewMode());
     if (previewMode) {
       setTimeout(() => {
-        markdownEditorRefs.current[index].focus();
+        markdownEditorRefs.current[tabId].focus();
       });
     }
   };
@@ -72,7 +70,7 @@ function TextEditor({
         setEditorContent={handleContentChange}
         previewMode={previewMode}
         markdownEditorRefs={markdownEditorRefs}
-        index={index}
+        tabId={tabId}
       />
       <MarkdownPreview previewMode={previewMode} innerText={editorContent} />
 

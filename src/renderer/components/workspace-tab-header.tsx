@@ -1,9 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FaX, FaEye } from 'react-icons/fa6';
+import { FaX } from 'react-icons/fa6';
+import { Reorder } from 'framer-motion';
 import { PiSidebarFill } from 'react-icons/pi';
 
-import { setActiveTabIndex, isTabDirty } from '../store/reducers/tab-bar';
+import {
+  setActiveTabIndex,
+  setTabOrder,
+  isTabDirty,
+} from '../store/reducers/tab-bar';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
 import store from '../store';
 import { requestCloseTab, saveCurrentTab } from '../utils/save-tab';
@@ -16,6 +21,7 @@ import { State } from '../types/state';
 function WorkspaceTabHeader() {
   const activeTab = useSelector((state: State) => state.tabBar.activeTabIndex);
   const tabs = useSelector((state: State) => state.tabBar.tabs);
+  const tabIds = useMemo(() => tabs.map((tab) => tab._id), [tabs]);
   const sidebarActive = useSelector((state: State) => state.sidebar.isActive);
   const [iconHovered, setIconHovered] = useState(false);
   const dispatch = useDispatch();
@@ -78,34 +84,44 @@ function WorkspaceTabHeader() {
             />
           </>
         )}
-        {tabs.map((tab, index) => (
-          <div
-            key={tab._id}
-            className={`workspace-tab ${index === activeTab ? 'active' : ''} ${
-              isTabDirty(tab) ? 'dirty' : ''
-            }`}
-            onClick={() => dispatch(setActiveTabIndex(index))}
-            role="button"
-            tabIndex={index}
-            onKeyDown={(e) => handleKeyDown(e, index)}
-            style={{ opacity: index === activeTab ? 1 : 0.6 }}
-          >
-            <p className="title">{tab.title}</p>
-            <div
-              className="icon dirty-dot"
-              role="img"
-              aria-label="Unsaved changes"
+        <Reorder.Group
+          as="div"
+          axis="x"
+          className="workspace-tab-list"
+          values={tabIds}
+          onReorder={(newIds: string[]) => dispatch(setTabOrder(newIds))}
+        >
+          {tabs.map((tab, index) => (
+            <Reorder.Item
+              as="div"
+              key={tab._id}
+              value={tab._id}
+              className={`workspace-tab ${
+                index === activeTab ? 'active' : ''
+              } ${isTabDirty(tab) ? 'dirty' : ''}`}
+              onClick={() => dispatch(setActiveTabIndex(index))}
+              role="button"
+              tabIndex={index}
+              onKeyDown={(e) => handleKeyDown(e, index)}
+              style={{ opacity: index === activeTab ? 1 : 0.6 }}
             >
-              <span />
-            </div>
-            <div
-              className="icon close-icon"
-              onClick={(e) => handleCloseTab(e, tab._id)}
-            >
-              <FaX />
-            </div>
-          </div>
-        ))}
+              <p className="title">{tab.title}</p>
+              <div
+                className="icon dirty-dot"
+                role="img"
+                aria-label="Unsaved changes"
+              >
+                <span />
+              </div>
+              <div
+                className="icon close-icon"
+                onClick={(e) => handleCloseTab(e, tab._id)}
+              >
+                <FaX />
+              </div>
+            </Reorder.Item>
+          ))}
+        </Reorder.Group>
       </div>
     </StyledWorkspaceTabHeader>
   );

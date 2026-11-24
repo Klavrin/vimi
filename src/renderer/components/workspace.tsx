@@ -17,7 +17,8 @@ function Workspace() {
   const allowFocusing = useSelector(
     (state: State) => state.workspace.allowFocusing,
   );
-  const markdownEditorRefs = useRef(Array(tabs.length).fill(null));
+  // Editor views keyed by tab _id, so reordering tabs doesn't mix them up
+  const markdownEditorRefs = useRef<Record<string, any>>({});
   const dispatch = useDispatch();
   useVimConfig();
 
@@ -44,8 +45,13 @@ function Workspace() {
   }, []);
 
   useEffect(() => {
-    if (markdownEditorRefs.current[activeTab] && allowFocusing) {
-      markdownEditorRefs.current[activeTab].focus();
+    const activeTabId = tabs[activeTab]?._id;
+    if (
+      activeTabId &&
+      markdownEditorRefs.current[activeTabId] &&
+      allowFocusing
+    ) {
+      markdownEditorRefs.current[activeTabId].focus();
     }
   }, [activeTab, tabs]);
 
@@ -60,7 +66,6 @@ function Workspace() {
           <TextEditor
             tabId={tab._id}
             contents={tab.contents}
-            index={index}
             markdownEditorRefs={markdownEditorRefs}
             previewMode={tab.previewMode}
           />

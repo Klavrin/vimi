@@ -83,6 +83,26 @@ const initialState = {
   //   : [],
 };
 
+/**
+ * Replaces the tab list with a new ordering, rewriting `order` and keeping the
+ * active index pointing at the same tab.
+ */
+const applyTabOrder = (
+  state: { activeTabIndex: number; tabs: NoteType[] },
+  newTabs: NoteType[],
+) => {
+  const activeId = state.tabs[state.activeTabIndex]?._id;
+  state.tabs = newTabs;
+  state.tabs.forEach((tab, index) => {
+    if (tab.order !== index) {
+      tab.order = index;
+      persistNow(tab);
+    }
+  });
+  const newActiveIndex = state.tabs.findIndex((tab) => tab._id === activeId);
+  state.activeTabIndex = newActiveIndex === -1 ? 0 : newActiveIndex;
+};
+
 const tabBarSlice = createSlice({
   name: 'tabBar',
   initialState,
@@ -137,6 +157,28 @@ const tabBarSlice = createSlice({
       cancelPendingPersist(tab._id);
       deleteTabFromDB(tab._id);
     },
+    setTabOrder: (state, action: PayloadAction<string[]>) => {
+      const byId = new Map(state.tabs.map((tab) => [tab._id, tab]));
+      const ids = action.payload.filter((id) => byId.has(id));
+      // Ignore payloads that don't describe exactly the current set of tabs
+      if (ids.length !== state.tabs.length || new Set(ids).size !== ids.length)
+        return;
+
+      applyTabOrder(
+        state,
+        ids.map((id) => byId.get(id) as NoteType),
+      );
+    },
+    moveTab: (state, action: PayloadAction<{ from: number; to: number }>) => {
+      const { from, to } = action.payload;
+      const inRange = (i: number) => i >= 0 && i < state.tabs.length;
+      if (from === to || !inRange(from) || !inRange(to)) return;
+
+      const newTabs = [...state.tabs];
+      const [moved] = newTabs.splice(from, 1);
+      newTabs.splice(to, 0, moved);
+      applyTabOrder(state, newTabs);
+    },
     updateTabContents: (
       state,
       action: PayloadAction<{ _id: string; contents: string }>,
@@ -187,6 +229,8 @@ export const {
   removeCurrentTab,
   updateTabContents,
   markTabSaved,
+  setTabOrder,
+  moveTab,
   togglePreviewMode,
   setPreviewMode,
 } = tabBarSlice.actions;
