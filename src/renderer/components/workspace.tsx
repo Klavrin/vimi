@@ -33,6 +33,7 @@ function Workspace() {
           previewMode: false,
           tags: [],
           pinned: false,
+          savedContents: file.contents,
         }),
       );
       setTimeout(() => {
@@ -57,6 +58,7 @@ function Workspace() {
           style={{ display: index === activeTab ? 'block' : 'none' }}
         >
           <TextEditor
+            tabId={tab._id}
             contents={tab.contents}
             index={index}
             markdownEditorRefs={markdownEditorRefs}

@@ -80,7 +80,7 @@ const customSyntaxHighlighting = HighlightStyle.define([
 type onChangeProps = (value: EditorState) => void;
 
 function useCodemiror(doc: string, onChange?: onChangeProps) {
-  const refContainer = useRef<Element>(null);
+  const refContainer = useRef<HTMLDivElement>(null);
   const [editorView, setEditorView] = useState<EditorView>();
 
   useEffect(() => {
@@ -119,7 +119,7 @@ function useCodemiror(doc: string, onChange?: onChangeProps) {
     setEditorView(view);
   }, []);
 
-  return [refContainer, editorView];
+  return [refContainer, editorView] as const;
 }
 
 export default useCodemiror;

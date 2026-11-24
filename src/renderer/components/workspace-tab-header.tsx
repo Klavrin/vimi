@@ -3,13 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FaX, FaEye } from 'react-icons/fa6';
 import { PiSidebarFill } from 'react-icons/pi';
 
-import {
-  setActiveTabIndex,
-  removeCurrentTab,
-  decrementActiveTabIndex,
-} from '../store/reducers/tab-bar';
+import { setActiveTabIndex } from '../store/reducers/tab-bar';
 import { setSidebarValue } from '../store/reducers/sidebar-active';
 import store from '../store';
+import { closeTab, saveCurrentTab } from '../utils/save-tab';
 
 import Tooltip from './tooltip';
 
@@ -25,25 +22,29 @@ function WorkspaceTabHeader() {
 
   useEffect(() => {
     const handleIpcCloseCurrentTab = () => {
-      const state = store.getState();
-      const currentActiveTab = state.tabBar.activeTabIndex;
-      const currentTabs = state.tabBar.tabs;
-
-      dispatch(removeCurrentTab());
-      if (currentActiveTab === currentTabs.length - 1) {
-        dispatch(decrementActiveTabIndex());
-      }
+      const { tabs: currentTabs, activeTabIndex } = store.getState().tabBar;
+      const currentTab = currentTabs[activeTabIndex];
+      if (currentTab) closeTab(currentTab._id);
     };
 
-    window.electron.ipcRenderer.on('closeCurrentTab', handleIpcCloseCurrentTab);
+    const removeCloseListener = window.electron.ipcRenderer.on(
+      'closeCurrentTab',
+      handleIpcCloseCurrentTab,
+    );
+    const removeSaveListener = window.electron.ipcRenderer.on(
+      'saveCurrentFile',
+      saveCurrentTab,
+    );
+
+    return () => {
+      removeCloseListener?.();
+      removeSaveListener?.();
+    };
   }, []);
 
-  const handleCloseTab = (e: React.MouseEvent) => {
+  const handleCloseTab = (e: React.MouseEvent, _id: string) => {
     e.stopPropagation();
-    dispatch(removeCurrentTab());
-    if (activeTab === tabs.length - 1) {
-      dispatch(decrementActiveTabIndex());
-    }
+    closeTab(_id);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
@@ -79,7 +80,7 @@ function WorkspaceTabHeader() {
         )}
         {tabs.map((tab, index) => (
           <div
-            key={tab.title}
+            key={tab._id}
             className={`workspace-tab ${index === activeTab ? 'active' : ''}`}
             onClick={() => dispatch(setActiveTabIndex(index))}
             role="button"
@@ -91,7 +92,7 @@ function WorkspaceTabHeader() {
             <div
               className="icon"
               style={{ display: index === activeTab ? 'block' : 'none' }}
-              onClick={handleCloseTab}
+              onClick={(e) => handleCloseTab(e, tab._id)}
             >
               <FaX />
             </div>

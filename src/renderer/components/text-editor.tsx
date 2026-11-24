@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { FaEye } from 'react-icons/fa6';
-import { togglePreviewMode, setPreviewMode } from '../store/reducers/tab-bar';
+import {
+  togglePreviewMode,
+  setPreviewMode,
+  updateTabContents,
+} from '../store/reducers/tab-bar';
 
 import MarkdownEditor from './markdown-editor';
 import MarkdownPreview from './markdown-preview';
 
 type TextEditorProps = {
+  tabId: string;
   contents: string;
   index: number;
   markdownEditorRefs: any;
@@ -14,6 +19,7 @@ type TextEditorProps = {
 };
 
 function TextEditor({
+  tabId,
   contents,
   index,
   markdownEditorRefs,
@@ -45,6 +51,11 @@ function TextEditor({
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [previewMode, spacePressed]);
 
+  const handleContentChange = (newContents: string) => {
+    setEditorContent(newContents);
+    dispatch(updateTabContents({ _id: tabId, contents: newContents }));
+  };
+
   const handlePreviewButton = () => {
     dispatch(togglePreviewMode());
     if (previewMode) {
@@ -58,7 +69,7 @@ function TextEditor({
     <>
       <MarkdownEditor
         value={editorContent}
-        setEditorContent={setEditorContent}
+        setEditorContent={handleContentChange}
         previewMode={previewMode}
         markdownEditorRefs={markdownEditorRefs}
         index={index}

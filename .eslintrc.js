@@ -13,6 +13,8 @@ module.exports = {
     '@typescript-eslint/no-shadow': 'error',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
+    // `_id` is the primary key used by the tab store and IndexedDB
+    'no-underscore-dangle': ['error', { allow: ['_id'] }],
   },
   parserOptions: {
     ecmaVersion: 2022,

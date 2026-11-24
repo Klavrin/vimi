@@ -10,6 +10,8 @@ export interface Tab {
   previewMode: boolean;
   tags: string[];
   pinned: boolean;
+  savedContents: string;
+  order: number;
 }
 
 export const initDB = () => {

@@ -28,6 +28,8 @@ export type State = {
       previewMode: boolean;
       tags: string[];
       pinned: boolean;
+      savedContents: string;
+      order: number;
     }[];
   };
 };

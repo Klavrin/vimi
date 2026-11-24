@@ -138,6 +138,18 @@ ipcMain.on('readFile', (event, filePath) => {
   });
 });
 
+ipcMain.on('writeFile', async (event, { path: filePath, contents }) => {
+  try {
+    await fs.writeFile(filePath, contents, 'utf8');
+    event.reply('fileSaved', { path: filePath, contents });
+  } catch (err) {
+    event.reply('fileSaveError', {
+      path: filePath,
+      message: err instanceof Error ? err.message : String(err),
+    });
+  }
+});
+
 ipcMain.on('renameFile', (_event, { filePath, newFileName }) => {
   fs.rename(filePath, `${path.dirname(filePath)}/${newFileName}.md`, (err) => {
     if (err) throw err;
