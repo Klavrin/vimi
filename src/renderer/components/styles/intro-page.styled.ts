@@ -21,7 +21,7 @@ const StyledIntroPage = styled.div`
     line-height: 1;
     letter-spacing: -0.04em;
     color: ${(props) => props.theme.text.primary};
-    opacity: 0.06;
+    opacity: 0.08;
     pointer-events: none;
   }
 
@@ -46,7 +46,11 @@ const StyledIntroPage = styled.div`
     border: none;
     border-radius: 6px;
     background: transparent;
-    color: ${(props) => props.theme.text.secondary};
+    color: color-mix(
+      in srgb,
+      ${(props) => props.theme.text.primary} 75%,
+      transparent
+    );
     font-size: 14px;
     text-align: left;
     cursor: pointer;
@@ -59,6 +63,10 @@ const StyledIntroPage = styled.div`
       outline: none;
       background: ${(props) => props.theme.background.secondary};
       color: ${(props) => props.theme.text.primary};
+
+      .intro-key {
+        color: ${(props) => props.theme.text.primary};
+      }
     }
 
     &:focus-visible {
@@ -66,7 +74,11 @@ const StyledIntroPage = styled.div`
     }
 
     &[aria-disabled='true'] {
-      opacity: 0.45;
+      color: color-mix(
+        in srgb,
+        ${(props) => props.theme.text.primary} 40%,
+        transparent
+      );
       cursor: default;
     }
   }
@@ -82,7 +94,11 @@ const StyledIntroPage = styled.div`
     border: 1px solid ${(props) => props.theme.border.secondary};
     border-radius: 4px;
     background: ${(props) => props.theme.background.secondary};
-    color: ${(props) => props.theme.text.secondary};
+    color: color-mix(
+      in srgb,
+      ${(props) => props.theme.text.primary} 70%,
+      transparent
+    );
     font-size: 12px;
     text-align: center;
   }
@@ -90,8 +106,11 @@ const StyledIntroPage = styled.div`
   .intro-hint {
     margin-top: 1.5rem;
     font-size: 12px;
-    color: ${(props) => props.theme.text.secondary};
-    opacity: 0.7;
+    color: color-mix(
+      in srgb,
+      ${(props) => props.theme.text.primary} 50%,
+      transparent
+    );
   }
 `;
 
